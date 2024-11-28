@@ -1,0 +1,216 @@
+/* Estilizações para tags */
+
+body {
+    background-color: rgba(0, 0, 0, 0.863);
+    /*Grafite: rgba(0, 0, 0, 0.155)*/
+}
+
+header {
+    position: relative; /* Torna o header o contexto do pseudo-elemento */
+    background-image: url(https://cdn.pixabay.com/photo/2022/08/24/15/42/library-7408106_1280.jpg);
+    background-position: center;
+    background-size: cover; /* Faz a imagem cobrir o espaço */
+    height: 300px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 0; /* Para garantir que o conteúdo fique acima */
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65); /* Cor preta com 50% de opacidade */
+    z-index: -1; /* Garante que a sobreposição fique atrás do conteúdo */
+}
+
+
+nav {
+    background-color: hsl(358, 81%, 50%);
+    height: 60px;
+    display: flex; 
+    justify-content: space-between;
+}
+
+main {
+    margin: auto;
+    display: block; 
+    max-width: 933px; /* Mexer quando os novos cards estiverem prontos */
+    text-align: left; /* Alinha textos e conteúdo inline à direita */
+}
+
+footer {
+    margin: auto;
+    display: block; 
+    max-width: 933px; /* Mexer quando os novos cards estiverem prontos */
+    text-align: left; /* Alinha textos e conteúdo inline à direita */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+h1, h2, h3{
+    all: unset;
+    font-family: "Rubik", sans-serif;
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 65px;
+    color: #ffffff;
+}
+
+h2 {
+    font-weight: 600;
+    margin: 10px auto 10px auto;
+    font-size: 55px;
+    opacity: 0.95;
+    color: #ffc02b;
+}
+
+h3 {
+    margin: 50px auto ;
+    font-weight: 560;
+    font-size: 35px;
+    color: rgb(253, 26, 26);
+    /* color: #f8572d; Laranja*/ 
+}
+
+p {
+    line-height: 150%;
+    font-size: 21px;
+    color: white;
+    opacity: 0.86;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    text-align: justify;
+}
+
+strong{
+    color: white;
+    opacity: 0.99;
+}
+
+ul{
+    font-family: "Inter", sans-serif;
+    margin: 20px auto 10px auto;
+}
+
+li{
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-size: 21px;
+    line-height: 150%;
+    color: white;
+    opacity: 0.86;
+}
+
+table {
+    width: 100%;
+    align-items: center;
+    border-collapse: collapse; /* Combina as bordas das células da tabela */
+}
+
+th, td {
+    border: 1px solid #ffffffa9;
+    padding: 7px;
+    background-color: #ddd;
+    color: #000;
+}
+
+th {
+    background-color: #333;
+    color: rgba(255, 255, 255, 0.824);
+}
+
+img{
+    width: 100%;
+}
+
+abbr {
+    object-fit: contain;
+    word-spacing: 1px;
+    font-size: 18px;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    color: white;
+    opacity: 0.86;
+    max-width: 1170px;
+}
+
+article {
+    object-fit: contain;
+    word-spacing: 1px;
+    font-size: 18px;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    color: white;
+    opacity: 0.86;
+    max-width: 1170px;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+a {
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+}
+
+code {
+    word-spacing: 2px;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    color: aqua;
+    opacity: 0.65;
+}
+
+@media screen and (max-width: 500px) {
+    main, footer {
+        max-width: 95vw; 
+    }
+
+    h1 {
+        font-size: 45px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    h3 {
+        font-size: 35px;
+    }
+    
+    p{
+        font-size: 20px;
+        text-align: justify;
+    }
+
+    img{
+        max-width: 95vw;
+    }
+
+    table {
+        max-width: 90vw;
+    }
+
+    th{ 
+        align-items: center;
+        padding: 3px;
+        font-size: 9px;
+    }
+}

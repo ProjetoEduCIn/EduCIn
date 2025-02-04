@@ -1,294 +1,126 @@
-/* Tags de cabeçalho */
-.logo {
-    width: 60px;
-    height: 60px;
+/* ----------------------------------------------------------- TELA DE LOGIN -----------------------------------------------------------*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+* {
     margin: 0;
-}
-
-.logo:hover {
-    scale: 1.1;
-    margin-left: 5px;
-}
-
-.botao_navegacao {
-    display: block;
-    position: relative;
-    width: 60px;
-    height: 60px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.barra {
-    display: block;
-    height: 8px;
-    width: 50px;
-    background-color: rgb(0, 0, 0);
-    margin: 4px auto;
-}
-
-.botao_navegacao:hover .menu_lateral {
-    display: block;
-}
-
-.menu_lateral {
-    margin: 0;
-    height: auto;
-    display: none;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 25vw;
-    background-color: #000000cd;
-    padding: 0px;
-    text-align: left;
+    padding: 0;
     box-sizing: border-box;
 }
 
-.barra_vertical {
-    display: none;
-    position: absolute;
-    width: 8px;
-    height: 36px;
-    background-color: hsl(358, 81%, 50%);
-    transition: background-color 0.6s;
-    margin: 0px 0px 0 1px;
-}
-
-.botao_navegacao:hover .caixa_botao {
-    display: block;
-}
-
-.botao_redirecionador {
-    text-decoration: none;
-    align-items: center;
-    margin: 10px;
-    color: #3febee;
-    font-size: 30px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 550;
-    font-optical-sizing: auto;
-    font-style: normal;
-    font-variation-settings: "slnt" 3;
-}
-
-.botao_redirecionador:hover .caixa_botao {
-    margin: 100px;
-}
-
-.caixa_botao {
-    border: #000 6px;
-    margin: 5px 0 1px 0;
-    opacity: 0.7;
-    transition: opacity 0.1s, background-color 0.5s ease;
-}
-
-.caixa_botao:hover .barra_vertical {
-    display: block;
-}
-
-.caixa_botao:hover {
-    opacity: 1;
-    box-shadow: 0px 10px 10px 0px rgba(255, 251, 251, 0.1);
+.container-info {
+    margin: auto;
+    height: auto;
+    width: 30dvw;
+    background: rgb(41,75,182);
+    background: linear-gradient(90deg, rgba(41,75,182,1) 0%, rgba(33,104,198,1) 36%, rgba(28,120,206,1) 70%, rgba(26,126,210,1) 80%, rgba(23,136,215,1) 100%, rgba(19,150,222,1) 100%, rgba(19,150,222,1) 100%);
+    border-radius: 0px;
     object-fit: contain;
-    height: auto;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.705);
-    align-items: left;
-    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
-.caixa_botao:hover .botao_redirecionador {
-    color: hsla(358, 81%, 50%, 0.952);
-}
-
-/* Tags card página inicial */
-.TituloIndex{
-    margin-bottom: 20px; 
-    font-size: 80px;
-}
-
-.Container{
-    width: auto;
-    height: auto;
-    margin: auto;
-    text-align: center;
-}
-
-.ContainerCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    flex-direction: row; /* flex-direction: row-reverse; --> colocar alternado para dar o efeito da página de pedro*/
-    gap: 10px;
-    width: 100%;
-    height: auto; /* Altura */
-    text-align: center; /* Centraliza o texto dentro da div */
-}
-
-.ContainerInfo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    width: 900px;
-    background-color: rgba(255, 255, 255, 0);
-}
-
-.TituloCardPaginaInicial{
-    color: rgb(255, 53, 53);
+#Login {
+    border-bottom: 2px solid #fff; /* Borda apenas abaixo do texto */
+    display: inline-block; /* Faz com que o tamanho do elemento se ajuste ao conteúdo */
+    color: #fff;
     font-size: 50px;
-    margin: 5px auto;
+    margin-top: 70px;
+    margin-left: 10%;
+    width: auto; 
 }
 
-.ParagrafoCardPaginaInicial {
-    color: #f3f3f3;
-    margin: 7px auto;
-    width: 95%;
+.Legenda{
+    font-size: 0.95rem;
+    color: #fff;
+    margin-top: 10% ;
+    margin-left: 10% ;
+    margin-bottom: 0px ;
 }
 
-.BotaoCardPaginaInicial {
+#Email, #Senha {
     all: unset;
-    text-decoration: none; /* Remove o sublinhado */
-    color: white; /* Herda a cor do elemento pai */
-    background-color: hsla(358, 81%, 50%, 0.826); /* Remove qualquer cor de fundo */
-    border: none; /* Remove bordas, se houver */
-    outline: none; /* Remove o contorno ao focar (não recomendado para acessibilidade, mas pode ser adicionado conforme necessário) */
-    font-size: 20px; /* Herda o tamanho da fonte do elemento pai */
-    line-height: 150%; /* Herda o espaçamento entre as linhas */
-    text-align: center; /* Herda o alinhamento do texto */
-    cursor: pointer; /* Alterar o cursor ao passar o mouse sobre o link */
-    padding: 10px;
-    margin: 10px;
-    width: 95%;
-}
-
-.ImagemCardPaginaInicial {
-    align-self: flex-start; /* Garante que a imagem se alinhe ao topo */
-    margin-top: 15px;
-    width: 42%; /* Garante que a imagem não ultrapasse o container */
-}
-
-.LinhaSeparadora{
-    background-color: red;
-    margin: 50px auto;
-    width: 100%;
-    height: 3px;
-}
-
-.reverse{
-    flex-direction: row-reverse;
-}
-
-/* Classes para as Questões */
-
-.ContainerQuestao{
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-.ContainerAlternativas{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex-wrap: wrap;
-    width: 100%;
-    height: auto;
-}
-
-.Alternativa {
-    all: unset;
-    align-items: center;
-    background-color: #2cb52f;
-    text-decoration: none;
-    color: white;
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    width: 80%;
+    height: 40px; /* Defina um tamanho fixo para evitar mudanças */
+    padding: 10px 0; /* Apenas padding superior e inferior */
+    margin-left: 10%;
+    border-width: 0 0 1px;
     font-size: 20px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.1s;
+    color: rgb(255, 255, 255);
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    box-sizing: border-box; /* Mantém a largura ao adicionar padding */
+    transition: border-color 0.3s, color 0.3s;
 }
 
-.Alternativa:hover {
-    background-color: #1e7b2d;
+#Email:hover, #Senha:hover,
+#Email:focus, #Senha:focus {
+    padding: 20px 0;
+    border-color: rgb(255, 255, 255); /* Mantém a cor da borda */
+    color: #ddd; /* Mantém a cor do texto */
+    background-color: rgba(0, 0, 0, 0); /* Mantém o fundo transparente */
+    outline: none; /* Remove o contorno padrão do navegador */
 }
 
-/* Estilos para botões de menu -------------------------------------------------------------------------------------------------------------- */
-.botao_menu {
-    display: flex;
+.FazerLogin {
+    all: unset;
+    display: block;
     align-items: center;
-    justify-content: center;
-    background-color: #2cb52f;
-    text-align: center;
-    text-decoration: none;
-    color: white;
-    font-size: 25px;
-    padding: 15px;
-    border-radius: 5px;
-    transition: all 0.25s;
-    opacity: 0.8;
-    margin-bottom: 16px;
-    flex: 0 0 calc(20% - 32px);
+    background-color: #1396de;
+    width: 80%;
+    height: 60px; /* Tamanho fixo */
+    padding: 0 20px; /* Apenas padding horizontal */
+    margin-top: 10%;
+    margin-bottom: 1%;
+    margin-left: 10%;
+    border-width: 1px;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    box-sizing: border-box;
+    transition: border-color 0.3s, color 0.3s;
+    text-align: center; /* Alinha o texto horizontalmente */
+    line-height: 50px; /* Centraliza verticalmente */
 }
 
-.botao_menu:hover {
-    transform: scale(1.10);
-    margin:10px;
-    background-color: #2cb52f;
-    opacity: 1;
+.EsqueceuSenha {
+    all: unset;
+    display: block;
+    background-color: #1397de00;
+    width: 80%;
+    height: 60px; /* Tamanho fixo */
+    padding: 0 5px; /* Apenas padding horizontal */
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 10%;
+    border-width: 0px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    border-color: rgba(255, 255, 255, 0.795);
+    text-align: center; /* Alinha o texto horizontalmente */
 }
 
-@media screen and (max-width: 500px) {
-    /* Tags card página inicial */
-    .Container{
-        width: 95vw;
+/* Media query para telas menores que 768px */
+@media screen and (max-width: 768px) {
+    .container-info {
+        width:100vw; /* Largura total em telas pequenas */
+        height:100vh; /* Largura total em telas pequenas */
+        padding: 5px;
+        box-shadow: none; /* Remover sombra em telas muito pequenas */
     }
 
-    .TituloIndex{
-        margin-bottom: 20px; 
-        font-size: 41px;
+    #Login {
+        margin-top: 20%;
     }
 
-    .TituloCardPaginaInicial{
-        font-weight: 800;
-        margin: 10px auto 10px auto;
-        font-size: 55px;
-        color: #ffc02b;
-    }
-    .ContainerCard {
-        flex-wrap: wrap;
-        width: 95vw;
-    }
-
-    .ContainerInfo {
-        width: 90vw;
-    }
-
-    .TituloCardPaginaInicial{
-        font-size: 40px;
-    }
-
-    .ParagrafoCardPaginaInicial {
-        width: 90vw;
-    }
-
-    .ImagemCardPaginaInicial {
-        all: unset;
-        margin: 15px auto;
-        width: 90vw; /* Garante que a imagem não ultrapasse o container */
-    }
-    .LinhaSeparadora{
-        width: 95vw;
-    }
-    
-    .reverse{
-        flex-direction: row;
+    #Email, #Senha {
+        padding: 20px 0; /* Apenas padding superior e inferior */
+        margin-left: 10%;
     }
 }

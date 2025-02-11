@@ -1,0 +1,90 @@
+
+.flex {
+    display: flex;
+    align-items: center;
+    object-fit: contain;
+}
+
+a {
+    all: unset;
+    border-bottom: 2px solid #ff0000; /* Borda apenas abaixo do texto */
+    display: inline-block; /* Faz com que o tamanho do elemento se ajuste ao conteúdo */
+    color: #000000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+main {
+    display: flex;
+    flex-direction: row; /* Organiza os elementos em coluna */
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    width: 95%; /* Faz a main ocupar toda a largura */
+    gap: 50px;
+}
+
+main > * {
+    width: 100%; /* Faz com que cada elemento ocupe toda a largura */
+    word-wrap: break-word; /* Garante a quebra de palavras longas */
+    overflow-wrap: break-word;
+    white-space: normal; /* Permite quebra de linha automática */
+}
+
+.cadeiras{
+    width: 100%;
+    display: flex;
+    gap: 40px;
+}
+
+nav{
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+    padding: 1%;
+}
+
+.periodo{
+    all: unset;
+    border-bottom: 3px solid #000000; /* Borda apenas abaixo do texto */
+    display: inline-block; /* Faz com que o tamanho do elemento se ajuste ao conteúdo */
+    color: #d32836;
+    font-size:  3rem;
+    font-weight: 700;
+    margin-top:    45px;
+    margin-bottom: 45px;
+}
+
+.Card{
+    padding: 0;
+    height: auto;
+    width: 20vw;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+}
+
+.Card > img{
+    width: 100%;
+    padding: 0%;
+}
+.Card > a{
+    all: unset;
+}
+
+.Inferior{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 10vh;
+    background-color:rgba(255, 0, 0, 0.712) ;
+    border-width: 2px 0 0 0;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+}
+
+.Inferior > p{
+    display: inline-block;
+    margin: auto;
+    font-size: 100%;
+    color: #ffffff;
+    padding: 0;
+}

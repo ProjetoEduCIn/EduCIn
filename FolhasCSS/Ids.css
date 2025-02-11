@@ -1,0 +1,16 @@
+#tabela_classes_numericas {
+    transform-origin: left center;
+    align-items: left;
+    max-height: 30vh;
+    display: block;
+}
+
+@media only screen and (max-width: 800px) {
+    #tabela_classes_numericas {
+        transform-origin: left center;
+        transform: scale(0.54);
+        align-items: left;
+        max-height: 30vh;
+        display: block;
+    }
+}

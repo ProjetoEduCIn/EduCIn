@@ -8,27 +8,39 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+  <meta charSet="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Educin</title>
+  <link rel="shortcut icon" href="imagens/logoDR_4.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="FolhasCSS/Classes.css" />
+  <link rel="stylesheet" href="FolhasCSS/Tags.css" />
+  <link rel="stylesheet" href="FolhasCSS/Ids.css" />
+  <style
+    dangerouslySetInnerHTML={{
+      __html:
+        "\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n    "
+    }}
+  />
+  <header>
+    <div className="Container">
+      <div
+        style={{ margin: "5px auto", height: 10 }}
+        className="LinhaSeparadora"
+      />
+      <h1 className="TituloIndex">Telas</h1>
+      <div
+        style={{ margin: "5px auto", height: 10 }}
+        className="LinhaSeparadora"
+      />
+    </div>
+  </header>
+  <main>
+    <a href="Telas/PaginaDeLogin.html">Login</a>
+    <a href="Telas/PaginaInicial.html">Inicial</a>
+    <a href="Telas/PaginaDeConteudos.html">Conteudos</a>
+  </main>
+</>
+    
   )
 }
 

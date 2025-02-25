@@ -1,16 +1,20 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
   server: {
     port: 5174,
-    open: true,
-    host: '0.0.0.0',
-    fs: {
-      strict: false
-    },
-    historyApiFallback: true // Redireciona 404s para o index.html
-  }
-});
-""
+    open: true
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@styles': path.resolve(__dirname, './src/styles'),
+      '@types': path.resolve(__dirname, './src/types')
+    }
+  },
+  publicDir: 'public'
+})

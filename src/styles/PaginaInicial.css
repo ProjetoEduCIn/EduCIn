@@ -88,3 +88,11 @@ nav{
     color: #ffffff;
     padding: 0;
 }
+
+
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}

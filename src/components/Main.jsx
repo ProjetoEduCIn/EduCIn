@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import Login from './Login';
-import Home from './Home';
+import Header from './Header';
 import Content from './Content';
+import Login from './Login';
 
 function Main() {
-  const [currentPage, setCurrentPage] = useState('login');
+    const [currentPage, setCurrentPage] = useState('login');
 
-  return (
-    <main>
-      {currentPage === 'login' && <Login />}
-      {currentPage === 'home' && <Home />}
-      {currentPage === 'content' && <Content />}
-    </main>
-  );
+    return (
+        <div style={{ paddingTop: '10dvh' }}>
+            <Header currentPage={currentPage} />
+            {currentPage === 'login' && (
+                <Login onPageChange={setCurrentPage} />
+            )}
+            {currentPage === 'content' && (
+                <Content />
+            )}
+        </div>
+    );
 }
 
 export default Main;

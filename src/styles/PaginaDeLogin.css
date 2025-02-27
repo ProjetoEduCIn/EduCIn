@@ -3,8 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 90dvh; 
-    width: 100%;
+    height: 100vh; 
+    width: 200vh;
     background: lightgray 50%;
     background-image: url(../imagens/ImagemCIn.jpg);
     background-position: center;
@@ -120,13 +120,15 @@
 }
 
 /* Media query para telas menores que 768px */
-@media screen and (max-width: 855px) {
+@media screen and (max-width: 200px) {
     .ContainerImagem {
         background: transparent; /* Mistura a cor com a imagem */
+        height: 100vh;
+        width: 100%;
     }
     .containerLogin {
-        width: 90dvw; /* Largura total em telas pequenas */
-        height:80dvh; /* Largura total em telas pequenas */
+        width: 100dvw; /* Largura total em telas pequenas */
+        height:100dvh; /* Largura total em telas pequenas */
         padding: 5px;
         box-shadow: none; /* Remover sombra em telas muito pequenas */
     }

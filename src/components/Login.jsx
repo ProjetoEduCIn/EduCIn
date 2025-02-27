@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import "@styles/PaginaDeLogin.css";
 
-const Login = () => {
+const Login = ({ onPageChange }) => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Tentativa de login com:', { email, senha });
-        // Aqui você pode adicionar sua lógica de autenticação
+        
+        // Verifica se os campos estão vazios ou se são admin/admin
+        if ((email === '' && senha === '') || 
+            (email === 'admin@cin.ufpe.br' && senha === 'admin')) {
+            console.log('Login bem sucedido!');
+            onPageChange('content'); // Muda para a página de conteúdo
+        } else {
+            alert('Credenciais inválidas!');
+        }
     };
 
     return (

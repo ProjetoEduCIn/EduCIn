@@ -5,7 +5,7 @@
   
     color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    background-color: #ffffff;
   
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -64,3 +64,9 @@
       background-color: #f9f9f9;
     }
   }
+
+  /* Adicione isso ao seu arquivo de estilos globais ou main.css */
+.mainContainer {
+  padding-top: 80px; /* mesma altura do header */
+  min-height: 100vh;
+}

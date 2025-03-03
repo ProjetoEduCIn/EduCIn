@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     height: 100vh; 
-    width: 200vh;
+    width: 220vh;
     background: lightgray 50%;
     background-image: url(../imagens/ImagemCIn.jpg);
     background-position: center;
@@ -16,9 +16,9 @@
 }
 
 .containerLogin {
-    margin: auto;
+    margin: auto; 
     height: auto;
-    width: 40dvw;
+    width: 35dvw;
     background: #F00000;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #DC281E, #F00000);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -107,7 +107,7 @@
     display: block;
     background-color: #1397de00;
     width: 80%;
-    height: 60px; /* Tamanho fixo */
+    height: 40px; /* Tamanho fixo */
     padding: 0 5px; /* Apenas padding horizontal */
     margin-top: 1%;
     margin-bottom: 1%;
@@ -118,6 +118,44 @@
     border-color: rgba(255, 255, 255, 0.795);
     text-align: center; /* Alinha o texto horizontalmente */
 }
+
+.Registrar{
+    all: unset;
+    display: block;
+    background-color: #1397de00;
+    width: 80%;
+    height: 0px; /* Tamanho fixo */
+    padding: 0 5px; /* Apenas padding horizontal */
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 10%;
+    border-width: 0px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    border-color: rgba(255, 255, 255, 0.795);
+    text-align: center; /* Alinha o texto horizontalmente */
+    
+}
+.botoes-container {
+    display: flex;
+    justify-content: space-between; /* Mantém os botões lado a lado */
+    align-items: center;
+    width: 80%; /* Mantém a mesma largura do botão "Fazer Login" */
+    margin-left: 7%;
+}
+
+.EsqueceuSenha, .Registrar {
+    width: 49%; /* Ajusta para ocupar metade da largura */
+    height: 40px; /* Define um tamanho adequado para evitar quebras */
+    text-align: center;
+    white-space: nowrap; /* Impede a quebra de linha */
+    font-size: 16px; /* Ajusta o tamanho da fonte */
+    line-height: 40px; /* Centraliza verticalmente */
+    margin-left: 0; /* Remove margem extra */
+    margin-right: 0; /* Garante alinhamento */
+}
+
+
 
 /* Media query para telas menores que 768px */
 @media screen and (max-width: 200px) {

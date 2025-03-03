@@ -11,6 +11,12 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    --vermelho:  #DB1E2F;
+    --vermelho-claro: #f5516c;
+    --vermelho-escuro:  #AF0421;
+    --preto:  #231F20;
+    --cinza-claro:  #E0E1E0;
   }
   
   a {

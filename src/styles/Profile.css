@@ -1,0 +1,178 @@
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--vermelho-escuro);
+    margin-bottom: 10px;
+  }
+  
+  h2{
+    color: var(--vermelho);
+  }
+  p {
+    color: var(--preto);
+    margin-bottom: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .button {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .button.selected {
+    border-color: var(--vermelho-claro);
+    background-color: var(--vermelho);
+    color: white;
+  }
+  
+  .progress-bar {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .progress-bar .filled {
+    width: 20%;
+    height: 5px;
+    background-color: var(--vermelho-claro);
+    border-radius: 3px;
+  }
+  
+  .progress-bar .empty {
+    flex-grow: 1;
+    height: 5px;
+    background-color: #ddd;
+    border-radius: 3px;
+    margin-left: 5px;
+  }
+  
+  .continue-button {
+    width: 100%;
+    background-color: var(--vermelho-claro);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .continue-button:hover {
+    background-color: var(--vermelho);
+  }
+  
+  .botao-selecionar {
+    background-color: var(--vermelho); /* Vermelho forte */
+    color: white; /* Texto branco */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px; /* Cantos arredondados */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    white-space: nowrap;
+}
+
+.botao-selecionar:hover {
+    background-color: var(--vermelho-escuro); /* Tom mais escuro ao passar o mouse */
+}
+
+.botao-selecionar:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.lista-disciplinas {
+  list-style: none;
+  padding: 0;
+  max-height: 200px; /* Limita o tamanho da lista e ativa o scroll */
+  overflow-y: auto;
+  font-size: 12px;
+  white-space: nowrap;
+  width: 540px;
+
+}
+
+.lista-disciplinas li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.lista-disciplinas label {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre o c  heckbox e o texto */
+}
+
+/* Remove a aparência padrão do sistema */
+.select-curso {
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #D32F2F; /* Vermelho */
+  background-color: white;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Efeito ao passar o mouse */
+.select-curso:hover {
+  border-color: #B71C1C; /* Vermelho mais escuro */
+}
+
+/* Estilização das opções */
+.select-curso option {
+  padding: 10px;
+  background-color: white;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Tenta forçar a opção selecionada a ter fundo vermelho */
+.select-curso option:checked {
+  background-color: #D32F2F !important; /* Vermelho */
+  color: white !important;
+}
+
+
+

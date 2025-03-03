@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "@styles/PaginaDeLogin.css";
+import "@styles/Profile.css";
 
 const Login = ({ onPageChange }) => {
     const [email, setEmail] = useState('');
@@ -41,9 +42,26 @@ const Login = ({ onPageChange }) => {
                 <button type="submit" className="FazerLogin">
                     Fazer Login
                 </button>
-                <button type="button" className="EsqueceuSenha">
-                    Esqueceu sua senha?
-                </button>
+            <div className="botoes-container">
+            <button 
+        className="EsqueceuSenha" 
+        onClick={(e) => {
+            e.preventDefault(); // Evita recarregar a página
+            onPageChange('profile'); // Redireciona para a tela profile
+        }}
+    >Esqueceu sua senha?
+    </button>
+    
+    <button 
+        className="Registrar" 
+        onClick={(e) => {
+            e.preventDefault(); // Evita recarregar a página
+            onPageChange('profile'); // Redireciona para a tela profile
+        }}
+    >Não tem conta? Registre-se!
+    </button>
+            </div>
+
             </form>
         </div>
     );

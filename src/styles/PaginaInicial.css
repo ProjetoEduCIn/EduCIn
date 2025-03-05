@@ -33,6 +33,7 @@ main > * {
     width: 100%;
     display: flex;
     gap: 40px;
+    
 }
 
 nav{
@@ -47,7 +48,7 @@ nav{
     border-bottom: 3px solid #000000; /* Borda apenas abaixo do texto */
     display: inline-block; /* Faz com que o tamanho do elemento se ajuste ao conteúdo */
     color: #d32836;
-    font-size:  3rem;
+    font-size:  2.6vw;
     font-weight: 700;
     margin-top:    45px;
     margin-bottom: 45px;
@@ -56,18 +57,24 @@ nav{
 .Card{
     padding: 0;
     height: auto;
-    width: 20vw;
+    width: 17vw;
     border-width: 2px;
     border-style: solid;
     border-color: rgb(0, 0, 0);
+    border-radius: 7%;
+    overflow: hidden; /* garantindo que o conteúdo interno respeite as bordas */
+
 }
 
 .Card > img{
     width: 100%;
     padding: 0%;
+    border-radius: 7%;
+
 }
 .Card > a{
     all: unset;
+
 }
 
 .Inferior{
@@ -79,6 +86,8 @@ nav{
     border-width: 2px 0 0 0;
     border-style: solid;
     border-color: rgb(0, 0, 0);
+
+
 }
 
 .Inferior > p{
@@ -87,6 +96,8 @@ nav{
     font-size: 100%;
     color: #ffffff;
     padding: 0;
+    font-size: 1vw;
+
 }
 
 
@@ -95,4 +106,36 @@ body{
     align-items: center;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
+}
+
+
+
+/* Para tablets */
+@media screen and (max-width: 768px) {
+    .Card {
+        width: 16vh; /* 2 cards por linha em tablets */
+        height: auto;
+    }
+    
+    .cadeiras {
+        gap: 1.5rem;
+    }
+
+    .periodo {
+        font-size: 6vw; /* diminui o tamanho relativo em tablets */
+    }	
+    .Inferior > p {
+        font-size: 1.3vh; /* aumenta o tamanho relativo em tablets */
+    }
+}
+
+/* Para smartphones */
+@media screen and (max-width: 480px) {
+
+    .periodo {
+        font-size: 4vw; /* diminui o tamanho relativo em tablets */
+    }	
+    .Inferior > p {
+        font-size: 2vw; /* aumenta ainda mais para telas pequenas */
+    }
 }

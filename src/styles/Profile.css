@@ -44,6 +44,7 @@ body {
     text-align: left;
     cursor: pointer;
     transition: all 0.3s;
+    color: #333;
   }
   
   .button:hover {
@@ -136,7 +137,7 @@ body {
 .lista-disciplinas label {
   display: flex;
   align-items: center;
-  gap: 10px; /* Espaço entre o c  heckbox e o texto */
+  gap: 10px; /* Espaço entre o checkbox e o texto */
 }
 
 /* Remove a aparência padrão do sistema */

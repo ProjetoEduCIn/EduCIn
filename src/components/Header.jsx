@@ -1,5 +1,5 @@
-import React from 'react';
 import '@styles/Header.css';
+import { Link } from 'react-router-dom'; // Importando o Link do react-router-dom
 
 const Header = ({ currentPage }) => {
     return (
@@ -11,9 +11,9 @@ const Header = ({ currentPage }) => {
             />
             {currentPage === 'content' && (
                 <nav>
-                    <a href="#">Sistemas de Informação</a>
-                    <a href="#">Ciência da Computação</a>
-                    <a href="#">Engenharia da Computação</a>
+                    <Link to = "/si">Sistemas de Informação</Link>
+                    <Link to = "/cc">Ciência da Computação</Link>
+                    <Link to = "/ec">Engenharia da Computação</Link>
                 </nav>
             )}
         </header>

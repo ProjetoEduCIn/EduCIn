@@ -1,4 +1,5 @@
 import '@styles/index.css';
+import { Link } from 'react-router-dom';
 import '@styles/PaginaInicial.css';
 import '@styles/reset.css';
 import { motion } from 'framer-motion';
@@ -15,24 +16,36 @@ const Content = () => {
         transition={{ duration: 0.3 }}>
             <h3 className="periodo">1° Período</h3>
             <div className="cadeiras">
-                <a className="Card" href="#">
-                    <img src="/imagens/ImagemLivro.jpg" alt="Livro" />
-                    <div className="Inferior">
-                        <p>Introdução à Programação</p>
-                    </div>
-                </a>
-                <a className="Card" href="#">
+
+
+
+                <Link className="Card" to="/sistemas-digitais">
                     <img src="/imagens/ImagemLivro.jpg" alt="Livro" />
                     <div className="Inferior">
                         <p>Sistemas Digitais</p>
                     </div>
+                </Link>
+
+
+
+                <a className="Card" href="#">
+                    <img src="/imagens/ImagemLivro.jpg" alt="Livro" />
+                    <div className="Inferior">
+                        <p>Introdução a Programação</p>
+                    </div>
                 </a>
+
+
+
                 <a className="Card" href="#">
                     <img src="/imagens/ImagemLivro.jpg" alt="Livro" />
                     <div className="Inferior">
                         <p>Concepção de Artefatos Digitais</p>
                     </div>
                 </a>
+
+
+
                 <a className="Card" href="#">
                     <img src="/imagens/ImagemLivro.jpg" alt="Livro" />
                     <div className="Inferior">

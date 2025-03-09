@@ -1,0 +1,61 @@
+.disciplina-page {
+    display: flex;
+}
+
+.conteudo {
+    flex: 1;
+    padding: 20px;
+}
+
+.conteudo-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.conteudo-nav a {
+    padding: 10px 15px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.conteudo-nav a:hover {
+    background-color: #ddd;
+}
+
+.conteudo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.conteudo-item {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.conteudo-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.conteudo-item video,
+.conteudo-item iframe {
+    width: 100%;
+    height: auto;
+}
+
+.conteudo-item a {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.conteudo-item a:hover {
+    text-decoration: underline;
+}

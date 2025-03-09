@@ -1,9 +1,16 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import '@styles/Header.css';
-import { Link } from 'react-router-dom'; // Importando o Link do react-router-dom
 
 const Header = ({ currentPage }) => {
     return (
-        <header className="flex header">
+        <motion.header
+            className="flex header"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
+        >
             <img 
                 style={{ height: '100%', marginLeft: '0.5%' }}
                 src="/imagens/ImagemHeader.png" 
@@ -11,12 +18,12 @@ const Header = ({ currentPage }) => {
             />
             {currentPage === 'content' && (
                 <nav>
-                    <Link to = "/si">Sistemas de Informação</Link>
-                    <Link to = "/cc">Ciência da Computação</Link>
-                    <Link to = "/ec">Engenharia da Computação</Link>
+                    <Link to="/si">Sistemas de Informação</Link>
+                    <Link to="/cc">Ciência da Computação</Link>
+                    <Link to="/ec">Engenharia da Computação</Link>
                 </nav>
             )}
-        </header>
+        </motion.header>
     );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "@styles/PaginaDeLogin.css";
-import "@styles/Profile.css";
+
 
 const Login = ({ onPageChange }) => {
     const [email, setEmail] = useState('');
@@ -47,7 +47,7 @@ const Login = ({ onPageChange }) => {
         className="EsqueceuSenha" 
         onClick={(e) => {
             e.preventDefault(); // Evita recarregar a página
-            onPageChange('profile'); // Redireciona para a tela profile
+            onPageChange('esqueceusenha'); // Redireciona para a tela profile
         }}
     >Esqueceu sua senha?
     </button>

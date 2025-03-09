@@ -4,6 +4,7 @@ import Content from './Content';
 import Login from './Login';
 import Profile from './Profile';
 import Profile2 from './Profile2';
+import EsqueceuSenha from './EsqueceuSenha';
 
 function Main() {
     const [currentPage, setCurrentPage] = useState('login');
@@ -22,6 +23,9 @@ function Main() {
             )}
             {currentPage === 'profile2' && (
                 <Profile2 onPageChange={setCurrentPage} /> 
+            )}
+            {currentPage === 'esqueceusenha' && (
+                <EsqueceuSenha onPageChange={setCurrentPage} />
             )}
         </div>
     );

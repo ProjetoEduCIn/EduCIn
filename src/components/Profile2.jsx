@@ -97,7 +97,7 @@ const Profile2 = ({ onPageChange }) => {
 
   return (
     <div className="container">
-      <h1>Escolha seu curso</h1>
+      <h1 className="h1-vermelho">Escolha seu curso</h1>
       <select className="select-curso" onChange={(e) => setSelectedCourse(e.target.value)}>
         <option value="">Selecione um curso</option>
         {Object.keys(courses).map((course) => (

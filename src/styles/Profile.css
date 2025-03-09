@@ -13,15 +13,43 @@ body {
     width: 100%;
     max-width: 400px;
     text-align: center;
+    border-radius: 8px;
   }
   
-  h1 {
+    
+.perguntas{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 110%;
+    gap: 15px;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: var(--vermelho);
+    border-color: var(--vermelho-claro);
+    
+  
+    & input{
+      font-family: 'Roboto', sans-serif;
+      border: 1px solid;
+      border-radius: 8px;
+      height: 35px;
+      font-size: 13px;
+      padding-left: 10px;
+    }
+  }
+
+
+h1 {
     font-size: 24px;
     font-weight: bold;
-    color: var(--vermelho-escuro);
+    color: white;
     margin-bottom: 10px;
+
   }
-  
+.h1-vermelho{
+  color: var(--vermelho);
+}  
   h2{
     color: var(--vermelho);
   }
@@ -57,26 +85,15 @@ body {
     color: white;
   }
   
-  .progress-bar {
+  
+  .email-inserido{
     display: flex;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    
+    
   }
-  
-  .progress-bar .filled {
-    width: 20%;
-    height: 5px;
-    background-color: var(--vermelho-claro);
-    border-radius: 3px;
-  }
-  
-  .progress-bar .empty {
-    flex-grow: 1;
-    height: 5px;
-    background-color: #ddd;
-    border-radius: 3px;
-    margin-left: 5px;
-  }
-  
   .continue-button {
     width: 100%;
     background-color: var(--vermelho-claro);

@@ -14,7 +14,7 @@ const Profile = ({ onPageChange }) => {
       <input placeholder="apelido" name="Apelido" type="text" />
       <div className="email-inserido">
       <h1>email Cin</h1>
-      <button className="button">fazer login com google</button>
+      <button className="button">fazer login com google</button> {/* PARA LETS FIGUEIROA */}
       </div>
       <h1>senha</h1>
       <input placeholder="senha" name="senha" type="password"></input>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '@styles/PaginaInicial.css';
 import '@styles/reset.css';
 import { motion } from 'framer-motion';
-
+import CursoPage from '../../components/CoursesPage.jsx';
 
 //conteudos de SI
 
@@ -14,7 +14,11 @@ const Content = () => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.3 }}>
-            <h3 className="periodo">1° Período</h3>
+           
+           <div>
+           <CursoPage curso="Sistemas de Informação" />
+           </div>
+            {/*<h3 className="periodo">1° Período</h3>
             <div className="cadeiras">
 
 
@@ -251,7 +255,7 @@ const Content = () => {
                     </div>
                 </a>
                 
-            </div>
+            </div>*/}
 
         </motion.div>
 

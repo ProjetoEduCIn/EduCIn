@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Sidebar from './Sidebar';
+import Sidebar from '../../components/Sidebar.jsx';
 import '@styles/DisciplinaPage.css';
 
 const DisciplinaPage = ({ nomeDisciplina, conteudo }) => {

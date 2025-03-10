@@ -18,9 +18,12 @@ const Header = ({ currentPage }) => {
             />
             {currentPage === 'content' && (
                 <nav>
-                    <Link to="/si">Sistemas de Informação</Link>
-                    <Link to="/cc">Ciência da Computação</Link>
-                    <Link to="/ec">Engenharia da Computação</Link>
+                    <ul>
+                        <li><Link to="/si" className='link'>Sistemas de Informação</Link></li>
+                        <li><Link to="/cc" className='link'>Ciência da Computação</Link></li>
+                        <li><Link to="/ec" className='link'>Engenharia da Computação</Link></li>
+                        
+                    </ul>
                 </nav>
             )}
         </motion.header>

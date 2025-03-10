@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Header from './Header';
-import Content from './Content';
-import Login from './Login';
-import Profile from './Profile';
-import Profile2 from './Profile2';
-import EsqueceuSenha from './EsqueceuSenha';
+import Content from './pages/Content';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
+import Profile2 from './pages/Profile2';
+import EsqueceuSenha from './pages/EsqueceuSenha';
 
 function Main() {
     const [currentPage, setCurrentPage] = useState('login');

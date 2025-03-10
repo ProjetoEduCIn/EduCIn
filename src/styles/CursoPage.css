@@ -1,0 +1,41 @@
+.curso-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .periodo-container {
+    margin-bottom: 30px;
+  }
+  
+  .periodo-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  
+  .disciplinas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .disciplina-card {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    width: 260px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .disciplina-card:hover {
+    transform: scale(1.05);
+  }
+  

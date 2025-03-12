@@ -1,46 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .ContainerImagem {
-    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh; 
-    width: 220vh;
-    background: lightgray 50%;
-    background-image: url(../imagens/ImagemCIn.jpg);
-    background-position: center;
-    background-size: cover;
-    background-color: rgba(0, 0, 0, 0.13); 
-    background-blend-mode: darken; /* Mistura a cor com a imagem */
-    border-radius: 15px;
-    padding: 0;
+    height: 90dvh; 
+    width: 100vw;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)), 
+  url(../imagens/ImagemCIn.jpg) center/cover no-repeat;
 }
 
 .containerLogin {
-    margin: auto; 
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: flex-start; /* Corrigindo alinhamento */
+    justify-content: center;
+    width: 30vw; /* Aumente a largura para um valor maior */
+    max-width: 40vw; /* Define um limite para telas grandes */
     height: auto;
-    width: 35dvw;
+    padding: 20px; /* Adiciona um espaçamento interno */
     background: #F00000;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #DC281E, #F00000);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
     border-radius: 25px;
-    object-fit: contain;
-    flex-wrap: wrap;
 }
 
+
 #Login {
-    border-bottom: 2px solid #fff; /* Borda apenas abaixo do texto */
-    display: inline-block; /* Faz com que o tamanho do elemento se ajuste ao conteúdo */
+    border-bottom: 2px solid #fff;
+    display: inline; /* Evita que o elemento ocupe espaço extra */
     color: #fff;
-    font-size: 50px;
-    margin-top: 70px;
+    font-size: 4vw;
+    margin-top: 5%;
     margin-left: 10%;
-    width: auto; 
+    margin-bottom: 0%;
+    font-weight: 500;
+    width: max-content; /* Faz a largura ser exatamente a do conteúdo */
 }
 
 .Legenda{
     font-size: 1.5rem;
     color: #fff;
-    margin-top: 10% ;
+    margin-top: 6% ;
     margin-left: 10% ;
     margin-bottom: 0px ;
 }
@@ -65,7 +71,7 @@
 #Email:hover, #Senha:hover,
 #Email:focus, #Senha:focus {
     background-color: #DB1E2F;
-    padding: 20px 0;
+    padding: 10px 0;
     border-color: rgb(255, 255, 255); /* Mantém a cor da borda */
     color: #ddd; /* Mantém a cor do texto */
     background-color: rgba(0, 0, 0, 0); /* Mantém o fundo transparente */
@@ -78,6 +84,7 @@
     -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* Remove o sombreamento */
     transition: background-color 5000s ease-in-out 0s; /* Evita mudança de cor rápida */
 }
+
 .FazerLogin {
     all: unset;
     display: block;
@@ -86,7 +93,7 @@
     width: 80%;
     height: 60px; /* Tamanho fixo */
     padding: 0 20px; /* Apenas padding horizontal */
-    margin-top: 10%;
+    margin-top: 4%;
     margin-bottom: 1%;
     margin-left: 10%;
     border-width: 1px;
@@ -102,81 +109,338 @@
     line-height: 50px; /* Centraliza verticalmente */
 }
 
-.EsqueceuSenha {
-    all: unset;
-    display: block;
-    background-color: #1397de00;
-    width: 80%;
-    height: 40px; /* Tamanho fixo */
-    padding: 0 5px; /* Apenas padding horizontal */
-    margin-top: 1%;
-    margin-bottom: 1%;
-    margin-left: 10%;
-    border-width: 0px;
-    font-size: 18px;
-    color: rgb(255, 255, 255);
-    border-color: rgba(255, 255, 255, 0.795);
-    text-align: center; /* Alinha o texto horizontalmente */
-}
-
-.Registrar{
-    all: unset;
-    display: block;
-    background-color: #1397de00;
-    width: 80%;
-    height: 0px; /* Tamanho fixo */
-    padding: 0 5px; /* Apenas padding horizontal */
-    margin-top: 1%;
-    margin-bottom: 1%;
-    margin-left: 10%;
-    border-width: 0px;
-    font-size: 18px;
-    color: rgb(255, 255, 255);
-    border-color: rgba(255, 255, 255, 0.795);
-    text-align: center; /* Alinha o texto horizontalmente */
-    
-}
 .botoes-container {
     display: flex;
-    justify-content: space-between; /* Mantém os botões lado a lado */
-    align-items: center;
-    width: 80%; /* Mantém a mesma largura do botão "Fazer Login" */
-    margin-left: 7%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .EsqueceuSenha, .Registrar {
-    width: 49%; /* Ajusta para ocupar metade da largura */
-    height: 40px; /* Define um tamanho adequado para evitar quebras */
+    all: unset;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
     text-align: center;
-    white-space: nowrap; /* Impede a quebra de linha */
-    font-size: 16px; /* Ajusta o tamanho da fonte */
-    line-height: 40px; /* Centraliza verticalmente */
-    margin-left: 0; /* Remove margem extra */
-    margin-right: 0; /* Garante alinhamento */
+    line-height: 40px;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.795);
+    white-space: nowrap;
 }
-
-
-
-/* Media query para telas menores que 768px */
-@media screen and (max-width: 200px) {
+.Registrar{
+    margin-bottom: 5%;
+}
+/* Media query para celulares */
+@media screen and (max-width: 500px) {
     .ContainerImagem {
-        background: transparent; /* Mistura a cor com a imagem */
-        height: 100vh;
-        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 90vh;
+        width: 100vw;
+        border-radius: 40px;
     }
     .containerLogin {
-        width: 100dvw; /* Largura total em telas pequenas */
-        height:100dvh; /* Largura total em telas pequenas */
-        padding: 5px;
-        box-shadow: none; /* Remover sombra em telas muito pequenas */
+        height: 80%; 
+        margin-top: 10%;
+        width: 80dvw; /* Largura total em telas pequenas */
     }
-
+    .Legenda{
+        margin-top: 15%;
+        margin-left: 5% ;
+    }
     #Login {
-        margin-top: 20%;
+        font-size: 2.7rem;
+        margin-left: 5% ;
+        margin-top: 10%;
     }
-
+    
     #Email, #Senha {
         padding: 20px 0; /* Apenas padding superior e inferior */
+        margin-left: 5%;
+        width: 90%;
+    }
+    .FazerLogin{
+        margin-left: 5%;
+        width: 90%;
+    }
+    .EsqueceuSenha, .Registrar {
+        all: unset;
+        width: 100%;
+        font-size: 1.2rem;
+        text-align: left;
+        line-height: 200%;
+        margin-left: 5%;
+    }
+}
+
+/* Media query para tablets (largura entre 768px e 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1800px) {
+    .ContainerImagem {
+        height: 90vh;
+        width: 100vw;
+    }
+    .containerLogin {
+        height: auto; /* Mantém a altura dinâmica */
+        width: 50dvw; /* Ajusta a largura para tablets */
+        padding: 10px;
+        box-shadow: none; /* Mantém sem sombra */
+    }
+    .Legenda {
+        margin-left: 5%;
+    }
+    #Login {/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container for Background Image */
+.ContainerImagem {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90dvh; 
+    width: 100vw;
+    background: lightgray 50%;
+    background-image: url(../imagens/ImagemCIn.jpg);
+    background-position: center;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.13); 
+    background-blend-mode: darken; /* Mistura a cor com a imagem */
+    border-radius: 15px;
+}
+
+/* Container for Login Form */
+.containerLogin {
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    margin: auto; 
+    height: auto;
+    width: 35dvw;
+    background: #F00000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #DC281E, #F00000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 25px;
+    object-fit: contain;
+}
+
+/* Login Title */
+#Login {
+    border-bottom: 2px solid #fff;
+    display: inline; /* Evita que o elemento ocupe espaço extra */
+    color: #fff;
+    font-size: 4vw;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-bottom: 0%;
+    font-weight: 500;
+    width: max-content; /* Faz a largura ser exatamente a do conteúdo */
+}
+
+/* Legend Text */
+.Legenda{
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 6% ;
+    margin-left: 10% ;
+    margin-bottom: 0px ;
+}
+
+/* Input Fields */
+#Email, #Senha {
+    all: unset;
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    width: 80%;
+    height: 40px; /* Defina um tamanho fixo para evitar mudanças */
+    padding: 10px 0; /* Apenas padding superior e inferior */
+    margin-left: 10%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    box-sizing: border-box; /* Mantém a largura ao adicionar padding */
+    transition: border-color 0.3s, color 0.3s;
+}
+
+/* Input Fields Hover and Focus */
+#Email:hover, #Senha:hover,
+#Email:focus, #Senha:focus {
+    background-color: #DB1E2F;
+    padding: 10px 0;
+    border-color: rgb(255, 255, 255); /* Mantém a cor da borda */
+    color: #ddd; /* Mantém a cor do texto */
+    background-color: rgba(0, 0, 0, 0); /* Mantém o fundo transparente */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+/* Input Fields Autofill */
+#Email:-webkit-autofill, #Senha:-webkit-autofill {
+    -webkit-text-fill-color: white !important; /* Garante que o texto fique branco */
+    background-color: transparent !important; /* Remove o fundo amarelo */
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* Remove o sombreamento */
+    transition: background-color 5000s ease-in-out 0s; /* Evita mudança de cor rápida */
+}
+
+/* Login Button */
+.FazerLogin {
+    all: unset;
+    display: block;
+    align-items: center;
+    background-color: #FFF;
+    width: 80%;
+    height: 60px; /* Tamanho fixo */
+    padding: 0 20px; /* Apenas padding horizontal */
+    margin-top: 4%;
+    margin-bottom: 1%;
+    margin-left: 10%;
+    border-width: 1px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #DB1E2F;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, color 0.3s;
+    text-align: center; /* Alinha o texto horizontalmente */
+    line-height: 50px; /* Centraliza verticalmente */
+}
+
+/* Container for Buttons */
+.botoes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Forgot Password and Register Buttons */
+.EsqueceuSenha, .Registrar {
+    all: unset;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    line-height: 40px;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.795);
+    white-space: nowrap;
+}
+
+/* Register Button */
+.Registrar{
+    margin-bottom: 5%;
+}
+
+/* Media Query for Mobile Devices */
+@media screen and (max-width: 500px) {
+    .ContainerImagem {
+        flex-direction: column;
+        align-items: flex-start;
+        height: 90vh;
+        width: 100vw;
+        border-radius: 40px;
+    }
+    .containerLogin {
+        height: 80%; 
+        margin-top: 10%;
+        width: 80dvw; /* Largura total em telas pequenas */
+    }
+    .Legenda{
+        margin-top: 15%;
+        margin-left: 5% ;
+    }
+    #Login {
+        font-size: 2.7rem;
+        margin-left: 5% ;
+        margin-top: 10%;
+    }
+    
+    #Email, #Senha {
+        padding: 20px 0; /* Apenas padding superior e inferior */
+        margin-left: 5%;
+        width: 90%;
+    }
+    .FazerLogin{
+        margin-left: 5%;
+        width: 90%;
+    }
+    .EsqueceuSenha, .Registrar {
+        all: unset;
+        width: 100%;
+        font-size: 1.2rem;
+        text-align: left;
+        line-height: 200%;
+        margin-left: 5%;
+    }
+}
+
+/* Media Query for Tablets */
+@media screen and (min-width: 768px) and (max-width: 1800px) {
+    .ContainerImagem {
+        height: 90vh;
+        width: 100vw;
+    }
+    .containerLogin {
+        height: auto; /* Mantém a altura dinâmica */
+        width: 50dvw; /* Ajusta a largura para tablets */
+        padding: 10px;
+        box-shadow: none; /* Mantém sem sombra */
+    }
+    .Legenda {
+        margin-left: 5%;
+    }
+    #Login {
+        margin-top: 5%;
         margin-left: 10%;
+        font-size: 3.5rem;
+    }
+    #Email, #Senha {
+        padding: 15px 0; /* Ajusta o padding */
+        margin-left: 10%;
+    }
+    .FazerLogin{
+        font-size: 1.6rem;
+    }
+    .EsqueceuSenha, .Registrar {
+        all: unset;
+        width: 100%;
+        height: 40px;
+        font-size: 1.3rem;
+        text-align: center;
+        line-height: 200%;
+    }
+    .Registrar{
+        margin-bottom: 2%;
+    }
+}
+        margin-top: 5%;
+        margin-left: 10%;
+        font-size: 3.5rem;
+    }
+    #Email, #Senha {
+        padding: 15px 0; /* Ajusta o padding */
+        margin-left: 10%;
+    }
+    .FazerLogin{
+        font-size: 1.6rem;
+    }
+    .EsqueceuSenha, .Registrar {
+        all: unset;
+        width: 100%;
+        height: 40px;
+        font-size: 1.3rem;
+        text-align: center;
+        line-height: 200%;
+    }
+    .Registrar{
+        margin-bottom: 2%;
     }
 }

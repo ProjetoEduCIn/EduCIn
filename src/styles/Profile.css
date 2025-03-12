@@ -1,115 +1,177 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+div{
+  margin: auto;
+}
+
+form{
+    all: unset;
+}
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+  url(../imagens/ImagemCIn.jpg) center/cover no-repeat;
     min-height: 100vh;
     margin: 0;
-  }
+}
   
-  .container {
-    width: 100%;
+h1{
+    border-bottom: 2px solid #fff;
+    display: inline; /* Evita que o elemento ocupe espaço extra */
+    color: #fff;
+    font-size: 2.7vw;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-bottom: 0%;
+    font-weight: 500;
+    width: max-content; /* Faz a largura ser exatamente a do conteúdo */
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50vw;
     max-width: 400px;
     text-align: center;
     border-radius: 8px;
-  }
-  
-    
+}
+ 
 .perguntas{
     display: flex;
-    flex-direction: column;
-    text-align: left;
-    width: 110%;
-    gap: 15px;
-    padding: 30px;
-    border-radius: 10px;
-    background-color: var(--vermelho);
-    border-color: var(--vermelho-claro);
+    flex-wrap: wrap;
+    align-items: left;
+    flex-direction: row;
+    width: 35dvw;
+    max-width: 40vw;
+    background: #DB1E2F;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #DC281E, #F00000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 25px;
+    object-fit: contain;
+}
     
-  
-    & input{
-      font-family: 'Roboto', sans-serif;
-      border: 1px solid;
-      border-radius: 8px;
-      height: 35px;
-      font-size: 13px;
-      padding-left: 10px;
-    }
-  }
+input{    
+    all: unset;
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    width: 80%;
+    height: 40px; /* Defina um tamanho fixo para evitar mudanças */
+    padding: 10px 0; /* Apenas padding superior e inferior */
+    margin-left: 10%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    border-width: 0 0 1px;
+    border-style: solid;
+    text-align: left;
+    border-color: rgba(255, 255, 255, 0.795);
+    box-sizing: border-box; /* Mantém a largura ao adicionar padding */
+    transition: border-color 0.3s, color 0.3s;
+}
 
+input:hover, input:hover,
+input:focus, input:focus {
+    background-color: #DB1E2F;
+    padding: 10px 0;
+    border-color: rgb(255, 255, 255); /* Mantém a cor da borda */
+    color: #ddd; /* Mantém a cor do texto */
+    background-color: rgba(0, 0, 0, 0); /* Mantém o fundo transparente */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
 
-h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 10px;
+#Email:-webkit-autofill, #Senha:-webkit-autofill {
+    -webkit-text-fill-color: white !important; /* Garante que o texto fique branco */
+    background-color: transparent !important; /* Remove o fundo amarelo */
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* Remove o sombreamento */
+    transition: background-color 5000s ease-in-out 0s; /* Evita mudança de cor rápida */
+}
 
-  }
-.h1-vermelho{
-  color: var(--vermelho);
-}  
-  h2{
-    color: var(--vermelho);
-  }
-  p {
-    color: var(--preto);
-    margin-bottom: 20px;
-  }
-  
-  .button-container {
+.Legenda{
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 5% ;
+    margin-left: 10% ;
+    margin-bottom: 0px ;
+}
+
+/* p {
+   color: var(--preto); 
+   margin-bottom: 20px; } 
+*/
+
+.button-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
-  
-  .button {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: white;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.3s;
-    color: #333;
-  }
-  
-  .button:hover {
+    margin-left: 5%;
+    /* gap: 10px; */
+}
+
+.button {
+    all: unset;
+    display: block;
+    text-align: center;
+    background-color: #FFF;
+    width: 80%;
+    height: 60px; /* Tamanho fixo */
+    padding: 0 20px; /* Apenas padding horizontal */
+    margin-top: 3%;
+    margin-bottom: 3%;
+    margin-left: 10%;
+    border-width: 1px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #DB1E2F;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.button:last-of-type {
+    margin-bottom: 5%;
+}
+
+.button:hover {
     background-color: #f0f0f0;
-  }
-  
-  .button.selected {
+}
+
+.button.selected {
     border-color: var(--vermelho-claro);
     background-color: var(--vermelho);
     color: white;
-  }
-  
-  
-  .email-inserido{
+}
+
+/* ---------------------------------------------------------------------PROFILE2--------------------------------------------------------------------- */
+
+.container2 {
+
+  display: flex;
+  gap:20px;
+  flex-wrap: wrap;
+  width: 50vw;
+  max-width: 400px;
+  align-items: flex-start;
+  text-align:center;
+  border-radius: 8px;
+}
+
+.email-inserido{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding-top: 20px;
-    
-    
-  }
-  .continue-button {
-    width: 100%;
-    background-color: var(--vermelho-claro);
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .continue-button:hover {
-    background-color: var(--vermelho);
-  }
-  
-  .botao-selecionar {
+    margin-left: 10%;
+}
+
+.botao-selecionar {
     background-color: var(--vermelho); /* Vermelho forte */
     color: white; /* Texto branco */
     font-size: 18px;
@@ -136,41 +198,40 @@ h1 {
 }
 
 .lista-disciplinas {
-  list-style: none;
-  padding: 0;
-  max-height: 200px; /* Limita o tamanho da lista e ativa o scroll */
-  overflow-y: auto;
-  font-size: 12px;
-  white-space: nowrap;
-  width: 540px;
-
+    list-style: none;
+    padding: 0;
+    max-height: 200px; /* Limita o tamanho da lista e ativa o scroll */
+    overflow-y: auto;
+    font-size: 12px;
+    white-space: nowrap;
+    width: 540px;
 }
 
 .lista-disciplinas li {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
 .lista-disciplinas label {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Espaço entre o checkbox e o texto */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre o checkbox e o texto */
 }
 
 /* Remove a aparência padrão do sistema */
 .select-curso {
-  appearance: none; 
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 2px solid #D32F2F; /* Vermelho */
-  background-color: white;
-  color: #333;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #D32F2F; /* Vermelho */
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 /* Efeito ao passar o mouse */
@@ -192,5 +253,12 @@ h1 {
   color: white !important;
 }
 
+/* Media query para celulares */
+@media screen and (max-width: 500px) {
 
+}
 
+/* Media query para tablets (largura entre 768px e 1024px) */
+@media screen and (min-width: 768px) and (max-width: 1800px) {
+
+}

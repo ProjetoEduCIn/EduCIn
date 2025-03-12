@@ -7,24 +7,23 @@ const Profile = ({ onPageChange }) => {
   const opcoes = [];
 
   return (
-    <div className="container">
-  
-      <form className="perguntas">
-      <h1>Como deseja ser chamado?</h1>
-      <input placeholder="apelido" name="Apelido" type="text" />
-      <div className="email-inserido">
-      <h1>email Cin</h1>
-      <button className="button">fazer login com google</button> {/* PARA LETS FIGUEIROA */}
-      </div>
-      <h1>senha</h1>
-      <input placeholder="senha" name="senha" type="password"></input>
-     {/* O botão agora chama a função onPageChange para mudar de tela */}
-     <button className="continue-button" onClick={() => onPageChange("profile2")}>
-        Continuar
-      </button>
-      </form>
-    
-      
+    <div>
+        <form className="perguntas">
+
+            <h1>Registro</h1>
+            <p className="Legenda">Como deseja ser chamado?</p>
+            <input name="Apelido" type="text" />
+
+            <p className="Legenda">Email CIn:</p>
+            <button className="button">fazer login com google</button> {/* PARA LETS FIGUEIROA */}
+
+            <p className="Legenda">Senha:</p>
+            <input name="senha" type="password"></input>
+            {/* O botão agora chama a função onPageChange para mudar de tela */}
+            <button className="button" onClick={() => onPageChange("profile2")}>
+              Continuar
+            </button>
+        </form>
     </div>
   );
 };

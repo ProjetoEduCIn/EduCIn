@@ -81,7 +81,29 @@ const Profile2 = ({ onPageChange }) => {
       "CIN0151 – TRABALHO DE CONCLUSÃO DE CURSO"],
 
     "Sistemas de Informação": 
-    ["CIN0132 – MATEMÁTICA DISCRETA PARA COMPUTAÇÃO", "CIN0130 – SISTEMAS DIGITAIS", "CIN0133 – INTRODUÇÃO À PROGRAMAÇÃO", "CIN0131 – CONCEPÇÃO DE ARTEFATOS DIGITAIS", "MA026 – CÁLCULO DIFERENCIAL E INTEGRAL 1", "CIN0135 – ESTRUTURA DE DADOS ORIENTADAS A OBJETOS", "CIN0134 – ARQUITETURA DE COMPUTADORES E SISTEMAS OPERACIONAIS", "CIN0136 – DESENVOLVIMENTO DE SOFTWARE", "CIN0138 – ÁLGEBRA VETORIAL E LINEAR PARA COMPUTAÇÃO", "CIN0140 – ALGORITMOS", "CIN0137 – BANCO DE DADOS", "CIN0139 – INTEGRAÇÃO E EVOLUÇÃO DE SISTEMAS DE INFORMAÇÃO", "CIN0141 – LÓGICA PARA COMPUTAÇÃO", "CIN0143 – INTRODUÇÃO A SISTEMAS DISTRIBUÍDOS E REDES DE COMPUTADORES", "CIN0144 – APRENDIZADO DE MÁQUINA E CIÊNCIA DE DADOS", "CIN0183 – EMPREENDIMENTOS EM INFORMÁTICA", "CIN0184 – ASPECTOS SÓCIO-ECONÔMICOS DE SISTEMAS DE INFORMAÇÃO", "CGA0002 – ADMINISTRAÇÃO CONTEMPORÂNEA", "CIN0187 – ARQUITETURA EMPRESARIAL", "CIN0186 – GESTÃO DE PROCESSOS DE NEGÓCIO", "CIN0188 – ESTÁGIO OBRIGATÓRIO", "CIN0189 – ANÁLISE E PROJETO DE SISTEMAS DE INFORMAÇÃO", "CIN0190 – COMUNICAÇÃO TÉCNICA E CIENTÍFICA", "CIN0191- TRABALHO DE CONCLUSÃO DE CURSO"
+    ["CIN0132 – MATEMÁTICA DISCRETA PARA COMPUTAÇÃO", 
+    "CIN0130 – SISTEMAS DIGITAIS", 
+    "CIN0133 – INTRODUÇÃO À PROGRAMAÇÃO", 
+    "CIN0131 – CONCEPÇÃO DE ARTEFATOS DIGITAIS", 
+    "MA026 – CÁLCULO DIFERENCIAL E INTEGRAL 1", 
+    "CIN0135 – ESTRUTURA DE DADOS ORIENTADAS A OBJETOS",
+    "CIN0134 – ARQUITETURA DE COMPUTADORES E SISTEMAS OPERACIONAIS", 
+    "CIN0136 – DESENVOLVIMENTO DE SOFTWARE", 
+    "CIN0138 – ÁLGEBRA VETORIAL E LINEAR PARA COMPUTAÇÃO", 
+    "CIN0140 – ALGORITMOS", 
+    "CIN0137 – BANCO DE DADOS", 
+    "CIN0139 – INTEGRAÇÃO E EVOLUÇÃO DE SISTEMAS DE INFORMAÇÃO", 
+    "CIN0141 – LÓGICA PARA COMPUTAÇÃO", 
+    "CIN0143 – INTRODUÇÃO A SISTEMAS DISTRIBUÍDOS E REDES DE COMPUTADORES", 
+    "CIN0144 – APRENDIZADO DE MÁQUINA E CIÊNCIA DE DADOS", 
+    "CIN0183 – EMPREENDIMENTOS EM INFORMÁTICA", "CIN0184 – ASPECTOS SÓCIO-ECONÔMICOS DE SISTEMAS DE INFORMAÇÃO", 
+    "CGA0002 – ADMINISTRAÇÃO CONTEMPORÂNEA", 
+    "CIN0187 – ARQUITETURA EMPRESARIAL", 
+    "CIN0186 – GESTÃO DE PROCESSOS DE NEGÓCIO", 
+    "CIN0188 – ESTÁGIO OBRIGATÓRIO", 
+    "CIN0189 – ANÁLISE E PROJETO DE SISTEMAS DE INFORMAÇÃO", 
+    "CIN0190 – COMUNICAÇÃO TÉCNICA E CIENTÍFICA", 
+    "CIN0191- TRABALHO DE CONCLUSÃO DE CURSO"
     ]
   };
 
@@ -96,44 +118,44 @@ const Profile2 = ({ onPageChange }) => {
   };
 
   return (
-    <div className="container">
-      <h1 className="h1-vermelho">Escolha seu curso</h1>
-      <select className="select-curso" onChange={(e) => setSelectedCourse(e.target.value)}>
-        <option value="">Selecione um curso</option>
-        {Object.keys(courses).map((course) => (
-          <option key={course} value={course}>{course}</option>
-        ))}
-      </select>
+    <div className="container2">
+        <h1>Escolha seu curso</h1>
+        <select className="select-curso" onChange={(e) => setSelectedCourse(e.target.value)}>
+          <option value="">Selecione um curso</option>
+          {Object.keys(courses).map((course) => (
+            <option key={course} value={course}>{course}</option>
+          ))}
+        </select>
 
-      <button className="botao-selecionar" onClick={toggleModal} disabled={!selectedCourse}>
-        Selecione as Disciplinas já Cursadas
-      </button>
+        <button className="botao-selecionar" onClick={toggleModal} disabled={!selectedCourse}>
+          Selecione as Disciplinas já Cursadas
+        </button>
 
-      {/* Modal de Seleção de Disciplinas */}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Toda vitória deverá ser contada!</h2>
-            <p>selecione as disciplinas que você já concluiu</p>
-            {selectedCourse && (
-              <ul className="lista-disciplinas">
-              {courses[selectedCourse].map((subject) => (
-                <li key={subject}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSubjects.includes(subject)}
-                      onChange={() => handleSubjectSelect(subject)}
-                    />
-                    {subject}
-                  </label>
-                </li>
-              ))}
-            </ul>
-            
-            )}
-            <button onClick={toggleModal}>Fechar</button>
-          </div>
+        {/* Modal de Seleção de Disciplinas */}
+        {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Toda vitória deverá ser contada!</h2>
+              <p>selecione as disciplinas que você já concluiu</p>
+              {selectedCourse && (
+                <ul className="lista-disciplinas">
+                {courses[selectedCourse].map((subject) => (
+                  <li key={subject}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedSubjects.includes(subject)}
+                        onChange={() => handleSubjectSelect(subject)}
+                      />
+                      {subject}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+              
+              )}
+              <button onClick={toggleModal}>Fechar</button>
+            </div>
         </div>
       )}
 

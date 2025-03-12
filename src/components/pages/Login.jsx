@@ -23,7 +23,7 @@ const Login = ({ onPageChange }) => {
         <div className="ContainerImagem">
             <form className="containerLogin" onSubmit={handleSubmit}>
                 <p id="Login">Login</p>
-                <p className="Legenda email">Email</p>
+                <p className="Legenda email">Email:</p>
                 <input 
                     type="email" 
                     id="Email" 
@@ -31,7 +31,7 @@ const Login = ({ onPageChange }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
-                <p className="Legenda">Senha</p>
+                <p className="Legenda">Senha:</p>
                 <input 
                     type="password" 
                     id="Senha" 
@@ -42,26 +42,24 @@ const Login = ({ onPageChange }) => {
                 <button type="submit" className="FazerLogin">
                     Fazer Login
                 </button>
-            <div className="botoes-container">
-            <button 
-        className="EsqueceuSenha" 
-        onClick={(e) => {
-            e.preventDefault(); // Evita recarregar a página
-            onPageChange('esqueceusenha'); // Redireciona para a tela profile
-        }}
-    >Esqueceu sua senha?
-    </button>
-    
-    <button 
-        className="Registrar" 
-        onClick={(e) => {
-            e.preventDefault(); // Evita recarregar a página
-            onPageChange('profile'); // Redireciona para a tela profile
-        }}
-    >Não tem conta? Registre-se!
-    </button>
-            </div>
-
+                <div className="botoes-container">
+                    <button 
+                        className="EsqueceuSenha" 
+                        onClick={(e) => {
+                            e.preventDefault(); // Evita recarregar a página
+                            onPageChange('esqueceusenha'); // Redireciona para a tela profile
+                        }}
+                        >Esqueceu sua senha?
+                    </button>
+                    <button 
+                        className="Registrar" 
+                        onClick={(e) => {
+                            e.preventDefault(); // Evita recarregar a página
+                            onPageChange('profile'); // Redireciona para a tela profile
+                        }}
+                        >Não tem conta? <strong>Registre-se!</strong>
+                    </button>
+                </div>
             </form>
         </div>
     );

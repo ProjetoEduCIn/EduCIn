@@ -1,152 +1,345 @@
+"""
+controllers.py
+Contém as rotas (endpoints) da aplicação para lidar com Aluno, Período, Cadeira, etc.
+"""
+
+
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 from typing import List, Optional
+from datetime import datetime, timedelta
+import jwt
+from pydantic import BaseModel
+
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from database import get_db
+from domain.entities import Aluno, Cadeira
+from infrastructure.repositories import AlunoRepository
+from application.dtos import AlunoCreateDTO, AlunoResponseDTO
+from application.auth import verificar_dominio
+
+# Configurações para JWT
+SECRET_KEY = "sua_chave_secreta_aqui" # Em produção, use variáveis de ambiente
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 router = APIRouter()
 
-@router.get("/")
-def read_root():
-    return {"message": "API funcionando!"}
+# Classes para autenticação
+class LoginRequest(BaseModel):
+    email: str
+    senha: str
 
-@router.get("/cursos")
-def listar_cursos():
-    """
-    Lista todos os cursos disponíveis
-    """
-    return [
-        {"id": "SI", "nome": "Sistemas de Informação"},
-        {"id": "CC", "nome": "Ciência da Computação"},
-        {"id": "EC", "nome": "Engenharia da Computação"}
-    ]
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+    user: AlunoResponseDTO
 
-@router.get("/cursos/{curso_id}/disciplinas")
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+# Função para criar token JWT
+def create_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+# Rotas de autenticação
+@router.post("/alunos/login", response_model=TokenResponse)
+def login(login_request: LoginRequest, db: Session = Depends(get_db)):
+    # Em produção, use uma tabela de usuário separada com senhas hasheadas
+    # Esta implementação é apenas para demonstração
+    
+    # Verifica se é o modo de desenvolvimento
+    if login_request.email == "admin@cin.ufpe.br" and login_request.senha == "admin":
+        # Cria um usuário admin fictício para desenvolvimento
+        aluno = Aluno(
+            id="admin-id", 
+            nome="Admin", 
+            email="admin@cin.ufpe.br", 
+            curso="SI"
+        )
+    else:
+        # Busca o aluno pelo email
+        aluno_repo = AlunoRepository(db)
+        aluno = aluno_repo.find_by_email(login_request.email)
+        
+        if not aluno:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Credenciais inválidas",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        # Em um sistema real, verificaria a senha hasheada aqui
+        # if not verify_password(login_request.senha, aluno.senha_hash):
+        #     raise HTTPException(...)
+    
+    # Cria tokens
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_token(
+        data={"sub": aluno.email, "id": aluno.id}, expires_delta=access_token_expires
+    )
+    
+    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    refresh_token = create_token(
+        data={"sub": aluno.email, "id": aluno.id, "refresh": True}, 
+        expires_delta=refresh_token_expires
+    )
+    
+    # Converte para DTO e retorna
+    aluno_dto = AlunoResponseDTO(
+        id=aluno.id,
+        nome=aluno.nome,
+        email=aluno.email,
+        curso=aluno.curso
+    )
+    
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "user": aluno_dto
+    }
+
+@router.post("/refresh-token", response_model=TokenResponse)
+def refresh_token(refresh_request: RefreshRequest, db: Session = Depends(get_db)):
+    try:
+        # Decodifica o refresh token
+        payload = jwt.decode(refresh_request.refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        user_id = payload.get("id")
+        is_refresh = payload.get("refresh")
+        
+        if not email or not user_id or not is_refresh:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token inválido",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token inválido ou expirado",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Busca o aluno para confirmar que ele existe
+    aluno_repo = AlunoRepository(db)
+    aluno = aluno_repo.find_by_email(email)
+    if not aluno:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Usuário não encontrado",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Gera novos tokens
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_token(
+        data={"sub": email, "id": user_id}, expires_delta=access_token_expires
+    )
+    
+    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    new_refresh_token = create_token(
+        data={"sub": email, "id": user_id, "refresh": True}, 
+        expires_delta=refresh_token_expires
+    )
+    
+    # Converte para DTO e retorna
+    aluno_dto = AlunoResponseDTO(
+        id=aluno.id,
+        nome=aluno.nome,
+        email=aluno.email,
+        curso=aluno.curso
+    )
+    
+    return {
+        "access_token": access_token,
+        "refresh_token": new_refresh_token,
+        "token_type": "bearer",
+        "user": aluno_dto
+    }
+
+# Rotas de alunos
+@router.post("/alunos", response_model=AlunoResponseDTO)
+def criar_aluno(aluno_dto: AlunoCreateDTO, db: Session = Depends(get_db)):
+    # Verifica se o email é do domínio @cin.ufpe.br
+    verificar_dominio(aluno_dto.email)
+    
+    # Verifica se já existe um aluno com este email
+    aluno_repo = AlunoRepository(db)
+    if aluno_repo.find_by_email(aluno_dto.email):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Já existe um aluno com este email"
+        )
+    
+    # Cria o aluno no domínio
+    aluno = Aluno(
+        nome=aluno_dto.nome,
+        email=aluno_dto.email,
+        curso=aluno_dto.curso
+    )
+    
+    # Salva no repositório
+    aluno_salvo = aluno_repo.save(aluno)
+    
+    # Converte para DTO e retorna
+    return AlunoResponseDTO(
+        id=aluno_salvo.id,
+        nome=aluno_salvo.nome,
+        email=aluno_salvo.email,
+        curso=aluno_salvo.curso
+    )
+
+# DTOs adicionais para disciplinas
+class DisciplinaDTO(BaseModel):
+    id: str
+    nome: str
+    imagem: Optional[str] = None
+
+# Rota para listar disciplinas por curso e período
+@router.get("/cursos/{curso_id}/disciplinas", response_model=List[DisciplinaDTO])
 def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
     """
-    Lista disciplinas de um curso, opcionalmente filtrado por período
+    Retorna as disciplinas de um curso, opcionalmente filtradas por período.
     """
-    # Dados mockados
-    disciplinas = {
-        "SI": {
-            1: [
+    # Simulação de dados, em produção você buscaria do banco
+    disciplinas = []
+    
+    if curso_id == "SI":  # Sistemas de Informação
+        if periodo == 1:
+            disciplinas = [
                 {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ip", "nome": "Introdução a Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            2: [
+            ]
+        elif periodo == 2:
+            disciplinas = [
                 {"id": "edoo", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "ds", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "acso", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-        },
-        "EC": {
-            1: [
-                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sd-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            2: [
-                {"id": "edoo-ec", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ds-ec", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "acso-ec", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "calc1-ec", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-        },
-        "CC": {
-            1: [
+    elif curso_id == "CC":  # Ciência da Computação
+        if periodo == 1:
+            disciplinas = [
                 {"id": "ip-cc", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "sd-cc", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "cad-cc", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md-cc", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            2: [
-                {"id": "edoo-cc", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ds-cc", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "acso-cc", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "calc1-cc", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-        }
-    }
+    elif curso_id == "EC":  # Engenharia da Computação
+        if periodo == 1:
+            disciplinas = [
+                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sd-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
     
-    if curso_id not in disciplinas:
-        raise HTTPException(status_code=404, detail=f"Curso {curso_id} não encontrado")
-        
-    if periodo is not None:
-        return disciplinas.get(curso_id, {}).get(periodo, [])
-        
-    # Se não especificou período, retorna todas as disciplinas do curso
-    todas_disciplinas = []
-    for periodo_disciplinas in disciplinas.get(curso_id, {}).values():
-        todas_disciplinas.extend(periodo_disciplinas)
-    return todas_disciplinas
+    return disciplinas
 
-@router.get("/disciplinas/{disciplina_id}")
-def obter_disciplina(disciplina_id: str):
+# Detalhes da disciplina
+class ConteudoDTO(BaseModel):
+    topicos: List[str] = []
+    links: List[dict] = []
+
+class DisciplinaDetalheDTO(BaseModel):
+    id: str
+    nome: str
+    codigo: Optional[str] = None
+    descricao: Optional[str] = None
+    cargaHoraria: Optional[int] = None
+    professores: List[str] = []
+    imagem: Optional[str] = None
+
+@router.get("/disciplinas/{disciplina_id}", response_model=DisciplinaDetalheDTO)
+def obter_detalhes_disciplina(disciplina_id: str):
     """
-    Obtém detalhes de uma disciplina específica
+    Retorna os detalhes de uma disciplina específica.
     """
-    # Dados mockados
-    disciplinas = {
-        "ip": {
+    # Simulação de dados, em produção você buscaria do banco
+    if disciplina_id == "ip":
+        return {
             "id": "ip",
             "nome": "Introdução à Programação",
-            "codigo": "IP101",
-            "descricao": "Curso introdutório aos conceitos de programação e algoritmos",
-            "cargaHoraria": 90,
-            "professores": ["Prof. João Silva", "Profa. Maria Oliveira"]
-        },
-        "sd": {
+            "codigo": "IF668",
+            "descricao": "Introdução aos conceitos básicos de programação usando Python.",
+            "cargaHoraria": 60,
+            "professores": ["João Silva", "Maria Santos"],
+            "imagem": "/imagens/ImagemLivro.jpg"
+        }
+    elif disciplina_id == "sd":
+        return {
             "id": "sd",
             "nome": "Sistemas Digitais",
-            "codigo": "SD202",
-            "descricao": "Estudo dos fundamentos de sistemas digitais e lógica booleana",
+            "codigo": "IF675",
+            "descricao": "Fundamentos de sistemas digitais e lógica booleana.",
             "cargaHoraria": 60,
-            "professores": ["Prof. Carlos Pereira"]
+            "professores": ["Carlos Oliveira", "Ana Souza"],
+            "imagem": "/imagens/ImagemLivro.jpg"
         }
-    }
     
-    if disciplina_id not in disciplinas:
-        raise HTTPException(status_code=404, detail=f"Disciplina {disciplina_id} não encontrada")
-    
-    return disciplinas[disciplina_id]
+    # Se não encontrar, retorna um objeto vazio
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Disciplina com ID {disciplina_id} não encontrada"
+    )
 
-@router.get("/disciplinas/{disciplina_id}/conteudo")
+@router.get("/disciplinas/{disciplina_id}/conteudo", response_model=ConteudoDTO)
 def obter_conteudo_disciplina(disciplina_id: str):
     """
-    Obtém o conteúdo de uma disciplina específica
+    Retorna o conteúdo detalhado de uma disciplina.
     """
-    # Dados mockados
-    conteudos = {
-        "ip": {
+    # Simulação de dados, em produção você buscaria do banco
+    if disciplina_id == "ip":
+        return {
             "topicos": [
-                "Algoritmos e lógica de programação",
-                "Tipos de dados e variáveis",
-                "Estruturas de controle",
-                "Funções e procedimentos",
-                "Vetores e matrizes"
+                "Introdução a algoritmos",
+                "Variáveis e tipos de dados",
+                "Estruturas condicionais",
+                "Estruturas de repetição",
+                "Funções",
+                "Listas e dicionários",
+                "Orientação a objetos"
             ],
             "links": [
-                {"url": "https://example.com/material1", "texto": "Material de apoio 1"},
-                {"url": "https://example.com/material2", "texto": "Material de apoio 2"}
-            ]
-        },
-        "sd": {
-            "topicos": [
-                "Sistemas de numeração",
-                "Álgebra booleana",
-                "Portas lógicas",
-                "Circuitos combinacionais",
-                "Circuitos sequenciais"
-            ],
-            "links": [
-                {"url": "https://example.com/sd-material1", "texto": "Slides da disciplina"},
-                {"url": "https://example.com/sd-material2", "texto": "Exercícios"}
+                {"texto": "Apostila de Python", "url": "https://example.com/python"},
+                {"texto": "Exercícios", "url": "https://example.com/exercises"},
+                {"texto": "Material complementar", "url": "https://example.com/extra"}
             ]
         }
-    }
     
-    if disciplina_id not in conteudos:
-        raise HTTPException(status_code=404, detail=f"Conteúdo para disciplina {disciplina_id} não encontrado")
-    
-    return conteudos[disciplina_id]
+    # Se não encontrar, retorna um objeto vazio
+    return {"topicos": [], "links": []}
+
+@router.get("/disciplinas/{disciplina_id}/duvidas")
+def obter_duvidas_disciplina(disciplina_id: str):
+    """
+    Retorna as dúvidas frequentes sobre a disciplina.
+    """
+    # Simulação de dados, em produção você buscaria do banco
+    return [
+        {
+            "pergunta": "Qual a linguagem de programação utilizada?",
+            "resposta": "Python"
+        },
+        {
+            "pergunta": "Preciso ter conhecimento prévio?",
+            "resposta": "Não, a disciplina é introdutória."
+        }
+    ]

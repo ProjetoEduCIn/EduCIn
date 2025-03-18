@@ -6,7 +6,7 @@ que a camada de infraestrutura deve implementar.
 
 from abc import ABC, abstractmethod
 from typing import Optional, List
-from .entities import Aluno, Periodo, Cadeira, Aula, Arquivo
+from domain.entities import Aluno, Periodo, Cadeira, Aula, Arquivo
 
 class IAlunoRepository(ABC):
     @abstractmethod

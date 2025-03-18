@@ -6,8 +6,8 @@ Implementa as interfaces usando SQLAlchemy e SQLite.
 from sqlalchemy import Column, String, Table, MetaData
 from sqlalchemy.orm import declarative_base, Session
 from typing import Optional, List
-from app.domain.entities import Aluno
-from app.domain.repositories import IAlunoRepository
+from domain.entities import Aluno
+from domain.repositories import IAlunoRepository
 from uuid import uuid4
 
 Base = declarative_base()

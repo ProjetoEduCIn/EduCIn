@@ -5,7 +5,7 @@ Gerencia a conexão com o banco de dados SQLite usando SQLAlchemy.
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.infrastructure.repositories import Base
+from infrastructure.repositories import Base  # Ajustado para o caminho correto
 
 DATABASE_URL = "sqlite:///./educacao.db"  # Caminho do seu banco
 

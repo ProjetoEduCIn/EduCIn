@@ -5,6 +5,7 @@ Evita expor diretamente as entidades de domínio.
 """
 
 from pydantic import BaseModel, EmailStr
+from typing import Optional, List
 
 class AlunoCreateDTO(BaseModel):
     """
@@ -12,6 +13,7 @@ class AlunoCreateDTO(BaseModel):
     """
     nome: str
     email: EmailStr
+    senha: str  # Em produção, você precisaria hash essa senha
     curso: str
 
 class AlunoResponseDTO(BaseModel):
@@ -22,3 +24,21 @@ class AlunoResponseDTO(BaseModel):
     nome: str
     email: EmailStr
     curso: str
+
+class DisciplinaDTO(BaseModel):
+    id: str
+    nome: str
+    imagem: Optional[str] = None
+
+class ConteudoDTO(BaseModel):
+    topicos: List[str] = []
+    links: List[dict] = []
+
+class DisciplinaDetalheDTO(BaseModel):
+    id: str
+    nome: str
+    codigo: Optional[str] = None
+    descricao: Optional[str] = None
+    cargaHoraria: Optional[int] = None
+    professores: List[str] = []
+    imagem: Optional[str] = None

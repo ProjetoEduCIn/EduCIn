@@ -78,10 +78,12 @@ const Login = ({ onPageChange }) => {
 
     return (
         <div className="ContainerImagem">
-            <form className="containerLogin" onSubmit={handleSubmit}>
+            {/* Provavelmente não precisa dessa div acima, bastava colocar a imagem no 
+            body mas agora não tenho tempo para verificar */}
+            <form onSubmit={handleSubmit}>
                 <p id="Login">Login</p>
-                {error && <div className="error-message">{error}</div>}
-                <p className="Legenda email">Email:</p>
+                    {error && <div className="error-message">{error}</div>}
+                <p className="Legenda">Email:</p>
                 <input 
                     type="email" 
                     id="Email" 
@@ -97,30 +99,29 @@ const Login = ({ onPageChange }) => {
                     onChange={(e) => setSenha(e.target.value)}
                     placeholder="Sua senha"
                 />
+                
                 <button 
                     type="submit" 
                     className="FazerLogin" 
-                    disabled={loading}
-                >
+                    disabled={loading}>
                     {loading ? "Carregando..." : "Fazer Login"}
                 </button>
-                <div className="botoes-container">
+                <div className="ContainerBotoesLogin">
                     <button 
                         className="EsqueceuSenha" 
                         onClick={(e) => {
                             e.preventDefault();
                             onPageChange('esqueceusenha');
-                        }}
-                    >
+                        }}>
                         Esqueceu sua senha?
                     </button>
+                    
                     <button 
                         className="Registrar" 
                         onClick={(e) => {
                             e.preventDefault();
                             onPageChange('profile');
-                        }}
-                    >
+                        }}>
                         Não tem conta? <strong>Registre-se!</strong>
                     </button>
                 </div>

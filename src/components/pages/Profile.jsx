@@ -37,8 +37,8 @@ const Profile = ({ onPageChange }) => {
   };
 
   return (
-    <div>
-      <form className="perguntas" onSubmit={handleSubmit}>
+    <>
+      <form onSubmit={handleSubmit}>
         <h1>Registro</h1>
         {error && <p className="error-message">{error}</p>}
         
@@ -68,14 +68,13 @@ const Profile = ({ onPageChange }) => {
         />
         
         <button 
-          className="button" 
           type="submit" 
           disabled={loading}
         >
           {loading ? "Enviando..." : "Continuar"}
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

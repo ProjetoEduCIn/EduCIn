@@ -127,7 +127,9 @@ const Profile2 = ({ onPageChange }) => {
           ))}
         </select>
 
-        <button className="botao-selecionar" onClick={toggleModal} disabled={!selectedCourse}>
+        <button 
+        className="botao-selecionar" 
+        onClick={toggleModal} disabled={!selectedCourse}>
           Selecione as Disciplinas já Cursadas
         </button>
 

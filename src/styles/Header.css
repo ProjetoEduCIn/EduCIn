@@ -2,6 +2,8 @@
     position: fixed;
     top: 0;
     left: 0;
+    /* As linhas acima estao dando conflito na pagina principal para quebrar os componentes. 
+    Por favor, tentar rever a estilização do header para remover essas linhas acima e não duplicar o header na página de login*/
     width: 100%;
     height: 10vh;  /* afinei a barra */
     background-color: #f4f4f4;

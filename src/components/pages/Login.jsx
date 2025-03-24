@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import { alunoService } from "../../services/apiService";
 import "@styles/PaginaDeLogin.css";
 
@@ -76,57 +78,87 @@ const Login = ({ onPageChange }) => {
         }
     };
 
+    const handleGoogleLoginSuccess = (response) => {
+        console.log('Login com Google bem sucedido!', response);
+        const userObject = jwtDecode(response.credential); // Alterado aqui
+        const userEmail = userObject.email;
+
+        console.log('Email do usuário:', userEmail); // Log de depuração
+
+        if (!userEmail.endsWith('@cin.ufpe.br')) {
+            setError('Apenas emails @cin.ufpe.br são permitidos.');
+            return;
+        }
+
+        // Armazena o token e dados do usuário
+        localStorage.setItem('userToken', response.credential);
+        localStorage.setItem('userData', JSON.stringify(userObject));
+        console.log('Redirecionando para a página de conteúdo'); // Log de depuração
+        onPageChange('content');
+    };
+
+    const handleGoogleLoginFailure = (error) => {
+        console.error('Falha no login com Google:', error);
+        setError('Falha no login com Google. Por favor, tente novamente.');
+    };
+
     return (
-        <div className="ContainerImagem">
-            {/* Provavelmente não precisa dessa div acima, bastava colocar a imagem no 
-            body mas agora não tenho tempo para verificar */}
-            <form onSubmit={handleSubmit}>
-                <p id="Login">Login</p>
+        <GoogleOAuthProvider clientId="692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com">
+            <div className="ContainerImagem">
+                <form onSubmit={handleSubmit}>
+                    <p id="Login">Login</p>
                     {error && <div className="error-message">{error}</div>}
-                <p className="Legenda">Email:</p>
-                <input 
-                    type="email" 
-                    id="Email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seu.email@cin.ufpe.br"
-                />
-                <p className="Legenda">Senha:</p>
-                <input 
-                    type="password" 
-                    id="Senha" 
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    placeholder="Sua senha"
-                />
-                
-                <button 
-                    type="submit" 
-                    className="FazerLogin" 
-                    disabled={loading}>
-                    {loading ? "Carregando..." : "Fazer Login"}
-                </button>
-                <div className="ContainerBotoesLogin">
-                    <button 
-                        className="EsqueceuSenha" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onPageChange('esqueceusenha');
-                        }}>
-                        Esqueceu sua senha?
-                    </button>
+                    <p className="Legenda">Email:</p>
+                    <input 
+                        type="email" 
+                        id="Email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="seu.email@cin.ufpe.br"
+                    />
+                    <p className="Legenda">Senha:</p>
+                    <input 
+                        type="password" 
+                        id="Senha" 
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                        placeholder="Sua senha"
+                    />
                     
                     <button 
-                        className="Registrar" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onPageChange('profile');
-                        }}>
-                        Não tem conta? <strong>Registre-se!</strong>
+                        type="submit" 
+                        className="FazerLogin" 
+                        disabled={loading}>
+                        {loading ? "Carregando..." : "Fazer Login"}
                     </button>
-                </div>
-            </form>
-        </div>
+
+                    <GoogleLogin
+                        onSuccess={handleGoogleLoginSuccess}
+                        onError={handleGoogleLoginFailure}
+                    />
+
+                    <div className="ContainerBotoesLogin">
+                        <button 
+                            className="EsqueceuSenha" 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onPageChange('esqueceusenha');
+                            }}>
+                            Esqueceu sua senha?
+                        </button>
+                        
+                        <button 
+                            className="Registrar" 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onPageChange('profile');
+                            }}>
+                            Não tem conta? <strong>Registre-se!</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </GoogleOAuthProvider>
     );
 };
 

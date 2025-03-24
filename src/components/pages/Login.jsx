@@ -78,23 +78,39 @@ const Login = ({ onPageChange }) => {
         }
     };
 
-    const handleGoogleLoginSuccess = (response) => {
+    const handleGoogleLoginSuccess = async (response) => {
         console.log('Login com Google bem sucedido!', response);
-        const userObject = jwtDecode(response.credential); // Alterado aqui
+        const userObject = jwtDecode(response.credential);
         const userEmail = userObject.email;
-
-        console.log('Email do usuário:', userEmail); // Log de depuração
-
+    
+        console.log('Email do usuário:', userEmail);
+    
         if (!userEmail.endsWith('@cin.ufpe.br')) {
             setError('Apenas emails @cin.ufpe.br são permitidos.');
             return;
         }
-
-        // Armazena o token e dados do usuário
-        localStorage.setItem('userToken', response.credential);
-        localStorage.setItem('userData', JSON.stringify(userObject));
-        console.log('Redirecionando para a página de conteúdo'); // Log de depuração
-        onPageChange('content');
+    
+        try {
+            // Verifica se é primeiro acesso
+            const isFirstAccess = await alunoService.checkFirstAccess(userEmail);
+            
+            if (isFirstAccess) {
+                // Salva as informações do Google temporariamente
+                localStorage.setItem('googleUserData', JSON.stringify(userObject));
+                // Redireciona para a página de perfil para completar o cadastro
+                onPageChange('profile');
+                return;
+            }
+    
+            // Se não for primeiro acesso, procede com login normal
+            localStorage.setItem('userToken', response.credential);
+            localStorage.setItem('userData', JSON.stringify(userObject));
+            console.log('Redirecionando para a página de conteúdo');
+            onPageChange('content');
+        } catch (error) {
+            console.error('Erro ao verificar primeiro acesso:', error);
+            setError('Erro ao fazer login. Por favor, tente novamente.');
+        }
     };
 
     const handleGoogleLoginFailure = (error) => {
@@ -147,14 +163,7 @@ const Login = ({ onPageChange }) => {
                             Esqueceu sua senha?
                         </button>
                         
-                        <button 
-                            className="Registrar" 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                onPageChange('profile');
-                            }}>
-                            Não tem conta? <strong>Registre-se!</strong>
-                        </button>
+                        
                     </div>
                 </form>
             </div>

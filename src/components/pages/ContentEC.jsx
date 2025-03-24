@@ -10,32 +10,15 @@ const ContentEC = () => {
     const [disciplinas, setDisciplinas] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const curso = "EC"; // Identificador para Engenharia da Computação
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-            setLoading(true);
             try {
-                // Por enquanto, carregaremos apenas os 2 primeiros períodos (conforme seu arquivo atual)
-                const periodos = [1, 2];
-                const disciplinasPorPeriodo = {};
-
-                for (const periodo of periodos) {
-                    try {
-                        const disciplinasDoPeriodo = await disciplinaService.listarDisciplinasPorCurso(curso, periodo);
-                        disciplinasPorPeriodo[periodo] = disciplinasDoPeriodo;
-                    } catch (err) {
-                        console.error(`Erro ao carregar período ${periodo}:`, err);
-                        // Fallback para dados locais
-                        disciplinasPorPeriodo[periodo] = getFallbackDisciplinas(periodo);
-                    }
-                }
-
-                setDisciplinas(disciplinasPorPeriodo);
-                setError(null);
+                // Busca todas as disciplinas sem verificar o curso do usuário
+                const response = await disciplinaService.getDisciplinas();
+                setDisciplinas(response);
             } catch (err) {
-                console.error("Erro ao carregar disciplinas:", err);
-                setError("Não foi possível carregar as disciplinas. Usando dados locais.");
+                console.error("Erro ao buscar disciplinas:", err);
                 setDisciplinas(getAllFallbackDisciplinas());
             } finally {
                 setLoading(false);
@@ -43,7 +26,7 @@ const ContentEC = () => {
         };
 
         fetchDisciplinas();
-    }, [curso]);
+    }, []);
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {

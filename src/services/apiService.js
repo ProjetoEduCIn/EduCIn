@@ -58,8 +58,27 @@ export const alunoService = {
       
       throw error;
     }
-  }
+  },
+  checkFirstAccess: async (email) => {
+    try {
+        const response = await api.get(`/alunos/check-email/${email}`);
+        return response.data.isFirstAccess;
+    } catch (error) {
+        console.error('Erro ao verificar primeiro acesso:', error);
+        
+        // Modo de desenvolvimento - simula primeiro acesso para testes
+        if (process.env.NODE_ENV === 'development') {
+            console.log("Usando modo de desenvolvimento para verificação de primeiro acesso");
+            return true; // Em desenvolvimento, sempre considera primeiro acesso
+        }
+        
+        throw error;
+    }
+}
+
 };
+
+
 
 // Serviços relacionados a disciplinas
 export const disciplinaService = {

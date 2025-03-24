@@ -10,32 +10,15 @@ const Content = () => {
     const [disciplinas, setDisciplinas] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const curso = "SI"; // Identificador para Sistemas de Informação
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-            setLoading(true);
             try {
-                // Carregamos todos os períodos de uma vez (da 1 a 8)
-                const periodos = [1, 2, 3, 4, 5, 6, 7, 8, 'eletivas'];
-                const disciplinasPorPeriodo = {};
-
-                for (const periodo of periodos) {
-                    try {
-                        const disciplinasDoPeriodo = await disciplinaService.listarDisciplinasPorCurso(curso, periodo);
-                        disciplinasPorPeriodo[periodo] = disciplinasDoPeriodo;
-                    } catch (err) {
-                        console.error(`Erro ao carregar período ${periodo}:`, err);
-                        // Usamos os dados fallback do front (dados atuais)
-                        disciplinasPorPeriodo[periodo] = getFallbackDisciplinas(periodo);
-                    }
-                }
-
-                setDisciplinas(disciplinasPorPeriodo);
-                setError(null);
+                // Busca todas as disciplinas sem verificar o curso do usuário
+                const response = await disciplinaService.getDisciplinas();
+                setDisciplinas(response);
             } catch (err) {
-                console.error("Erro ao carregar disciplinas:", err);
-                setError("Não foi possível carregar as disciplinas. Usando dados locais.");
+                console.error("Erro ao buscar disciplinas:", err);
                 setDisciplinas(getAllFallbackDisciplinas());
             } finally {
                 setLoading(false);
@@ -43,7 +26,7 @@ const Content = () => {
         };
 
         fetchDisciplinas();
-    }, [curso]);
+    }, []);
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {

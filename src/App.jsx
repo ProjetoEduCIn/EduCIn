@@ -38,16 +38,16 @@ function AnimatedRoutes() {
                 <Route path="/cc" element={<ContentCC />} />
                 <Route path="/ec" element={<ContentEC />} />
                 {disciplinas.map((disciplina, index) => (
-                    <Route
-                        key={index}
-                        path={`/${disciplina.nome.replace(/\s+/g, '-').toLowerCase()}`}
-                        element={<DisciplinaPage nomeDisciplina={disciplina.nome} conteudo={disciplina.conteudo} />}
-                    >
-                        <Route path="video" element={<VideoContent conteudo={disciplina.conteudo} />} />
-                        <Route path="questoes" element={<QuestoesContent conteudo={disciplina.conteudo} />} />
-                        <Route path="slides" element={<SlidesContent conteudo={disciplina.conteudo} />} />
-                        <Route path="links" element={<LinksContent conteudo={disciplina.conteudo} />} />
-                    </Route>
+                <Route
+                    key={index}
+                    path={`/${disciplina.nome.replace(/\s+/g, '-').toLowerCase()}`}
+                    element={<DisciplinaPage nomeDisciplina={disciplina.nome} conteudo={disciplina.conteudo} />}>
+
+                    <Route path="video" element={<VideoContent conteudo={disciplina.conteudo} />} />
+                    <Route path="questoes" element={<QuestoesContent conteudo={disciplina.conteudo} />} />
+                    <Route path="slides" element={<SlidesContent conteudo={disciplina.conteudo} />} />
+                    <Route path="links" element={<LinksContent conteudo={disciplina.conteudo} />} />
+                </Route>
                 ))}
             </Routes>
         </AnimatePresence>
@@ -57,10 +57,10 @@ function AnimatedRoutes() {
 function App() {
     return (
         <BrowserRouter>
-            <div>
+            <>
                 <Header currentPage="content" />
                 <AnimatedRoutes />
-            </div>
+            </>
         </BrowserRouter>
     );
 }

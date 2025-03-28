@@ -66,7 +66,7 @@ const ContentEC = () => {
     }
 
     return (
-        <motion.div
+        <motion.div className='ContainerCadeiras'
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -74,37 +74,43 @@ const ContentEC = () => {
         >
             {error && <div className="error-message">{error}</div>}
            
-            <h3 className="periodo">1° Período</h3>
-            <div className="cadeiras">
-                {disciplinas[1]?.map((disciplina) => (
-                    <Link 
-                        key={disciplina.id} 
-                        className="Card" 
-                        to={`/disciplina/${disciplina.id}`}
-                    >
-                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                        <div className="Inferior">
-                            <p>{disciplina.nome}</p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
+            
 
-            <h3 className="periodo">2° Período</h3>
-            <div className="cadeiras">
-                {disciplinas[2]?.map((disciplina) => (
-                    <Link 
-                        key={disciplina.id} 
-                        className="Card" 
-                        to={`/disciplina/${disciplina.id}`}
-                    >
-                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                        <div className="Inferior">
-                            <p>{disciplina.nome}</p>
-                        </div>
-                    </Link>
-                ))}
+            <div className="CardCadeiras">
+                <h3 className="periodo">1° Período</h3>
+                <div className="cadeiras">
+                    {disciplinas[1]?.map((disciplina) => (
+                        <Link 
+                            key={disciplina.id} 
+                            className="Card" 
+                            to={`/disciplina/${disciplina.id}`}
+                        >
+                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                            <div className="Inferior">
+                                <p>{disciplina.nome}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
+            <div className="CardCadeiras">
+                <h3 className="periodo">2° Período</h3>
+                <div className="cadeiras">
+                    {disciplinas[2]?.map((disciplina) => (
+                        <Link 
+                            key={disciplina.id} 
+                            className="Card" 
+                            to={`/disciplina/${disciplina.id}`}
+                        >
+                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                            <div className="Inferior">
+                                <p>{disciplina.nome}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+            
         </motion.div>
     );
 };

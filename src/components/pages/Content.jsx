@@ -24,7 +24,6 @@ const Content = () => {
                 setLoading(false);
             }
         };
-
         fetchDisciplinas();
     }, []);
 
@@ -116,10 +115,10 @@ const Content = () => {
                 <h3 className="periodo">1° Período</h3>
                 <div className="cadeiras">
                     {disciplinas[1]?.map((disciplina) => (
-                        <Link 
+                        <Link // Substitui a tag <a> na biblioteca router
                             key={disciplina.id} 
                             className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
+                            to={`/disciplina/${disciplina.id}`} // Leva para a rota
                         >
                             <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
                             <div className="Inferior">
@@ -273,15 +272,6 @@ const Content = () => {
                 </div>
             </div>
 
-
-            
-            
-            
-            
-
-            
-
-            
         </motion.div>
     );
 };

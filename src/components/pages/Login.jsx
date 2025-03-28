@@ -41,7 +41,7 @@ const Login = ({ onPageChange }) => {
             
             try {
                 // Tenta fazer login usando o serviço da API
-                const response = await alunoService.login(email, senha);
+                const response = await alunoService.login(email, senha); // 
                 console.log('Login bem sucedido via API!', response);
                 
                 // Armazena o token e dados do usuário

@@ -70,15 +70,11 @@ export const alunoService = {
         if (process.env.NODE_ENV === 'development') {
             console.log("Usando modo de desenvolvimento para verificação de primeiro acesso");
             return true; // Em desenvolvimento, sempre considera primeiro acesso
-        }
-        
+        }        
         throw error;
     }
-}
-
+  }
 };
-
-
 
 // Serviços relacionados a disciplinas
 export const disciplinaService = {

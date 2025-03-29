@@ -5,7 +5,7 @@ import Main            from './components/Main';
 import VideoContent    from './components/VideoContent';
 import SlidesContent   from './components/SlidesContent';
 import LinksContent    from './components/LinksContent';
-import HomeContent    from './components/HomeContent';
+import HomeContent     from './components/HomeContent';
 import Content         from './components/pages/Content';
 import ContentCC       from './components/pages/ContentCC';
 import ContentEC       from './components/pages/ContentEC';
@@ -76,10 +76,6 @@ const disciplinasTeste = {
 }
 
 
-
-
-
-
 function AnimatedRoutes() {
     const location = useLocation();
     return (
@@ -97,7 +93,7 @@ function AnimatedRoutes() {
                     element={<DisciplinaPage nomeDisciplina={disciplina.nome} conteudo={disciplina.conteudo} />}>
 
                         {/* Cria as sub-rotas para cada rota */}
-                        <Route path=""         element={<HomeContent/>} />
+                        <Route path="home"     element={<HomeContent />} />
                         {/* <Route path=""         element={<HomeContent     conteudo={disciplina.conteudo} />} /> */}
                         <Route path="video"    element={<VideoContent    conteudo={disciplina.conteudo} />} />
                         <Route path="questoes" element={<QuestoesContent conteudo={disciplina.conteudo} />} />

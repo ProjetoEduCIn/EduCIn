@@ -14,6 +14,7 @@ const Content = () => {
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
+<<<<<<< Updated upstream
             setLoading(true);
             try {
                 // Carregamos todos os períodos de uma vez (da 1 a 8)
@@ -40,10 +41,21 @@ const Content = () => {
             } finally {
                 setLoading(false);
             }
+=======
+          try {
+            const response = await disciplinaService.getDisciplinas();
+            setDisciplinas(response);
+          } catch (err) {
+            setDisciplinas(getAllFallbackDisciplinas());
+          }
+>>>>>>> Stashed changes
         };
-
         fetchDisciplinas();
+<<<<<<< Updated upstream
     }, [curso]);
+=======
+      }, []);
+>>>>>>> Stashed changes
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {

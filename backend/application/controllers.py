@@ -5,12 +5,14 @@ Contém as rotas (endpoints) da aplicação para lidar com Aluno, Período, Cade
 
 
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from datetime import datetime, timedelta
 import jwt
 from pydantic import BaseModel
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 import sys
 import os
@@ -23,10 +25,14 @@ from application.dtos import AlunoCreateDTO, AlunoResponseDTO
 from application.auth import verificar_dominio
 
 # Configurações para JWT
-SECRET_KEY = "sua_chave_secreta_aqui" # Em produção, use variáveis de ambiente
+SECRET_KEY = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com" # Em produção, use variáveis de ambiente
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+# Configurações para Google OAuth
+GOOGLE_CLIENT_ID = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com"  # Mova para variáveis de ambiente em produção
+COOKIE_NAME = "first_access_token"
 
 router = APIRouter()
 
@@ -43,6 +49,17 @@ class TokenResponse(BaseModel):
 
 class RefreshRequest(BaseModel):
     refresh_token: str
+
+class GoogleLoginRequest(BaseModel):
+    token: str
+
+class FirstAccessRequest(BaseModel):
+    nome_preferido: str
+    email_cin: str
+    curso: str
+    senha: str
+    senha_confirmacao: str
+    google_token: str
 
 # Função para criar token JWT
 def create_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -171,6 +188,134 @@ def refresh_token(refresh_request: RefreshRequest, db: Session = Depends(get_db)
         "token_type": "bearer",
         "user": aluno_dto
     }
+
+@router.post("/auth/google")
+async def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db)):
+    try:
+        print(f"Token recebido no backend: {request.token}")  # Log do token
+
+        idinfo = id_token.verify_oauth2_token(
+            request.token,
+            requests.Request(),
+            GOOGLE_CLIENT_ID
+        )
+        print(f"Informações do usuário: {idinfo}")  # Log das informações
+
+        email = idinfo['email']
+
+        # Verifica se é email do CIn
+        if not email.endswith("@cin.ufpe.br"):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Apenas emails @cin.ufpe.br são permitidos"
+            )
+
+        # Verifica se o usuário já existe
+        aluno_repo = AlunoRepository(db)
+        aluno = aluno_repo.find_by_email(email)
+
+        if aluno:
+            # Usuário já existe
+            access_token = create_token({"sub": email, "id": aluno.id})
+            refresh_token = create_token(
+                {"sub": email, "id": aluno.id, "refresh": True},
+                expires_delta=timedelta(days=7)
+            )
+            
+            return {
+                "status": "existing_user",
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "user": AlunoResponseDTO.from_orm(aluno)
+            }
+        else:
+            # Primeiro acesso
+            return {
+                "status": "first_access",
+                "email": email,
+                "picture": idinfo.get('picture'),
+                "given_name": idinfo.get('given_name')
+            }
+
+    except ValueError as e:
+        print(f"Erro ao validar token do Google: {e}")
+        raise HTTPException(
+            status_code=401,
+            detail=str(e)
+        )
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
+@router.post("/first-access")
+async def complete_first_access(request: FirstAccessRequest, response: Response, db: Session = Depends(get_db)):
+    if not request:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Dados de primeiro acesso não encontrados"
+        )
+
+    try:
+        # Verifica o token de primeiro acesso
+        payload = jwt.decode(
+            request.google_token, 
+            SECRET_KEY, 
+            algorithms=[ALGORITHM]
+        )
+        
+        if not payload.get("first_access"):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Token inválido"
+            )
+
+        # Validações
+        if request.senha != request.senha_confirmacao:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Senhas não conferem"
+            )
+            
+        if not request.email_cin.endswith("@cin.ufpe.br"):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email deve ser do domínio @cin.ufpe.br"
+            )
+
+        # Cria novo aluno
+        aluno = Aluno(
+            id=str(uuid4()),
+            nome=request.nome_preferido,
+            email=request.email_cin,
+            curso=request.curso,
+            senha_hash=hash_password(request.senha)  # Implemente esta função
+        )
+
+        # Salva no banco
+        aluno_repo = AlunoRepository(db)
+        aluno_salvo = aluno_repo.save(aluno)
+
+        # Gera tokens de acesso
+        access_token = create_token({"sub": aluno.email, "id": aluno.id})
+        refresh_token = create_token(
+            {"sub": aluno.email, "id": aluno.id, "refresh": True},
+            expires_delta=timedelta(days=7)
+        )
+
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "user": AlunoResponseDTO.from_orm(aluno_salvo)
+        }
+
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token de primeiro acesso inválido"
+        )
 
 # Rotas de alunos
 @router.post("/alunos", response_model=AlunoResponseDTO)

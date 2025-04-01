@@ -14,48 +14,15 @@ const Content = () => {
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-<<<<<<< Updated upstream
-            setLoading(true);
-            try {
-                // Carregamos todos os períodos de uma vez (da 1 a 8)
-                const periodos = [1, 2, 3, 4, 5, 6, 7, 8, 'eletivas'];
-                const disciplinasPorPeriodo = {};
-
-                for (const periodo of periodos) {
-                    try {
-                        const disciplinasDoPeriodo = await disciplinaService.listarDisciplinasPorCurso(curso, periodo);
-                        disciplinasPorPeriodo[periodo] = disciplinasDoPeriodo;
-                    } catch (err) {
-                        console.error(`Erro ao carregar período ${periodo}:`, err);
-                        // Usamos os dados fallback do front (dados atuais)
-                        disciplinasPorPeriodo[periodo] = getFallbackDisciplinas(periodo);
-                    }
-                }
-
-                setDisciplinas(disciplinasPorPeriodo);
-                setError(null);
-            } catch (err) {
-                console.error("Erro ao carregar disciplinas:", err);
-                setError("Não foi possível carregar as disciplinas. Usando dados locais.");
-                setDisciplinas(getAllFallbackDisciplinas());
-            } finally {
-                setLoading(false);
-            }
-=======
           try {
             const response = await disciplinaService.getDisciplinas();
             setDisciplinas(response);
           } catch (err) {
             setDisciplinas(getAllFallbackDisciplinas());
           }
->>>>>>> Stashed changes
         };
         fetchDisciplinas();
-<<<<<<< Updated upstream
-    }, [curso]);
-=======
       }, []);
->>>>>>> Stashed changes
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {

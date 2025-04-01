@@ -43,6 +43,5 @@ class Cadeira(Base):
     periodo_id = Column(String, ForeignKey("periodos.id"))
 
     periodo = relationship("Periodo", back_populates="cadeiras")
-    aulas = relationship("Aula", back_populates="cadeira")
 
 # Se houver uma tabela Aula, defina aqui também...

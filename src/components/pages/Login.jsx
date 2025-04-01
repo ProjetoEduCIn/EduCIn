@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-import React, { useState } from 'react';
-=======
-import  { useState } from "react";
+import { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
->>>>>>> Stashed changes
+import { jwtDecode } from "jwt-decode"; // Corrigido: forma correta de importar
 import { alunoService } from "../../services/apiService";
 import "@styles/PaginaDeLogin.css";
 
@@ -20,137 +16,85 @@ const Login = ({ onPageChange }) => {
     setLoading(true);
     setError("");
 
-<<<<<<< Updated upstream
-    return (
-        <div className="ContainerImagem">
-            <form className="containerLogin" onSubmit={handleSubmit}>
-                <p id="Login">Login</p>
-                {error && <div className="error-message">{error}</div>}
-                <p className="Legenda email">Email:</p>
-                <input 
-                    type="email" 
-                    id="Email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seu.email@cin.ufpe.br"
-                />
-                <p className="Legenda">Senha:</p>
-                <input 
-                    type="password" 
-                    id="Senha" 
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    placeholder="Sua senha"
-                />
-                <button 
-                    type="submit" 
-                    className="FazerLogin" 
-                    disabled={loading}
-                >
-                    {loading ? "Carregando..." : "Fazer Login"}
-                </button>
-                <div className="botoes-container">
-                    <button 
-                        className="EsqueceuSenha" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onPageChange('esqueceusenha');
-                        }}
-                    >
-                        Esqueceu sua senha?
-                    </button>
-                    <button 
-                        className="Registrar" 
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onPageChange('profile');
-                        }}
-                    >
-                        Não tem conta? <strong>Registre-se!</strong>
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-=======
     try {
       const response = await alunoService.login(email, senha);
-
-      if (response.success) {
-        localStorage.setItem("userToken", response.token);
-        localStorage.setItem("userData", JSON.stringify(response.user));
-        onPageChange("content");
-      } else {
-        setError("Email ou senha incorretos");
-      }
+      // Armazena tokens e dados do usuário no localStorage
+      localStorage.setItem("access_token", response.access_token);
+      localStorage.setItem("refresh_token", response.refresh_token);
+      localStorage.setItem("userData", JSON.stringify(response.user));
+      onPageChange("content");
     } catch (error) {
-      setError(error.response?.data?.message || "Erro ao fazer login");
+      console.error("Erro no login:", error);
+      setError(error.response?.data?.detail || "Email ou senha incorretos");
     } finally {
       setLoading(false);
     }
   };
 
   // Login com Google
-  const handleGoogleLoginSuccess = async (response) => {
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
     setLoading(true);
     setError("");
 
     try {
-      const token = response.credential; // Captura o token do Google
-    console.log("Token recebido do Google:", token); // Log para depuração
+      const token = credentialResponse.credential;
+      console.log("Token do Google recebido");
 
-    // Decodifica o token para obter o email do usuário
-    const userObject = jwtDecode(token);
-    const userEmail = userObject.email;
+      // Decodifica o token para obter informações do usuário
+      const userObject = jwtDecode(token);
+      const userEmail = userObject.email;
 
-    console.log("Email do usuário:", userEmail); // Log para depuração
+      // Verifica se o email é do domínio @cin.ufpe.br
+      if (!userEmail.endsWith("@cin.ufpe.br")) {
+        setError("Apenas emails @cin.ufpe.br são permitidos");
+        setLoading(false);
+        return;
+      }
 
-    // Verifica se o email é do domínio @cin.ufpe.br
-    if (!userEmail.endsWith("@cin.ufpe.br")) {
-      setError("Apenas emails @cin.ufpe.br são permitidos");
-      return;
-    }
-
-    // Tenta fazer login/registro com Google
-    const loginResponse = await alunoService.googleLogin(token);
+      // Comunica com o backend para login/registro via Google
+      const loginResponse = await alunoService.googleLogin(token);
 
       if (loginResponse.status === "first_access") {
-        // Primeiro acesso: salva dados temporários e redireciona para perfil
+        // Primeiro acesso: salva dados temporários e redireciona para completar perfil
         localStorage.setItem(
           "googleUserData",
           JSON.stringify({
             email: userEmail,
-            name: userObject.name,
+            name: userObject.name || userObject.given_name,
             picture: userObject.picture,
-            token: response.credential,
+            token: token,
           })
         );
         onPageChange("profile");
       } else {
-        // Usuário existente: salva tokens e redireciona
-        localStorage.setItem("userToken", loginResponse.access_token);
+        // Usuário existente: salva tokens e redireciona para conteúdo
+        localStorage.setItem("access_token", loginResponse.access_token);
+        localStorage.setItem("refresh_token", loginResponse.refresh_token);
         localStorage.setItem("userData", JSON.stringify(loginResponse.user));
         onPageChange("content");
       }
     } catch (error) {
       console.error("Erro no login com Google:", error);
-      setError("Falha no login com Google. Tente novamente.");
+      setError("Falha no login com Google. Verifique se seu email é do CIn.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleGoogleLoginFailure = (error) => {
-    console.error("Falha no login com Google:", error);
-    setError("Falha no login com Google. Por favor, tente novamente.");
-  };
-
   return (
     <GoogleOAuthProvider clientId="692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com">
       <div className="ContainerImagem">
-        <form onSubmit={handleSubmit}>
+        <div className="containerLogin">
           <p id="Login">Login</p>
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div
+              className="error-message"
+              style={{ color: "white", margin: "10px" }}
+            >
+              {error}
+            </div>
+          )}
+
           <p className="Legenda">Email:</p>
           <input
             type="email"
@@ -158,8 +102,8 @@ const Login = ({ onPageChange }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="seu.email@cin.ufpe.br"
-            required
           />
+
           <p className="Legenda">Senha:</p>
           <input
             type="password"
@@ -167,19 +111,34 @@ const Login = ({ onPageChange }) => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             placeholder="Sua senha"
-            required
           />
 
-          <button type="submit" className="FazerLogin" disabled={loading}>
+          <button
+            className="FazerLogin"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             {loading ? "Carregando..." : "Fazer Login"}
           </button>
 
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={handleGoogleLoginFailure}
-          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "10px 0",
+            }}
+          >
+            <GoogleLogin
+              onSuccess={handleGoogleLoginSuccess}
+              onError={() => setError("Erro ao conectar com Google")}
+              size="large"
+              text="continue_with"
+              shape="pill"
+              locale="pt-BR"
+            />
+          </div>
 
-          <div className="ContainerBotoesLogin">
+          <div className="botoes-container">
             <button
               className="EsqueceuSenha"
               onClick={(e) => {
@@ -190,11 +149,10 @@ const Login = ({ onPageChange }) => {
               Esqueceu sua senha?
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </GoogleOAuthProvider>
   );
->>>>>>> Stashed changes
 };
 
 export default Login;

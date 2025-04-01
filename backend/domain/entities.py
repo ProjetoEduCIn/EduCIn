@@ -29,17 +29,12 @@ class Cadeira(BaseModel):
     id: str = str(uuid4())
     nome: str
     periodo_id: str
-    aulas: List[str] = []
     provas: List[str] = []
     listas: List[str] = []
     slides: List[str] = []
     links: List[str] = []
 
-class Aula(BaseModel):
-    id: str = str(uuid4())
-    titulo: str
-    video_url: HttpUrl
-    cadeira_id: str
+
 
 class Arquivo(BaseModel):
     id: str = str(uuid4())

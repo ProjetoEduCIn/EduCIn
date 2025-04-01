@@ -202,15 +202,42 @@ async def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/first-access")
-async def complete_first_access(request: FirstAccessRequest, response: Response, db: Session = Depends(get_db)):
+@router.post("/first-access", response_model=TokenResponse)
+async def complete_first_access(request: FirstAccessRequest, db: Session = Depends(get_db)):
+    # Validar dados
+    if request.senha != request.senha_confirmacao:
+        raise HTTPException(status_code=400, detail="Senhas não coincidem")
+        
+    # Gerar hash da senha
+    senha_hash = hash_password(request.senha)
     
-    #Rota de exemplo para completar o cadastro do usuário no primeiro acesso.
+    # Criar novo aluno
+    novo_aluno = Aluno(
+        nome=request.nome_preferido,
+        email=request.email_cin,
+        curso=request.curso,
+        senha_hash=senha_hash
+    )
     
-    if not request:
-        raise HTTPException(status_code=401, detail="Dados de primeiro acesso não encontrados")
-    # Aqui você implementaria a criação de um novo aluno com a senha hash
-    return {"detail": "Fluxo de primeiro acesso a implementar."}
+    # Salvar no banco
+    repo = AlunoRepository(db)
+    aluno_salvo = repo.save(novo_aluno)
+    
+    # Gerar tokens
+    access_token = create_token({"sub": aluno_salvo.email, "id": aluno_salvo.id})
+    refresh_token = create_token({"sub": aluno_salvo.email, "id": aluno_salvo.id, "refresh": True}, timedelta(days=7))
+    
+    return {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "token_type": "bearer",
+        "user": {
+            "id": aluno_salvo.id,
+            "nome": aluno_salvo.nome,
+            "email": aluno_salvo.email,
+            "curso": aluno_salvo.curso
+        }
+    }
 
 # ----- ROTAS DE ALUNOS -----
 

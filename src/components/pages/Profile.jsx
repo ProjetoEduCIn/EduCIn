@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { alunoService } from "../../services/apiService";
 import "@styles/Profile.css";
 
@@ -6,30 +6,6 @@ const Profile = ({ onPageChange }) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-<<<<<<< Updated upstream
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    
-    // Validações básicas
-    if (!nome || !email || !senha) {
-      setError("Todos os campos são obrigatórios");
-      return;
-    }
-    
-    if (!email.endsWith("@cin.ufpe.br")) {
-      setError("Use um email @cin.ufpe.br válido");
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      await alunoService.cadastrar(nome, email, senha, ""); // Curso será definido na próxima etapa
-      onPageChange("profile2");
-=======
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [curso, setCurso] = useState("");
   const [loading, setLoading] = useState(false);
@@ -68,13 +44,56 @@ const Profile = ({ onPageChange }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    // Validar a senha antes de enviar
+    if (!validatePassword(senha)) {
+      setError("Sua senha não atende aos requisitos de segurança");
+      setLoading(false);
+      return;
+    }
+
+    // Verificar se as senhas coincidem
+    if (senha !== confirmarSenha) {
+      setError("As senhas não coincidem");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await alunoService.cadastrar(nome, email, senha, curso);
-      localStorage.setItem("userData", JSON.stringify(response));
+      // Obter o token do Google salvo no localStorage
+      const googleData = JSON.parse(
+        localStorage.getItem("googleUserData") || "{}"
+      );
+
+      // Usar o método completarCadastro em vez de cadastrar
+      const response = await alunoService.completarCadastro({
+        nome_preferido: nome,
+        email_cin: email,
+        curso: curso,
+        senha: senha,
+        senha_confirmacao: confirmarSenha,
+        google_token: googleData.token || "",
+      });
+
+      // Guardar os tokens e dados do usuário retornados pela API
+      localStorage.setItem("access_token", response.access_token);
+      localStorage.setItem("refresh_token", response.refresh_token);
+      localStorage.setItem("userData", JSON.stringify(response.user));
+
+      // Limpar os dados temporários do Google
+      localStorage.removeItem("googleUserData");
+
+      // Avançar para a página de conteúdo
       onPageChange("content");
->>>>>>> Stashed changes
     } catch (err) {
-      setError(err.message);
+      console.error("Erro ao completar cadastro:", err);
+      setError(
+        err.response?.data?.detail || "Erro ao criar conta. Tente novamente."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,12 +120,6 @@ const Profile = ({ onPageChange }) => {
         />
         <button className="button">fazer login com google</button>
 
-<<<<<<< Updated upstream
-        <p className="Legenda">Senha:</p>
-        <input 
-          name="senha" 
-          type="password" 
-=======
         <p className="Legenda">Escolha seu curso:</p>
         <select
           value={curso}
@@ -123,18 +136,9 @@ const Profile = ({ onPageChange }) => {
         <input
           name="senha"
           type="password"
->>>>>>> Stashed changes
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
-<<<<<<< Updated upstream
-        
-        <button 
-          className="button" 
-          type="submit" 
-          disabled={loading}
-        >
-=======
 
         <div className="senha-requisitos">
           <p className={senhaErrors.length ? "invalido" : "valido"}>
@@ -170,7 +174,6 @@ const Profile = ({ onPageChange }) => {
         )}
 
         <button type="submit" disabled={loading}>
->>>>>>> Stashed changes
           {loading ? "Enviando..." : "Continuar"}
         </button>
       </form>

@@ -5,7 +5,7 @@ Interfaces de repositório (contratos) que a camada de infraestrutura deve imple
 
 from abc import ABC, abstractmethod
 from typing import Optional, List
-from domain.entities import Aluno, Periodo, Cadeira, Aula, Arquivo
+from domain.entities import Aluno, Periodo, Cadeira, Arquivo
 
 class IAlunoRepository(ABC):
     @abstractmethod
@@ -34,10 +34,6 @@ class ICadeiraRepository(ABC):
     def save(self, cadeira: Cadeira) -> Cadeira:
         pass
 
-class IAulaRepository(ABC):
-    @abstractmethod
-    def save(self, aula: Aula) -> Aula:
-        pass
 
 class IArquivoRepository(ABC):
     @abstractmethod

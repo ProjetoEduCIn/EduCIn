@@ -1,42 +1,44 @@
 """
 controllers.py
-Contém as rotas (endpoints) da aplicação para lidar com Aluno, Período, Cadeira, etc.
+Rotas principais da aplicação para autenticação, alunos e disciplinas.
 """
 
-
-
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
-from sqlalchemy.orm import Session
-from typing import List, Optional
-from datetime import datetime, timedelta
-import jwt
-from pydantic import BaseModel
-from google.oauth2 import id_token
-from google.auth.transport import requests
-
-import sys
 import os
+import sys
+from datetime import datetime, timedelta
+from typing import List, Optional
+
+import jwt
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie
+from google.auth.transport import requests
+from google.oauth2 import id_token
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import get_db
-from domain.entities import Aluno, Cadeira
+from domain.entities import Aluno
 from infrastructure.repositories import AlunoRepository
-from application.dtos import AlunoCreateDTO, AlunoResponseDTO
-from application.auth import verificar_dominio
+from application.dtos import (
+    AlunoCreateDTO,
+    AlunoResponseDTO,
+)
+from application.auth import verificar_dominio, hash_password, verify_password
+from application.auth import pwd_context  # Opcional, se quiser usar diretamente
 
-# Configurações para JWT
-SECRET_KEY = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com" # Em produção, use variáveis de ambiente
+# Configurações básicas; em produção use variáveis de ambiente
+SECRET_KEY = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
-
-# Configurações para Google OAuth
-GOOGLE_CLIENT_ID = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com"  # Mova para variáveis de ambiente em produção
+GOOGLE_CLIENT_ID = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com"
 COOKIE_NAME = "first_access_token"
 
 router = APIRouter()
 
-# Classes para autenticação
+# ----- MODELOS PARA AUTENTICAÇÃO -----
+
 class LoginRequest(BaseModel):
     email: str
     senha: str
@@ -61,310 +63,202 @@ class FirstAccessRequest(BaseModel):
     senha_confirmacao: str
     google_token: str
 
-# Função para criar token JWT
-def create_token(data: dict, expires_delta: Optional[timedelta] = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+# ----- FUNÇÕES DE SUPORTE -----
 
-# Rotas de autenticação
+def create_token(data: dict, expires_delta: Optional[timedelta] = None):
+    
+    #Gera um token JWT com expiração configurável.
+    
+    to_encode = data.copy()
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
+    to_encode["exp"] = expire
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+# ----- ROTAS DE AUTENTICAÇÃO -----
+
 @router.post("/alunos/login", response_model=TokenResponse)
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
-    # Em produção, use uma tabela de usuário separada com senhas hasheadas
-    # Esta implementação é apenas para demonstração
     
-    # Verifica se é o modo de desenvolvimento
+    #Realiza login de um aluno verificando email e senha com hash no banco.
+    
+    # Admin fictício para desenvolvimento
     if login_request.email == "admin@cin.ufpe.br" and login_request.senha == "admin":
-        # Cria um usuário admin fictício para desenvolvimento
-        aluno = Aluno(
-            id="admin-id", 
-            nome="Admin", 
-            email="admin@cin.ufpe.br", 
-            curso="SI"
-        )
+        # Gera aluno sem senha_hash (apenas para teste)
+        aluno = Aluno(id="admin-id", nome="Admin", email="admin@cin.ufpe.br", curso="SI", senha_hash=None)
     else:
-        # Busca o aluno pelo email
-        aluno_repo = AlunoRepository(db)
-        aluno = aluno_repo.find_by_email(login_request.email)
-        
+        repo = AlunoRepository(db)
+        aluno = repo.find_by_email(login_request.email)
+
         if not aluno:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Credenciais inválidas",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        
-        # Em um sistema real, verificaria a senha hasheada aqui
-        # if not verify_password(login_request.senha, aluno.senha_hash):
-        #     raise HTTPException(...)
-    
-    # Cria tokens
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_token(
-        data={"sub": aluno.email, "id": aluno.id}, expires_delta=access_token_expires
-    )
-    
-    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-    refresh_token = create_token(
-        data={"sub": aluno.email, "id": aluno.id, "refresh": True}, 
-        expires_delta=refresh_token_expires
-    )
-    
-    # Converte para DTO e retorna
-    aluno_dto = AlunoResponseDTO(
-        id=aluno.id,
-        nome=aluno.nome,
-        email=aluno.email,
-        curso=aluno.curso
-    )
-    
+
+        if not aluno.senha_hash:
+            # Caso o aluno não tenha senha_hash salvo
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Senha não cadastrada ou inválida"
+            )
+
+        # Verifica se a senha informada corresponde ao hash armazenado
+        if not verify_password(login_request.senha, aluno.senha_hash):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Credenciais inválidas",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+    access_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    refresh_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+
+    access_token = create_token({"sub": aluno.email, "id": aluno.id}, access_expires)
+    refresh_token = create_token({"sub": aluno.email, "id": aluno.id, "refresh": True}, refresh_expires)
+
+
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
-        "user": aluno_dto
+        "user": AlunoResponseDTO(
+            id=aluno.id,
+            nome=aluno.nome,
+            email=aluno.email,
+            curso=aluno.curso
+        )
     }
 
 @router.post("/refresh-token", response_model=TokenResponse)
-def refresh_token(refresh_request: RefreshRequest, db: Session = Depends(get_db)):
+def refresh_token_endpoint(refresh_request: RefreshRequest, db: Session = Depends(get_db)):
+    
+    #Cria um novo conjunto de tokens a partir de um refresh_token válido.
+    
     try:
-        # Decodifica o refresh token
         payload = jwt.decode(refresh_request.refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
+        if not payload.get("refresh"):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
         email = payload.get("sub")
         user_id = payload.get("id")
-        is_refresh = payload.get("refresh")
-        
-        if not email or not user_id or not is_refresh:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token inválido",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
     except jwt.PyJWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token inválido ou expirado",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    # Busca o aluno para confirmar que ele existe
-    aluno_repo = AlunoRepository(db)
-    aluno = aluno_repo.find_by_email(email)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido ou expirado")
+
+    repo = AlunoRepository(db)
+    aluno = repo.find_by_email(email)
     if not aluno:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Usuário não encontrado",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    # Gera novos tokens
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_token(
-        data={"sub": email, "id": user_id}, expires_delta=access_token_expires
-    )
-    
-    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-    new_refresh_token = create_token(
-        data={"sub": email, "id": user_id, "refresh": True}, 
-        expires_delta=refresh_token_expires
-    )
-    
-    # Converte para DTO e retorna
-    aluno_dto = AlunoResponseDTO(
-        id=aluno.id,
-        nome=aluno.nome,
-        email=aluno.email,
-        curso=aluno.curso
-    )
-    
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário não encontrado")
+
+    access_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    refresh_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+
+    new_access_token = create_token({"sub": email, "id": user_id}, access_expires)
+    new_refresh_token = create_token({"sub": email, "id": user_id, "refresh": True}, refresh_expires)
+
     return {
-        "access_token": access_token,
+        "access_token": new_access_token,
         "refresh_token": new_refresh_token,
         "token_type": "bearer",
-        "user": aluno_dto
+        "user": AlunoResponseDTO(
+            id=aluno.id,
+            nome=aluno.nome,
+            email=aluno.email,
+            curso=aluno.curso
+        )
     }
 
 @router.post("/auth/google")
 async def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db)):
+    
+    #Faz login via token do Google; aceita apenas emails @cin.ufpe.br.
+    
     try:
-        print(f"Token recebido no backend: {request.token}")  # Log do token
-
-        idinfo = id_token.verify_oauth2_token(
-            request.token,
-            requests.Request(),
-            GOOGLE_CLIENT_ID
-        )
-        print(f"Informações do usuário: {idinfo}")  # Log das informações
-
-        email = idinfo['email']
-
-        # Verifica se é email do CIn
-        if not email.endswith("@cin.ufpe.br"):
+        idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
+        email = idinfo.get('email')
+        if not email or not email.endswith("@cin.ufpe.br"):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Apenas emails @cin.ufpe.br são permitidos"
             )
-
-        # Verifica se o usuário já existe
-        aluno_repo = AlunoRepository(db)
-        aluno = aluno_repo.find_by_email(email)
-
+        repo = AlunoRepository(db)
+        aluno = repo.find_by_email(email)
         if aluno:
-            # Usuário já existe
             access_token = create_token({"sub": email, "id": aluno.id})
-            refresh_token = create_token(
-                {"sub": email, "id": aluno.id, "refresh": True},
-                expires_delta=timedelta(days=7)
-            )
-            
+            refresh_token = create_token({"sub": email, "id": aluno.id, "refresh": True}, timedelta(days=7))
             return {
                 "status": "existing_user",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
                 "user": AlunoResponseDTO.from_orm(aluno)
             }
-        else:
-            # Primeiro acesso
-            return {
-                "status": "first_access",
-                "email": email,
-                "picture": idinfo.get('picture'),
-                "given_name": idinfo.get('given_name')
-            }
-
+        return {
+            "status": "first_access",
+            "email": email,
+            "picture": idinfo.get('picture'),
+            "given_name": idinfo.get('given_name')
+        }
     except ValueError as e:
-        print(f"Erro ao validar token do Google: {e}")
-        raise HTTPException(
-            status_code=401,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=401, detail=str(e))
     except Exception as e:
-        print(f"Erro inesperado: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
-        )
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/first-access")
 async def complete_first_access(request: FirstAccessRequest, response: Response, db: Session = Depends(get_db)):
+    
+    #Rota de exemplo para completar o cadastro do usuário no primeiro acesso.
+    
     if not request:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Dados de primeiro acesso não encontrados"
-        )
+        raise HTTPException(status_code=401, detail="Dados de primeiro acesso não encontrados")
+    # Aqui você implementaria a criação de um novo aluno com a senha hash
+    return {"detail": "Fluxo de primeiro acesso a implementar."}
 
-    try:
-        # Verifica o token de primeiro acesso
-        payload = jwt.decode(
-            request.google_token, 
-            SECRET_KEY, 
-            algorithms=[ALGORITHM]
-        )
-        
-        if not payload.get("first_access"):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token inválido"
-            )
+# ----- ROTAS DE ALUNOS -----
 
-        # Validações
-        if request.senha != request.senha_confirmacao:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Senhas não conferem"
-            )
-            
-        if not request.email_cin.endswith("@cin.ufpe.br"):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email deve ser do domínio @cin.ufpe.br"
-            )
-
-        # Cria novo aluno
-        aluno = Aluno(
-            id=str(uuid4()),
-            nome=request.nome_preferido,
-            email=request.email_cin,
-            curso=request.curso,
-            senha_hash=hash_password(request.senha)  # Implemente esta função
-        )
-
-        # Salva no banco
-        aluno_repo = AlunoRepository(db)
-        aluno_salvo = aluno_repo.save(aluno)
-
-        # Gera tokens de acesso
-        access_token = create_token({"sub": aluno.email, "id": aluno.id})
-        refresh_token = create_token(
-            {"sub": aluno.email, "id": aluno.id, "refresh": True},
-            expires_delta=timedelta(days=7)
-        )
-
-        return {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "user": AlunoResponseDTO.from_orm(aluno_salvo)
-        }
-
-    except jwt.PyJWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token de primeiro acesso inválido"
-        )
-
-# Rotas de alunos
 @router.post("/alunos", response_model=AlunoResponseDTO)
 def criar_aluno(aluno_dto: AlunoCreateDTO, db: Session = Depends(get_db)):
-    # Verifica se o email é do domínio @cin.ufpe.br
-    verificar_dominio(aluno_dto.email)
     
-    # Verifica se já existe um aluno com este email
-    aluno_repo = AlunoRepository(db)
-    if aluno_repo.find_by_email(aluno_dto.email):
+    #Cria um novo aluno (email @cin.ufpe.br) caso ainda não exista, armazenando a senha como hash.
+    
+    verificar_dominio(aluno_dto.email)
+    repo = AlunoRepository(db)
+    if repo.find_by_email(aluno_dto.email):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Já existe um aluno com este email"
         )
-    
-    # Cria o aluno no domínio
-    aluno = Aluno(
+
+    # Gera hash da senha em texto puro
+    senha_hashed = hash_password(aluno_dto.senha)
+
+    novo_aluno = Aluno(
         nome=aluno_dto.nome,
         email=aluno_dto.email,
-        curso=aluno_dto.curso
-    )
-    
-    # Salva no repositório
-    aluno_salvo = aluno_repo.save(aluno)
-    
-    # Converte para DTO e retorna
-    return AlunoResponseDTO(
-        id=aluno_salvo.id,
-        nome=aluno_salvo.nome,
-        email=aluno_salvo.email,
-        curso=aluno_salvo.curso
+        curso=aluno_dto.curso,
+        senha_hash=senha_hashed
     )
 
-# DTOs adicionais para disciplinas
+    salvo = repo.save(novo_aluno)
+    return AlunoResponseDTO(
+        id=salvo.id,
+        nome=salvo.nome,
+        email=salvo.email,
+        curso=salvo.curso
+    )
+
+# ----- ROTAS DE DISCIPLINAS (EXEMPLO DE DADOS ESTÁTICOS) -----
+
 class DisciplinaDTO(BaseModel):
     id: str
     nome: str
     imagem: Optional[str] = None
 
-# Rota para listar disciplinas por curso e período
 @router.get("/cursos/{curso_id}/disciplinas", response_model=List[DisciplinaDTO])
 def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
-    """
-    Retorna as disciplinas de um curso, opcionalmente filtradas por período.
-    """
-    # Simulação de dados, em produção você buscaria do banco
-    disciplinas = []
     
-    if curso_id == "SI":  # Sistemas de Informação
+    #Lista disciplinas por curso e período (dados simulados).
+   
+    disciplinas = []
+    if curso_id == "SI":
         if periodo == 1:
             disciplinas = [
                 {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
@@ -379,7 +273,7 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
                 {"id": "acso", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-    elif curso_id == "CC":  # Ciência da Computação
+    elif curso_id == "CC":
         if periodo == 1:
             disciplinas = [
                 {"id": "ip-cc", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
@@ -387,7 +281,7 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
                 {"id": "cad-cc", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md-cc", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-    elif curso_id == "EC":  # Engenharia da Computação
+    elif curso_id == "EC":
         if periodo == 1:
             disciplinas = [
                 {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
@@ -395,10 +289,8 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
                 {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-    
     return disciplinas
 
-# Detalhes da disciplina
 class ConteudoDTO(BaseModel):
     topicos: List[str] = []
     links: List[dict] = []
@@ -414,10 +306,9 @@ class DisciplinaDetalheDTO(BaseModel):
 
 @router.get("/disciplinas/{disciplina_id}", response_model=DisciplinaDetalheDTO)
 def obter_detalhes_disciplina(disciplina_id: str):
-    """
-    Retorna os detalhes de uma disciplina específica.
-    """
-    # Simulação de dados, em produção você buscaria do banco
+    
+    #Retorna detalhes de uma disciplina (dados simulados).
+    
     if disciplina_id == "ip":
         return {
             "id": "ip",
@@ -438,8 +329,6 @@ def obter_detalhes_disciplina(disciplina_id: str):
             "professores": ["Carlos Oliveira", "Ana Souza"],
             "imagem": "/imagens/ImagemLivro.jpg"
         }
-    
-    # Se não encontrar, retorna um objeto vazio
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Disciplina com ID {disciplina_id} não encontrada"
@@ -448,9 +337,8 @@ def obter_detalhes_disciplina(disciplina_id: str):
 @router.get("/disciplinas/{disciplina_id}/conteudo", response_model=ConteudoDTO)
 def obter_conteudo_disciplina(disciplina_id: str):
     """
-    Retorna o conteúdo detalhado de uma disciplina.
+    Retorna o conteúdo programático de uma disciplina (dados simulados).
     """
-    # Simulação de dados, em produção você buscaria do banco
     if disciplina_id == "ip":
         return {
             "topicos": [
@@ -468,16 +356,13 @@ def obter_conteudo_disciplina(disciplina_id: str):
                 {"texto": "Material complementar", "url": "https://example.com/extra"}
             ]
         }
-    
-    # Se não encontrar, retorna um objeto vazio
     return {"topicos": [], "links": []}
 
 @router.get("/disciplinas/{disciplina_id}/duvidas")
 def obter_duvidas_disciplina(disciplina_id: str):
     """
-    Retorna as dúvidas frequentes sobre a disciplina.
+    Retorna dúvidas frequentes sobre a disciplina (dados simulados).
     """
-    # Simulação de dados, em produção você buscaria do banco
     return [
         {
             "pergunta": "Qual a linguagem de programação utilizada?",

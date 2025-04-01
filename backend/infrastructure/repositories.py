@@ -3,49 +3,45 @@ repositories.py (infra)
 Implementa as interfaces usando SQLAlchemy e SQLite.
 """
 
-from sqlalchemy import Column, String, Table, MetaData
-from sqlalchemy.orm import declarative_base, Session
-from typing import Optional, List
-from domain.entities import Aluno
+from typing import Optional
+from sqlalchemy.orm import Session
+from database import Base
+from domain.entities import Aluno as AlunoDomain
 from domain.repositories import IAlunoRepository
-from uuid import uuid4
-
-Base = declarative_base()
-
-# Tabela de Aluno (exemplo). Você criaria outras tabelas para Periodo, Cadeira, etc.
-class AlunoDB(Base):
-    __tablename__ = "alunos"
-    id = Column(String, primary_key=True, index=True)
-    nome = Column(String)
-    email = Column(String, unique=True, index=True)
-    curso = Column(String)
+# Importa do models.py a classe do ORM
+from models import Aluno as AlunoModel
 
 class AlunoRepository(IAlunoRepository):
-    """
-    Implementação concreta do repositório de alunos.
-    """
+    
+    #Repositório de Aluno, persistindo em SQLite/SQLAlchemy.
+    #Usa a classe Aluno do models.py para mapear a tabela 'alunos'.
+    
     def __init__(self, db: Session):
         self.db = db
 
-    def save(self, aluno: Aluno) -> Aluno:
-        aluno_db = AlunoDB(
+    def save(self, aluno: AlunoDomain) -> AlunoDomain:
+        aluno_db = AlunoModel(
             id=aluno.id,
             nome=aluno.nome,
             email=aluno.email,
-            curso=aluno.curso
+            curso=aluno.curso,
+            senha_hash=aluno.senha_hash
         )
         self.db.merge(aluno_db)
         self.db.commit()
         self.db.refresh(aluno_db)
+        # Retorna o objeto de domínio
         return aluno
 
-    def find_by_email(self, email: str) -> Optional[Aluno]:
-        aluno_db = self.db.query(AlunoDB).filter_by(email=email).first()
+    def find_by_email(self, email: str) -> Optional[AlunoDomain]:
+        aluno_db = self.db.query(AlunoModel).filter_by(email=email).first()
         if not aluno_db:
             return None
-        return Aluno(
+        # Convertendo AlunoModel -> AlunoDomain
+        return AlunoDomain(
             id=aluno_db.id,
             nome=aluno_db.nome,
             email=aluno_db.email,
-            curso=aluno_db.curso
+            curso=aluno_db.curso,
+            senha_hash=aluno_db.senha_hash
         )

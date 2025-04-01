@@ -6,8 +6,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  // Adiciona configurações para CORS
-  withCredentials: true,
+  withCredentials: true, // Adiciona configurações para CORS
 });
 
 // Interceptores com melhor tratamento de erro
@@ -51,6 +50,7 @@ api.interceptors.response.use(
   }
 );
 
+// Serviços relacionados a alunos
 export const alunoService = {
   login: async (email, senha) => {
     try {
@@ -69,9 +69,7 @@ export const alunoService = {
         token.substring(0, 20) + "..."
       );
 
-      const response = await api.post("/auth/google", {
-        token: token,
-      });
+      const response = await api.post("/auth/google", { token });
 
       console.log("Login com Google bem-sucedido:", response.data);
       return response.data;
@@ -84,12 +82,6 @@ export const alunoService = {
       });
       throw error;
     }
-<<<<<<< Updated upstream
-  }
-};
-
-// Serviços relacionados a disciplinas
-=======
   },
 
   checkFirstAccess: async (email) => {
@@ -115,7 +107,7 @@ export const alunoService = {
   },
 };
 
->>>>>>> Stashed changes
+// Serviços relacionados a disciplinas
 export const disciplinaService = {
   listarDisciplinasPorCurso: async (cursoId, periodo) => {
     try {
@@ -150,6 +142,7 @@ export const disciplinaService = {
   },
 };
 
+// Serviços relacionados a cursos
 export const cursoService = {
   listarCursos: async () => {
     try {

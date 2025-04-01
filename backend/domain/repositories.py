@@ -1,7 +1,6 @@
 """
 repositories.py
-Define as interfaces (contratos) de repositório
-que a camada de infraestrutura deve implementar.
+Interfaces de repositório (contratos) que a camada de infraestrutura deve implementar.
 """
 
 from abc import ABC, abstractmethod
@@ -17,7 +16,6 @@ class IAlunoRepository(ABC):
     def find_by_email(self, email: str) -> Optional[Aluno]:
         pass
 
-
 class IPeriodoRepository(ABC):
     @abstractmethod
     def find_all_by_curso(self, curso: str) -> List[Periodo]:
@@ -26,7 +24,6 @@ class IPeriodoRepository(ABC):
     @abstractmethod
     def save(self, periodo: Periodo) -> Periodo:
         pass
-
 
 class ICadeiraRepository(ABC):
     @abstractmethod
@@ -37,12 +34,10 @@ class ICadeiraRepository(ABC):
     def save(self, cadeira: Cadeira) -> Cadeira:
         pass
 
-
 class IAulaRepository(ABC):
     @abstractmethod
     def save(self, aula: Aula) -> Aula:
         pass
-
 
 class IArquivoRepository(ABC):
     @abstractmethod

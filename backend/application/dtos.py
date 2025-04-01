@@ -1,25 +1,18 @@
 """
 dtos.py
-Modelos de entrada e saída de dados (para requests/responses).
-Evita expor diretamente as entidades de domínio.
+Data Transfer Objects para requests/responses, isolando as entidades de domínio.
 """
 
-from pydantic import BaseModel, EmailStr
 from typing import Optional, List
+from pydantic import BaseModel, EmailStr
 
 class AlunoCreateDTO(BaseModel):
-    """
-    Dados recebidos para criar um novo aluno.
-    """
     nome: str
     email: EmailStr
-    senha: str  # Em produção, você precisaria hash essa senha
+    senha: str      # Senha em texto puro (será hash ao salvar)
     curso: str
 
 class AlunoResponseDTO(BaseModel):
-    """
-    Dados retornados ao frontend após criar ou buscar um aluno.
-    """
     id: str
     nome: str
     email: EmailStr

@@ -1,18 +1,20 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-const VideoContent = ({ conteudo }) => {
-    return (
-        <div>
-            {conteudo.map((item, index) => (
-                item.tipo === 'video' && (
-                    <div key={index}>
-                        <h3>Vídeo</h3>
-                        <video controls src={item.link}></video>
-                    </div>
-                )
-            ))}
+const VideoContent = () => {
+  const { conteudo } = useOutletContext();
+  const videos = conteudo.filter(item => item.tipo === 'video');
+
+  return (
+    <div className="video-container">
+      {videos.map((video, index) => (
+        <div key={index}>
+          <video controls src={video.link} />
+          <p>{video.descricao}</p>
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default VideoContent;

@@ -27,16 +27,19 @@ class AlunoRepository(IAlunoRepository):
             curso=aluno.curso,
             senha_hash=aluno.senha_hash
         )
-        self.db.merge(aluno_db)
+        self.db.add(aluno_db)
         self.db.commit()
         self.db.refresh(aluno_db)
         # Retorna o objeto de domínio
         return aluno
 
     def find_by_email(self, email: str) -> Optional[AlunoDomain]:
+        print(f"Procurando aluno com email: {email}")  # Log para verificar o email buscado
         aluno_db = self.db.query(AlunoModel).filter_by(email=email).first()
         if not aluno_db:
+            print("Nenhum aluno encontrado com este email.")  # Log para verificar se não encontrou
             return None
+        print(f"Aluno encontrado: {aluno_db}")  # Log para verificar o aluno encontrado
         # Convertendo AlunoModel -> AlunoDomain
         return AlunoDomain(
             id=aluno_db.id,

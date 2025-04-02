@@ -54,7 +54,7 @@ api.interceptors.response.use(
 export const alunoService = {
   login: async (email, senha) => {
     try {
-      const response = await api.post("/auth/login", { email, senha });
+      const response = await api.post("/alunos/login", { email, senha });
       return response.data;
     } catch (error) {
       console.error("Erro no login:", error);

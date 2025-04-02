@@ -169,28 +169,36 @@ def refresh_token_endpoint(refresh_request: RefreshRequest, db: Session = Depend
 
 @router.post("/auth/google")
 async def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db)):
-    
-    #Faz login via token do Google; aceita apenas emails @cin.ufpe.br.
-    
+    """
+    Faz login via token do Google; aceita apenas emails @cin.ufpe.br.
+    """
     try:
+        # Verifica o token do Google
         idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
         email = idinfo.get('email')
         if not email or not email.endswith("@cin.ufpe.br"):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Apenas emails @cin.ufpe.br são permitidos"
-            )
+            raise HTTPException(status_code=400, detail="Email inválido ou não permitido.")
+
+        # Verifica se o usuário já existe no banco de dados
         repo = AlunoRepository(db)
         aluno = repo.find_by_email(email)
         if aluno:
-            access_token = create_token({"sub": email, "id": aluno.id})
-            refresh_token = create_token({"sub": email, "id": aluno.id, "refresh": True}, timedelta(days=7))
+            # Usuário já existe, gera os tokens
+            access_token = create_token({"sub": aluno.email, "id": aluno.id})
+            refresh_token = create_token({"sub": aluno.email, "id": aluno.id, "refresh": True}, timedelta(days=7))
             return {
                 "status": "existing_user",
                 "access_token": access_token,
                 "refresh_token": refresh_token,
-                "user": AlunoResponseDTO.from_orm(aluno)
+                "user": AlunoResponseDTO(
+                    id=aluno.id,
+                    nome=aluno.nome,
+                    email=aluno.email,
+                    curso=aluno.curso
+                )
             }
+
+        # Usuário não existe, retorna status de "primeiro acesso"
         return {
             "status": "first_access",
             "email": email,
@@ -200,7 +208,8 @@ async def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Erro no login com Google: {e}")
+        raise HTTPException(status_code=500, detail="Erro interno no servidor")
 
 @router.post("/first-access", response_model=TokenResponse)
 async def complete_first_access(request: FirstAccessRequest, db: Session = Depends(get_db)):
@@ -243,34 +252,37 @@ async def complete_first_access(request: FirstAccessRequest, db: Session = Depen
 
 @router.post("/alunos", response_model=AlunoResponseDTO)
 def criar_aluno(aluno_dto: AlunoCreateDTO, db: Session = Depends(get_db)):
-    
-    #Cria um novo aluno (email @cin.ufpe.br) caso ainda não exista, armazenando a senha como hash.
-    
-    verificar_dominio(aluno_dto.email)
-    repo = AlunoRepository(db)
-    if repo.find_by_email(aluno_dto.email):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Já existe um aluno com este email"
+    try:
+        verificar_dominio(aluno_dto.email)
+        repo = AlunoRepository(db)
+        if repo.find_by_email(aluno_dto.email):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Já existe um aluno com este email"
+            )
+
+        senha_hashed = hash_password(aluno_dto.senha)
+        print(f"Hash da senha gerado: {senha_hashed}")  # Log para verificar o hash
+
+        novo_aluno = Aluno(
+            nome=aluno_dto.nome,
+            email=aluno_dto.email,
+            curso=aluno_dto.curso,
+            senha_hash=senha_hashed
         )
 
-    # Gera hash da senha em texto puro
-    senha_hashed = hash_password(aluno_dto.senha)
+        salvo = repo.save(novo_aluno)
+        print(f"Aluno salvo no banco: {salvo}")  # Log para verificar o aluno salvo
 
-    novo_aluno = Aluno(
-        nome=aluno_dto.nome,
-        email=aluno_dto.email,
-        curso=aluno_dto.curso,
-        senha_hash=senha_hashed
-    )
-
-    salvo = repo.save(novo_aluno)
-    return AlunoResponseDTO(
-        id=salvo.id,
-        nome=salvo.nome,
-        email=salvo.email,
-        curso=salvo.curso
-    )
+        return AlunoResponseDTO(
+            id=salvo.id,
+            nome=salvo.nome,
+            email=salvo.email,
+            curso=salvo.curso
+        )
+    except Exception as e:
+        print(f"Erro ao criar aluno: {e}")
+        raise HTTPException(status_code=500, detail="Erro interno no servidor")
 
 # ----- ROTAS DE DISCIPLINAS (EXEMPLO DE DADOS ESTÁTICOS) -----
 

@@ -10,6 +10,7 @@ const Content = () => {
     const [disciplinas, setDisciplinas] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const curso = "SI"; // Identificador para Sistemas de Informação
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
@@ -98,176 +99,157 @@ const Content = () => {
     }
 
     return (
-        <motion.div className='ContainerCadeiras'
+        <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}>
-            {/* Refatorar o codigo e fazer uma função que renderiza todos os conteúdos e outra que faz o container inteiro */}
+            transition={{ duration: 0.3 }}
+        >
             {error && <div className="error-message">{error}</div>}
            
-
-            <div className='CardCadeiras'>
-                <h3 className="periodo">1° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[1]?.map((disciplina) => (
-                        <Link // Substitui a tag <a> na biblioteca router
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`} // Leva para a rota
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">1° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[1]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
-            <div className='CardCadeiras'>
-                <h3 className="periodo">2° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[2]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">2° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[2]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
-            <div className='CardCadeiras'>
-                <h3 className="periodo">3° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[3]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">3° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[3]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
-            <div className='CardCadeiras'>
-                <h3 className="periodo">4° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[4]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">4° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[4]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
             
-            <div className='CardCadeiras'>
-                <h3 className="periodo">5° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[5]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">5° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[5]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
             
-            <div className='CardCadeiras'>
-                <h3 className="periodo">6° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[6]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">6° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[6]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
             
-            <div className='CardCadeiras'>
-                <h3 className="periodo">7° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[7]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </div>
-            
-            <div className='CardCadeiras'>
-                <h3 className="periodo">8° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[8]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </div>
-            
-            <div className='CardCadeiras'>
-                <h3 className='periodo'>Eletivas</h3>
-                <div className='cadeiras'>
-                    {disciplinas['eletivas']?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}>
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">7° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[7]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
+            <h3 className="periodo">8° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[8]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+
+            <h3 className='periodo'>Eletivas</h3>
+            <div className='cadeiras'>
+                {disciplinas['eletivas']?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
         </motion.div>
     );
 };

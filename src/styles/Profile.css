@@ -1,133 +1,37 @@
-/* ------------------------ Reset e Configurações Gerais ------------------------ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-div {
-    margin: auto;
+
+div{
+  margin: auto;
 }
-form {
-    all:unset;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: left;
-    flex-direction: row;
-    width: 35dvw;
-    max-width: 40vw;
-    background: linear-gradient(to right, #DC281E, #F00000);
-    border-radius: 25px;
-    object-fit: contain;
+
+form{
+    all: unset;
 }
+
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
-    url(../imagens/ImagemCIn.jpg) center/cover no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
+  url(../imagens/ImagemCIn.jpg) center/cover no-repeat;
     min-height: 100vh;
     margin: 0;
 }
-/* ------------------------ Texto ------------------------ */
-h1 {
-    display: inline;
+  
+h1{
     border-bottom: 2px solid #fff;
+    display: inline; /* Evita que o elemento ocupe espaço extra */
     color: #fff;
     font-size: 2.7vw;
-    margin: 5% 0 0 10%;
-    font-weight: 500;
-    width: max-content;
-}
-.Legenda, p {
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    font-size: 1.5rem;
-    color: #fff;
-    margin: 5% 0 0 10%;
-}
-/* ------------------------ Botões ------------------------ */
-button {
-    all: unset;
-    display: block;
-    text-align: center;
-    background-color: #FFF;
-    width: 80%;
-    height: 60px;
-    padding: 0 20px;
-    margin: 3% 0 3% 10%;
-    border: 1px solid rgba(255, 255, 255, 0.795);
-    font-size: 20px;
-    font-weight: 600;
-    color: #DB1E2F;
-    border-radius: 10px;
-    box-sizing: border-box;
-    transition: border-color 0.3s, color 0.3s;
-}
-button:last-of-type {
-    margin-bottom: 5%;
-}
-button:hover {
-    background-color: #f0f0f0;
-}
-button.selected {
-    border-color: var(--vermelho-claro);
-    background-color: var(--vermelho);
-    color: white;
-}
-
-.botao-selecionar {
-    background-color: var(--vermelho);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-}
-
-.botao-selecionar:hover {
-    background-color: var(--vermelho-escuro);
-}
-
-.botao-selecionar:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* ------------------------ Inputs ------------------------ */
-input {
-    all: unset;
-    display: block;
-    background-color: transparent;
-    width: 80%;
-    height: 40px;
-    padding: 10px 0;
+    margin-top: 5%;
     margin-left: 10%;
-    font-size: 20px;
-    color: white;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.795);
-    box-sizing: border-box;
-    transition: border-color 0.3s, color 0.3s;
+    margin-bottom: 0%;
+    font-weight: 500;
+    width: max-content; /* Faz a largura ser exatamente a do conteúdo */
 }
 
-input:hover, input:focus {
-    border-color: white;
-    color: #ddd;
-    background-color: transparent;
-    outline: none;
-}
-
-#Email:-webkit-autofill, #Senha:-webkit-autofill {
-    -webkit-text-fill-color: white !important;
-    background-color: transparent !important;
-    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-    transition: background-color 5000s ease-in-out 0s;
-}
-
-/* ------------------------ Containers ------------------------ */
-.container, .container2 {
+.container {
     display: flex;
     flex-wrap: wrap;
     width: 50vw;
@@ -135,24 +39,175 @@ input:hover, input:focus {
     text-align: center;
     border-radius: 8px;
 }
-
-.container2 {
-    align-items: flex-start;
-    gap: 20px;
+ 
+.perguntas{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: left;
+    flex-direction: row;
+    width: 35dvw;
+    max-width: 40vw;
+    background: #DB1E2F;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #DC281E, #F00000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DC281E, #F00000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 25px;
+    object-fit: contain;
+}
+    
+input{    
+    all: unset;
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    width: 80%;
+    height: 40px; /* Defina um tamanho fixo para evitar mudanças */
+    padding: 10px 0; /* Apenas padding superior e inferior */
+    margin-left: 10%;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    border-width: 0 0 1px;
+    border-style: solid;
+    text-align: left;
+    border-color: rgba(255, 255, 255, 0.795);
+    box-sizing: border-box; /* Mantém a largura ao adicionar padding */
+    transition: border-color 0.3s, color 0.3s;
 }
 
-/* ------------------------ Listas ------------------------ */
+input:hover, input:hover,
+input:focus, input:focus {
+    background-color: #DB1E2F;
+    padding: 10px 0;
+    border-color: rgb(255, 255, 255); /* Mantém a cor da borda */
+    color: #ddd; /* Mantém a cor do texto */
+    background-color: rgba(0, 0, 0, 0); /* Mantém o fundo transparente */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+#Email:-webkit-autofill, #Senha:-webkit-autofill {
+    -webkit-text-fill-color: white !important; /* Garante que o texto fique branco */
+    background-color: transparent !important; /* Remove o fundo amarelo */
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* Remove o sombreamento */
+    transition: background-color 5000s ease-in-out 0s; /* Evita mudança de cor rápida */
+}
+
+.Legenda{
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 5% ;
+    margin-left: 10% ;
+    margin-bottom: 0px ;
+}
+
+/* p {
+   color: var(--preto); 
+   margin-bottom: 20px; } 
+*/
+
+.button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+    /* gap: 10px; */
+}
+
+.button {
+    all: unset;
+    display: block;
+    text-align: center;
+    background-color: #FFF;
+    width: 80%;
+    height: 60px; /* Tamanho fixo */
+    padding: 0 20px; /* Apenas padding horizontal */
+    margin-top: 3%;
+    margin-bottom: 3%;
+    margin-left: 10%;
+    border-width: 1px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #DB1E2F;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.795);
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.button:last-of-type {
+    margin-bottom: 5%;
+}
+
+.button:hover {
+    background-color: #f0f0f0;
+}
+
+.button.selected {
+    border-color: var(--vermelho-claro);
+    background-color: var(--vermelho);
+    color: white;
+}
+
+/* ---------------------------------------------------------------------PROFILE2--------------------------------------------------------------------- */
+
+.container2 {
+
+  display: flex;
+  gap:20px;
+  flex-wrap: wrap;
+  width: 50vw;
+  max-width: 400px;
+  align-items: flex-start;
+  text-align:center;
+  border-radius: 8px;
+}
+
+.email-inserido{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10%;
+}
+
+.botao-selecionar {
+    background-color: var(--vermelho); /* Vermelho forte */
+    color: white; /* Texto branco */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px; /* Cantos arredondados */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    white-space: nowrap;
+}
+
+.botao-selecionar:hover {
+    background-color: var(--vermelho-escuro); /* Tom mais escuro ao passar o mouse */
+}
+
+.botao-selecionar:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 .lista-disciplinas {
     list-style: none;
     padding: 0;
-    max-height: 200px;
+    max-height: 200px; /* Limita o tamanho da lista e ativa o scroll */
     overflow-y: auto;
     font-size: 12px;
     white-space: nowrap;
     width: 540px;
 }
 
-.lista-disciplinas, li {
+.lista-disciplinas li {
     padding: 8px;
     border-bottom: 1px solid #ddd;
 }
@@ -160,15 +215,18 @@ input:hover, input:focus {
 .lista-disciplinas label {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Espaço entre o checkbox e o texto */
 }
-/* ------------------------ Select ------------------------ */
+
+/* Remove a aparência padrão do sistema */
 .select-curso {
-    appearance: none;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
     width: 100%;
     padding: 10px;
     border-radius: 5px;
-    border: 2px solid #D32F2F;
+    border: 2px solid #D32F2F; /* Vermelho */
     background-color: white;
     color: #333;
     font-size: 16px;
@@ -176,27 +234,31 @@ input:hover, input:focus {
     transition: 0.3s;
 }
 
+/* Efeito ao passar o mouse */
 .select-curso:hover {
-    border-color: #B71C1C;
+  border-color: #B71C1C; /* Vermelho mais escuro */
 }
 
+/* Estilização das opções */
 .select-curso option {
-    padding: 10px;
-    background-color: white;
-    color: #333;
-    font-size: 16px;
+  padding: 10px;
+  background-color: white;
+  color: #333;
+  font-size: 16px;
 }
 
+/* Tenta forçar a opção selecionada a ter fundo vermelho */
 .select-curso option:checked {
-    background-color: #D32F2F !important;
-    color: white !important;
+  background-color: #D32F2F !important; /* Vermelho */
+  color: white !important;
 }
 
-/* ------------------------ Media Queries ------------------------ */
+/* Media query para celulares */
 @media screen and (max-width: 500px) {
-    
+
 }
 
+/* Media query para tablets (largura entre 768px e 1024px) */
 @media screen and (min-width: 768px) and (max-width: 1800px) {
-    
+
 }

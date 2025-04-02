@@ -5,22 +5,24 @@ import '@styles/Header.css';
 
 const Header = ({ currentPage }) => {
     return (
-        <motion.header // motion é uma biblioteca para fazer animações
+        <motion.header
             className="flex header"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.1 }}>
+            transition={{ duration: 0.1 }}
+        >
             <img 
                 style={{ height: '100%', marginLeft: '0.5%' }}
                 src="/imagens/ImagemHeader.png" 
-                alt="Logo" />
+                alt="Logo" 
+            />
             {currentPage === 'content' && (
-                // renderiza se for a página de escolha de conteúdo
                 <nav>
                     <ul>
                         <li><Link to="/si" className='link'>Sistemas de Informação</Link></li>
                         <li><Link to="/cc" className='link'>Ciência da Computação</Link></li>
                         <li><Link to="/ec" className='link'>Engenharia da Computação</Link></li>
+                        
                     </ul>
                 </nav>
             )}

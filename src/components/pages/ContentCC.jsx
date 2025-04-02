@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { disciplinaService } from '../../services/apiService';
 import '@styles/index.css';
@@ -10,14 +10,32 @@ const ContentCC = () => {
     const [disciplinas, setDisciplinas] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const curso = "CC"; // Identificador para Ciência da Computação
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
+            setLoading(true);
             try {
-                const response = await disciplinaService.getDisciplinas();
-                setDisciplinas(response);
+                // Por enquanto, carregaremos apenas os 3 primeiros períodos (conforme seu arquivo atual)
+                const periodos = [1, 2, 3];
+                const disciplinasPorPeriodo = {};
+
+                for (const periodo of periodos) {
+                    try {
+                        const disciplinasDoPeriodo = await disciplinaService.listarDisciplinasPorCurso(curso, periodo);
+                        disciplinasPorPeriodo[periodo] = disciplinasDoPeriodo;
+                    } catch (err) {
+                        console.error(`Erro ao carregar período ${periodo}:`, err);
+                        // Fallback para dados locais
+                        disciplinasPorPeriodo[periodo] = getFallbackDisciplinas(periodo);
+                    }
+                }
+
+                setDisciplinas(disciplinasPorPeriodo);
+                setError(null);
             } catch (err) {
-                console.error("Erro ao buscar disciplinas:", err);
+                console.error("Erro ao carregar disciplinas:", err);
+                setError("Não foi possível carregar as disciplinas. Usando dados locais.");
                 setDisciplinas(getAllFallbackDisciplinas());
             } finally {
                 setLoading(false);
@@ -25,7 +43,7 @@ const ContentCC = () => {
         };
 
         fetchDisciplinas();
-    }, []);
+    }, [curso]);
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {
@@ -71,7 +89,7 @@ const ContentCC = () => {
     }
 
     return (
-        <motion.div  className='ContainerCadeiras'
+        <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -79,66 +97,57 @@ const ContentCC = () => {
         >
             {error && <div className="error-message">{error}</div>}
            
-            
-
-            
-            <div className="CardCadeiras">
-                <h3 className="periodo">1° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[1]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </div>
-            <div className="CardCadeiras">
-                <h3 className="periodo">2° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[2]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
-            </div>
-            <div className="CardCadeiras">
-                <h3 className="periodo">3° Período</h3>
-                <div className="cadeiras">
-                    {disciplinas[3]?.map((disciplina) => (
-                        <Link 
-                            key={disciplina.id} 
-                            className="Card" 
-                            to={`/disciplina/${disciplina.id}`}
-                        >
-                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                            <div className="Inferior">
-                                <p>{disciplina.nome}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+            <h3 className="periodo">1° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[1]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
-            <div className='CardCadeiras'>
-                <h3 className="periodo">4° Período</h3>
-                <div className="cadeiras">
-                    {/* Este período ainda será implementado conforme os dados do backend */}
-                </div>
+            <h3 className="periodo">2° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[2]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+
+            <h3 className="periodo">3° Período</h3>
+            <div className="cadeiras">
+                {disciplinas[3]?.map((disciplina) => (
+                    <Link 
+                        key={disciplina.id} 
+                        className="Card" 
+                        to={`/disciplina/${disciplina.id}`}
+                    >
+                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                        <div className="Inferior">
+                            <p>{disciplina.nome}</p>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+
+            <h3 className="periodo">4° Período</h3>
+            <div className="cadeiras">
+                {/* Este período ainda será implementado conforme os dados do backend */}
             </div>
         </motion.div>
     );

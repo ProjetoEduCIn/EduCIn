@@ -6,13 +6,8 @@ const Profile = ({ onPageChange }) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-<<<<<<< HEAD
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [curso, setCurso] = useState("");
-=======
-  const [confirmarSenha, setConfirmarSenha] = useState(""); 
-  const [curso, setCurso] = useState(""); 
->>>>>>> main
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [senhaErrors, setSenhaErrors] = useState({
@@ -21,11 +16,7 @@ const Profile = ({ onPageChange }) => {
     lowercase: true,
     number: true,
     special: true,
-<<<<<<< HEAD
     match: true,
-=======
-    match: true
->>>>>>> main
   });
   const validatePassword = (password) => {
     const errors = {
@@ -34,7 +25,6 @@ const Profile = ({ onPageChange }) => {
       lowercase: !/[a-z]/.test(password),
       number: !/[0-9]/.test(password),
       special: !/[!@#$%^&*(),.?":{}|<>]/.test(password),
-<<<<<<< HEAD
       match: password !== confirmarSenha,
     };
     setSenhaErrors(errors);
@@ -43,28 +33,12 @@ const Profile = ({ onPageChange }) => {
 
   useEffect(() => {
     const googleData = localStorage.getItem("googleUserData");
-=======
-      match: password !== confirmarSenha
-    };
-    setSenhaErrors(errors);
-    return !Object.values(errors).some(error => error);
-  };
-
-
-
-  useEffect(() => {
-    const googleData = localStorage.getItem('googleUserData');
->>>>>>> main
     if (googleData) {
       const userData = JSON.parse(googleData);
       setNome(userData.name || "");
       setEmail(userData.email || "");
     } else {
-<<<<<<< HEAD
       onPageChange("login");
-=======
-      onPageChange('login');
->>>>>>> main
     }
   }, [onPageChange]);
 
@@ -72,7 +46,6 @@ const Profile = ({ onPageChange }) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-<<<<<<< HEAD
 
     // Validar a senha antes de enviar
     if (!validatePassword(senha)) {
@@ -85,21 +58,10 @@ const Profile = ({ onPageChange }) => {
     if (senha !== confirmarSenha) {
       setError("As senhas não coincidem");
       setLoading(false);
-=======
-    
-    if (!nome || !email || !curso || !senha) {
-      setError("Todos os campos são obrigatórios");
-      return;
-    }
-
-    if (!validatePassword(senha)) {
-      setError("A senha não atende aos requisitos mínimos");
->>>>>>> main
       return;
     }
 
     try {
-<<<<<<< HEAD
       // Obter o token do Google salvo no localStorage
       const googleData = JSON.parse(
         localStorage.getItem("googleUserData") || "{}"
@@ -125,24 +87,6 @@ const Profile = ({ onPageChange }) => {
 
       // Avançar para a página de conteúdo
       onPageChange("content");
-=======
-      setLoading(true);
-      const googleData = JSON.parse(localStorage.getItem('googleUserData'));
-      
-      await alunoService.cadastrar(nome, email, senha, curso);
-      
-      localStorage.setItem('userToken', googleData.credential);
-      localStorage.setItem('userData', JSON.stringify({
-        nome,
-        email,
-        curso
-      }));
-      
-      // Removemos os dados temporários por último
-      localStorage.removeItem('googleUserData');
-      
-      onPageChange('content');
->>>>>>> main
     } catch (err) {
       console.error("Erro ao completar cadastro:", err);
       setError(
@@ -154,9 +98,9 @@ const Profile = ({ onPageChange }) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <h1>Complete seu Perfil</h1>
+    <div>
+      <form className="perguntas" onSubmit={handleSubmit}>
+        <h1>Registro</h1>
         {error && <p className="error-message">{error}</p>}
 
         <p className="Legenda">Como deseja ser chamado?</p>
@@ -172,8 +116,9 @@ const Profile = ({ onPageChange }) => {
           name="email"
           type="email"
           value={email}
-          readOnly // Email do Google não deve ser editável
+          onChange={(e) => setEmail(e.target.value)}
         />
+        <button className="button">fazer login com google</button>
 
         <p className="Legenda">Escolha seu curso:</p>
         <select
@@ -188,21 +133,11 @@ const Profile = ({ onPageChange }) => {
         </select>
 
         <p className="Legenda">Crie sua senha:</p>
-<<<<<<< HEAD
         <input
           name="senha"
           type="password"
-=======
-        <input 
-          name="senha" 
-          type="password" 
->>>>>>> main
           value={senha}
-          onChange={(e) => {
-            setSenha(e.target.value);
-            validatePassword(e.target.value);
-          }}
-          placeholder="Sua senha"
+          onChange={(e) => setSenha(e.target.value)}
         />
 
         <div className="senha-requisitos">
@@ -224,15 +159,9 @@ const Profile = ({ onPageChange }) => {
         </div>
 
         <p className="Legenda">Confirme sua senha:</p>
-<<<<<<< HEAD
         <input
           name="confirmarSenha"
           type="password"
-=======
-        <input 
-          name="confirmarSenha" 
-          type="password" 
->>>>>>> main
           value={confirmarSenha}
           onChange={(e) => {
             setConfirmarSenha(e.target.value);
@@ -244,19 +173,11 @@ const Profile = ({ onPageChange }) => {
           <p className="senha-error">As senhas não coincidem</p>
         )}
 
-<<<<<<< HEAD
         <button type="submit" disabled={loading}>
-=======
-        
-        <button 
-          type="submit" 
-          disabled={loading}
-        >
->>>>>>> main
           {loading ? "Enviando..." : "Continuar"}
         </button>
       </form>
-    </>
+    </div>
   );
 };
 

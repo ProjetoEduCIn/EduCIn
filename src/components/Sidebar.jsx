@@ -1,45 +1,36 @@
-import { useState } from 'react';
+// componente responsavel por renderizar a barra lateral
 import { Link } from 'react-router-dom';
 import '@styles/Sidebar.css';
-import { disciplina } from '@components/DadosMockados'; // Importando os dados mockados
+import { motion } from 'framer-motion';
 
-const Sidebar = () => {
-  const [moduloAberto, setModuloAberto] = useState(null);
+import '@styles/Sidebar.css';
 
-  const toggleModulo = (index) => {
-    setModuloAberto(moduloAberto === index ? null : index); // Alterna entre abrir e fechar
-  };
-
-  return (
-    <nav className="sidebar">
-      {disciplina.video.map((modulo, index) => (
-        <div key={index}>
-          {/* Módulo clicável */}
-          <div 
-            className="sidebar-link" 
-            onClick={() => toggleModulo(index)}
-            style={{ cursor: 'pointer' }} // Para indicar que é clicável
-          >
+const Sidebar = ({ conteudos, provas }) => {
+    return (
+        <motion.div
+            className="sidebar"
+            initial={{ x: -200 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <h3>Conteúdos</h3>
             <ul>
-            {modulo.modulo}</ul>
-          </div>
-
-          {/* Exibe os vídeos quando o módulo está aberto */}
-          {moduloAberto === index && (
-            <div className="video-list">
-              {modulo.videos.map((video, i) => (
-                <li key={i} className="video-item">
-                  <Link to={video.link} target="_blank">
-                    {video.titulo}
-                  </Link>
-                </li>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
-    </nav>
-  );
+                {conteudos.map((conteudo, index) => (
+                    <li key={index}>
+                        <Link to={conteudo.link}>{conteudo.nome}</Link>
+                    </li>
+                ))}
+            </ul>
+            <h3>Provas e Listas</h3>
+            <ul>
+                {provas.map((prova, index) => (
+                    <li key={index}>
+                        <Link to={prova.link}>{prova.periodo}</Link>
+                    </li>
+                ))}
+            </ul>
+        </motion.div>
+    );
 };
 
 export default Sidebar;

@@ -3,23 +3,21 @@ import"@styles/index.css";
 
 function EsqueceuSenha() {
   return (
-    <>
-      <form className="Formulario">
-      
-        <h1>Email CIn</h1>
-        <button >fazer login com google</button>
-
-        <p>Nova Senha:</p>
-        <input placeholder="Digite sua nova senha" name="senha" type="password"></input>
-        
-        <button 
-          className="continue-button" 
-          onClick={() => onPageChange("login")}>
-          Continuar
-        </button>
+    <div className="container">
+  
+      <form className="perguntas">
+      <div className="email-inserido">
+      <h1>email Cin</h1>
+      <button className="button">fazer login com google</button>
+      </div>
+      <h1>nova senha</h1>
+      <input placeholder="senha" name="senha" type="password"></input>
+     <button className="continue-button" onClick={() => onPageChange("login")}>
+        Continuar
+      </button>
       </form>
     
-  </>
+  </div>
   );
 }
 

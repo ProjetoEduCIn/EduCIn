@@ -109,6 +109,16 @@ export const alunoService = {
 
 // Serviços relacionados a disciplinas
 export const disciplinaService = {
+  listarTodasDisciplinas: async () => {
+    try {
+      const response = await api.get("/disciplinas");
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao listar todas as disciplinas:", error);
+      throw error;
+    }
+  },
+
   listarDisciplinasPorCurso: async (cursoId, periodo) => {
     try {
       const response = await api.get(`/cursos/${cursoId}/disciplinas`, {

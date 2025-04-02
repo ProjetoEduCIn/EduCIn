@@ -66,9 +66,9 @@ class FirstAccessRequest(BaseModel):
 # ----- FUNÇÕES DE SUPORTE -----
 
 def create_token(data: dict, expires_delta: Optional[timedelta] = None):
-    
-    #Gera um token JWT com expiração configurável.
-    
+    """
+    Gera um token JWT com expiração configurável.
+    """
     to_encode = data.copy()
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
     to_encode["exp"] = expire
@@ -78,9 +78,9 @@ def create_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 @router.post("/alunos/login", response_model=TokenResponse)
 def login(login_request: LoginRequest, db: Session = Depends(get_db)):
-    
-    #Realiza login de um aluno verificando email e senha com hash no banco.
-    
+    """
+    Realiza login de um aluno verificando email e senha com hash no banco.
+    """
     # Admin fictício para desenvolvimento
     if login_request.email == "admin@cin.ufpe.br" and login_request.senha == "admin":
         # Gera aluno sem senha_hash (apenas para teste)
@@ -116,7 +116,6 @@ def login(login_request: LoginRequest, db: Session = Depends(get_db)):
 
     access_token = create_token({"sub": aluno.email, "id": aluno.id}, access_expires)
     refresh_token = create_token({"sub": aluno.email, "id": aluno.id, "refresh": True}, refresh_expires)
-
 
     return {
         "access_token": access_token,
@@ -284,51 +283,33 @@ def criar_aluno(aluno_dto: AlunoCreateDTO, db: Session = Depends(get_db)):
         print(f"Erro ao criar aluno: {e}")
         raise HTTPException(status_code=500, detail="Erro interno no servidor")
 
-# ----- ROTAS DE DISCIPLINAS (EXEMPLO DE DADOS ESTÁTICOS) -----
+# ----- ROTAS DE DISCIPLINAS -----
 
 class DisciplinaDTO(BaseModel):
     id: str
     nome: str
     imagem: Optional[str] = None
 
-@router.get("/cursos/{curso_id}/disciplinas", response_model=List[DisciplinaDTO])
-def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
-    
-    #Lista disciplinas por curso e período (dados simulados).
-   
-    disciplinas = []
-    if curso_id == "SI":
-        if periodo == 1:
-            disciplinas = [
-                {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-        elif periodo == 2:
-            disciplinas = [
-                {"id": "edoo", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ds", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "acso", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-    elif curso_id == "CC":
-        if periodo == 1:
-            disciplinas = [
-                {"id": "ip-cc", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sd-cc", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad-cc", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md-cc", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-    elif curso_id == "EC":
-        if periodo == 1:
-            disciplinas = [
-                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sd-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-    return disciplinas
+@router.get("/disciplinas", response_model=dict)
+def listar_todas_disciplinas():
+    """
+    Lista todas as disciplinas organizadas por período.
+    """
+    return {
+        "1": [
+            {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+        ],
+        "2": [
+            {"id": "edoo", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "ds", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "acso", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
+        ],
+        # Adicione os outros períodos...
+    }
 
 class ConteudoDTO(BaseModel):
     topicos: List[str] = []
@@ -412,3 +393,101 @@ def obter_duvidas_disciplina(disciplina_id: str):
             "resposta": "Não, a disciplina é introdutória."
         }
     ]
+
+@router.get("/cursos/{curso_id}/disciplinas")
+def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
+    """
+    Lista todas as disciplinas de um curso específico, com filtro opcional por período.
+    """
+    disciplinas_por_periodo = {
+        "CC": {
+            1: [
+                {"id": "ip-cc", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sd-cc", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "cad-cc", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "md-cc", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            2: [
+                {"id": "edoo-cc", "nome": "Estrutura De Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ds-cc", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "acso-cc", "nome": "Arquitetura de Computadores", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "calc1-cc", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            3: [
+                {"id": "av-cc", "nome": "Álgebra Vetorial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "alg-cc", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "bd-cc", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "iesi-cc", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
+        },
+        "EC": {
+            1: [
+                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sd-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            2: [
+                {"id": "edoo-ec", "nome": "Estrutura De Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ds-ec", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "acso-ec", "nome": "Arquitetura de Computadores", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "calc1-ec", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
+        },
+        "SI": {
+            1: [
+                {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            2: [
+                {"id": "edoo", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ds", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "acso", "nome": "Arquitetura de Computadores e SO", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            3: [
+                {"id": "av", "nome": "Álgebra Vetorial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "alg", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "bd", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "iesi", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            4: [
+                {"id": "epc", "nome": "Estatística e Probabilidade", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "lc", "nome": "Lógica para Computação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "isdr", "nome": "Introdução a Sistemas Distribuídos e Redes", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "amcd", "nome": "Aprendizado de Máquina e Ciência de Dados", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            5: [
+                {"id": "ei", "nome": "Empreendimentos em Informática", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "asesi", "nome": "Aspectos Sócio-Econômicos de SI", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ac", "nome": "Administração Contemporânea", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            6: [
+                {"id": "ae", "nome": "Arquitetura Empresarial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "gpn", "nome": "Gestão de Processos de Negócios", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            7: [
+                {"id": "ctc", "nome": "Comunicação Técnica e Científica", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "apsi", "nome": "Análise e Projeto de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            8: [
+                {"id": "tcc", "nome": "TCC", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
+        }
+    }
+
+    if curso_id not in disciplinas_por_periodo:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Curso {curso_id} não encontrado"
+        )
+
+    if periodo is not None:
+        if periodo not in disciplinas_por_periodo[curso_id]:
+            # Em vez de retornar 404, retornamos uma lista vazia
+            return []
+        return disciplinas_por_periodo[curso_id][periodo]
+
+    return disciplinas_por_periodo[curso_id]

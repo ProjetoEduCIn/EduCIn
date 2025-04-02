@@ -69,3 +69,5 @@ firebase_credentials.json
 .coverage
 htmlcov/
 .pytest_cache/
+*.pyc
+__pycache__/

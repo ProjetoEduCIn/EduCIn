@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { disciplinaService } from '../../services/apiService';
 import '@styles/index.css';
@@ -10,32 +10,15 @@ const ContentEC = () => {
     const [disciplinas, setDisciplinas] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const curso = "EC"; // Identificador para Engenharia da Computação
 
     useEffect(() => {
         const fetchDisciplinas = async () => {
-            setLoading(true);
             try {
-                // Por enquanto, carregaremos apenas os 2 primeiros períodos (conforme seu arquivo atual)
-                const periodos = [1, 2];
-                const disciplinasPorPeriodo = {};
-
-                for (const periodo of periodos) {
-                    try {
-                        const disciplinasDoPeriodo = await disciplinaService.listarDisciplinasPorCurso(curso, periodo);
-                        disciplinasPorPeriodo[periodo] = disciplinasDoPeriodo;
-                    } catch (err) {
-                        console.error(`Erro ao carregar período ${periodo}:`, err);
-                        // Fallback para dados locais
-                        disciplinasPorPeriodo[periodo] = getFallbackDisciplinas(periodo);
-                    }
-                }
-
-                setDisciplinas(disciplinasPorPeriodo);
-                setError(null);
+                // Busca todas as disciplinas sem verificar o curso do usuário
+                const response = await disciplinaService.getDisciplinas();
+                setDisciplinas(response);
             } catch (err) {
-                console.error("Erro ao carregar disciplinas:", err);
-                setError("Não foi possível carregar as disciplinas. Usando dados locais.");
+                console.error("Erro ao buscar disciplinas:", err);
                 setDisciplinas(getAllFallbackDisciplinas());
             } finally {
                 setLoading(false);
@@ -43,7 +26,7 @@ const ContentEC = () => {
         };
 
         fetchDisciplinas();
-    }, [curso]);
+    }, []);
 
     // Função para obter os dados fallback caso a API falhe
     const getFallbackDisciplinas = (periodo) => {
@@ -83,7 +66,7 @@ const ContentEC = () => {
     }
 
     return (
-        <motion.div
+        <motion.div className='ContainerCadeiras'
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
@@ -91,37 +74,43 @@ const ContentEC = () => {
         >
             {error && <div className="error-message">{error}</div>}
            
-            <h3 className="periodo">1° Período</h3>
-            <div className="cadeiras">
-                {disciplinas[1]?.map((disciplina) => (
-                    <Link 
-                        key={disciplina.id} 
-                        className="Card" 
-                        to={`/disciplina/${disciplina.id}`}
-                    >
-                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                        <div className="Inferior">
-                            <p>{disciplina.nome}</p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
+            
 
-            <h3 className="periodo">2° Período</h3>
-            <div className="cadeiras">
-                {disciplinas[2]?.map((disciplina) => (
-                    <Link 
-                        key={disciplina.id} 
-                        className="Card" 
-                        to={`/disciplina/${disciplina.id}`}
-                    >
-                        <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
-                        <div className="Inferior">
-                            <p>{disciplina.nome}</p>
-                        </div>
-                    </Link>
-                ))}
+            <div className="CardCadeiras">
+                <h3 className="periodo">1° Período</h3>
+                <div className="cadeiras">
+                    {disciplinas[1]?.map((disciplina) => (
+                        <Link 
+                            key={disciplina.id} 
+                            className="Card" 
+                            to={`/disciplina/${disciplina.id}`}
+                        >
+                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                            <div className="Inferior">
+                                <p>{disciplina.nome}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
+            <div className="CardCadeiras">
+                <h3 className="periodo">2° Período</h3>
+                <div className="cadeiras">
+                    {disciplinas[2]?.map((disciplina) => (
+                        <Link 
+                            key={disciplina.id} 
+                            className="Card" 
+                            to={`/disciplina/${disciplina.id}`}
+                        >
+                            <img src={disciplina.imagem || '/imagens/ImagemLivro.jpg'} alt="Livro" />
+                            <div className="Inferior">
+                                <p>{disciplina.nome}</p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+            
         </motion.div>
     );
 };

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Content from "./components/pages/Content";
@@ -34,9 +40,27 @@ const disciplinasFallback = [
   // Adicione mais disciplinas conforme necessário
 ];
 
+// Componente para determinar se o usuário está autenticado
+function useAuth() {
+  // Verifica se existe um token de acesso no localStorage
+  return localStorage.getItem("access_token") !== null;
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
   const [disciplinas, setDisciplinas] = useState(disciplinasFallback);
+  const isAuthenticated = useAuth();
+
+  // Determinar a página atual com base no caminho
+  const getCurrentPage = () => {
+    const path = location.pathname;
+    if (path === "/") return "login";
+    if (["/si", "/cc", "/ec"].includes(path)) return "content";
+    if (path.startsWith("/disciplina/")) return "content";
+    return "login";
+  };
+
+  const currentPage = getCurrentPage();
 
   useEffect(() => {
     // Função para carregar todas as disciplinas ao iniciar a aplicação
@@ -71,20 +95,38 @@ function AnimatedRoutes() {
   }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Main />} />
-        <Route path="/si" element={<Content />} />
-        <Route path="/cc" element={<ContentCC />} />
-        <Route path="/ec" element={<ContentEC />} />
+    <>
+      <Header currentPage={currentPage} isAuthenticated={isAuthenticated} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Main />} />
+          <Route
+            path="/si"
+            element={isAuthenticated ? <Content /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/cc"
+            element={isAuthenticated ? <ContentCC /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/ec"
+            element={isAuthenticated ? <ContentEC /> : <Navigate to="/" />}
+          />
 
-        {/* Rota dinâmica para qualquer disciplina */}
-        <Route
-          path="/:disciplinaNome/*"
-          element={<DynamicDisciplinaRoute disciplinas={disciplinas} />}
-        />
-      </Routes>
-    </AnimatePresence>
+          {/* Nova rota padronizada */}
+          <Route
+            path="/disciplina/:disciplinaNome/*"
+            element={
+              isAuthenticated ? (
+                <DynamicDisciplinaRoute disciplinas={disciplinas} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -180,7 +222,6 @@ function App() {
   return (
     <BrowserRouter>
       <div>
-        <Header currentPage="content" />
         <AnimatedRoutes />
       </div>
     </BrowserRouter>

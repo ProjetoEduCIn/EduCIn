@@ -3,12 +3,16 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode"; // Corrigido: forma correta de importar
 import { alunoService } from "../../services/apiService";
 import "@styles/PaginaDeLogin.css";
+import { useNavigate } from "react-router-dom"; 
+
 
 const Login = ({ onPageChange }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
+
 
   // Login com email/senha
   const handleSubmit = async (e) => {
@@ -22,7 +26,7 @@ const Login = ({ onPageChange }) => {
       localStorage.setItem("access_token", response.access_token);
       localStorage.setItem("refresh_token", response.refresh_token);
       localStorage.setItem("userData", JSON.stringify(response.user));
-      onPageChange("content");
+      navigate("/si");
     } catch (error) {
       console.error("Erro no login:", error);
       setError(error.response?.data?.detail || "Email ou senha incorretos");
@@ -71,7 +75,7 @@ const Login = ({ onPageChange }) => {
         localStorage.setItem("access_token", loginResponse.access_token);
         localStorage.setItem("refresh_token", loginResponse.refresh_token);
         localStorage.setItem("userData", JSON.stringify(loginResponse.user));
-        onPageChange("content");
+        navigate("/si");
       }
     } catch (error) {
       console.error("Erro no login com Google:", error);

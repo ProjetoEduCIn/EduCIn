@@ -154,7 +154,7 @@ const ContentCC = () => {
           <Link
             key={disciplina.id}
             className="Card"
-            to={`/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
           >
             <img
               src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
@@ -173,7 +173,7 @@ const ContentCC = () => {
           <Link
             key={disciplina.id}
             className="Card"
-            to={`/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
           >
             <img
               src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
@@ -192,7 +192,7 @@ const ContentCC = () => {
           <Link
             key={disciplina.id}
             className="Card"
-            to={`/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
           >
             <img
               src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}

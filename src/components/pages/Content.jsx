@@ -207,7 +207,7 @@ const Content = () => {
               <Link
                 key={disciplina.id}
                 className="Card"
-                to={`/${disciplina.nome
+                to={`/disciplina/${disciplina.nome
                   .replace(/\s+/g, "-")
                   .toLowerCase()}/video`}
               >

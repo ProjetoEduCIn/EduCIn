@@ -1,5 +1,4 @@
 .header {
-    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -40,8 +39,8 @@ ul{
 .link{
     text-decoration: none;
     color: #000;
-    font-size: 18px;
-    padding: 0.4rem;
+    font-size: 20px;
+    padding: 1rem;
     position: relative;
 }
 

@@ -11,8 +11,8 @@ const Sidebar = ({ conteudos, provas }) => {
             className="sidebar"
             initial={{ x: -200 }}
             animate={{ x: 0 }}
-            transition={{ duration: 0.5 }}
-        >
+            transition={{ duration: 0.5 }}>
+
             <h3>Conteúdos</h3>
             <ul>
                 {conteudos.map((conteudo, index) => (
@@ -21,7 +21,9 @@ const Sidebar = ({ conteudos, provas }) => {
                     </li>
                 ))}
             </ul>
+
             <h3>Provas e Listas</h3>
+            
             <ul>
                 {provas.map((prova, index) => (
                     <li key={index}>

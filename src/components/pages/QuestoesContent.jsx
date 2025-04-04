@@ -2,7 +2,7 @@ import React from 'react';
 
 const QuestoesContent = ({ conteudo }) => {
     return (
-        <div>
+        <>
             {conteudo.map((item, index) => (
                 item.tipo === 'questao' && (
                     <div key={index}>
@@ -11,7 +11,7 @@ const QuestoesContent = ({ conteudo }) => {
                     </div>
                 )
             ))}
-        </div>
+        </>
     );
 };
 

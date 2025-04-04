@@ -110,10 +110,14 @@
 }
 
 .botoes-container {
+    /* background-color: aqua; */
+    /* margin-left: 10%; */
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-between;
-    width: 100%;
+    width: 38.5vw;
+    align-items: center;
 }
 
 .EsqueceuSenha, .Registrar {

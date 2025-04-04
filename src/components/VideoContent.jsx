@@ -2,7 +2,7 @@ import React from 'react';
 
 const VideoContent = ({ conteudo }) => {
     return (
-        <div>
+        <>
             {conteudo.map((item, index) => (
                 item.tipo === 'video' && (
                     <div key={index}>
@@ -11,7 +11,7 @@ const VideoContent = ({ conteudo }) => {
                     </div>
                 )
             ))}
-        </div>
+        </>
     );
 };
 

@@ -10,8 +10,9 @@ function Main() {
     const [currentPage, setCurrentPage] = useState('login');
 
     return (
-        <div style={{ paddingTop: '10dvh' }}>
-            <Header currentPage={currentPage} />
+        <>
+        {/* O headr estava duplicado */}
+            {/* <Header currentPage={currentPage} /> */}
             {currentPage === 'login' && (
                 <Login onPageChange={setCurrentPage} />
             )}
@@ -27,7 +28,7 @@ function Main() {
             {currentPage === 'esqueceusenha' && (
                 <EsqueceuSenha onPageChange={setCurrentPage} />
             )}
-        </div>
+        </>
     );
 }
 

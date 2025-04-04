@@ -118,7 +118,6 @@ const Profile = ({ onPageChange }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button className="button">fazer login com google</button>
 
         <p className="Legenda">Escolha seu curso:</p>
         <select
@@ -173,7 +172,7 @@ const Profile = ({ onPageChange }) => {
           <p className="senha-error">As senhas não coincidem</p>
         )}
 
-        <button type="submit" disabled={loading}>
+        <button className="button" type="submit" disabled={loading}>
           {loading ? "Enviando..." : "Continuar"}
         </button>
       </form>

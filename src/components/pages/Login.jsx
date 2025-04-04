@@ -116,8 +116,7 @@ const Login = ({ onPageChange }) => {
           <button
             className="FazerLogin"
             onClick={handleSubmit}
-            disabled={loading}
-          >
+            disabled={loading} >
             {loading ? "Carregando..." : "Fazer Login"}
           </button>
 
@@ -126,28 +125,27 @@ const Login = ({ onPageChange }) => {
               display: "flex",
               justifyContent: "center",
               margin: "10px 0",
-            }}
-          >
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={() => setError("Erro ao conectar com Google")}
-              size="large"
-              text="continue_with"
-              shape="pill"
-              locale="pt-BR"
-            />
-          </div>
+            }} >
+            
+            <div className="botoes-container">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={() => setError("Erro ao conectar com Google")}
+                size="large"
+                text="continue_with"
+                shape="pill"
+                locale="pt-BR" />
 
-          <div className="botoes-container">
-            <button
-              className="EsqueceuSenha"
-              onClick={(e) => {
-                e.preventDefault();
-                onPageChange("esqueceusenha");
-              }}
-            >
-              Esqueceu sua senha?
-            </button>
+              <button
+                className="EsqueceuSenha"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onPageChange("esqueceusenha");
+                }}
+                >
+                Esqueceu sua senha?
+              </button>
+            </div>
           </div>
         </div>
       </div>

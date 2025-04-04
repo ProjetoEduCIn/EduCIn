@@ -6,15 +6,7 @@ function EsqueceuSenha() {
     <div className="container">
   
       <form className="perguntas">
-      <div className="email-inserido">
-      <h1>email Cin</h1>
-      <button className="button">fazer login com google</button>
-      </div>
-      <h1>nova senha</h1>
-      <input placeholder="senha" name="senha" type="password"></input>
-     <button className="continue-button" onClick={() => onPageChange("login")}>
-        Continuar
-      </button>
+       <p>Envie email para email@cin.ufpe.br com seu Nome Completo e Email do CIn</p>
       </form>
     
   </div>

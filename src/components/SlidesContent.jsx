@@ -2,7 +2,7 @@ import React from 'react';
 
 const SlidesContent = ({ conteudo }) => {
     return (
-        <div>
+        <>
             {conteudo.map((item, index) => (
                 item.tipo === 'slide' && (
                     <div key={index}>
@@ -11,7 +11,7 @@ const SlidesContent = ({ conteudo }) => {
                     </div>
                 )
             ))}
-        </div>
+        </>
     );
 };
 

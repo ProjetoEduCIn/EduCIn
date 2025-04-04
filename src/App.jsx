@@ -17,7 +17,7 @@ const disciplinas = [
     {
         nome: 'Sistemas Digitais',
         conteudo: [
-            { tipo: 'video', link: 'video-link.mp4' },
+            { tipo: 'video', link: 'https://www.youtube.com/live/vzxMEMD7nE0?si=TkKEjSLxM7hpyzTS' },
             { tipo: 'questao', descricao: 'Questão 1' },
             { tipo: 'slide', link: 'slide-link.pdf' },
             { tipo: 'link', descricao: 'Link 1', link: 'http://example.com' },

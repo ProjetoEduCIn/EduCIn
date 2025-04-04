@@ -191,11 +191,11 @@ const Content = () => {
 
   return (
     <motion.div
+      className="containerContent"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.3 }}
-    >
+      transition={{ duration: 0.3 }}>
       {error && <div className="error-message">{error}</div>}
       {Object.keys(disciplinas).map((periodo) => (
         <div key={periodo}>
@@ -207,7 +207,9 @@ const Content = () => {
               <Link
                 key={disciplina.id}
                 className="Card"
-                to={`/disciplina/${disciplina.id}`}
+                to={`/${disciplina.nome
+                  .replace(/\s+/g, "-")
+                  .toLowerCase()}/video`}
               >
                 <img
                   src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}

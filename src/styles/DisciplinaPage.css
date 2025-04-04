@@ -1,34 +1,51 @@
 .disciplina-page {
     display: flex;
+    height: 90vh; /* O header tem 10vh de altura*/
+    width: 100vw;
 }
 
 .conteudo {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
     flex: 1;
-    padding: 20px;
+    padding: 10px;
 }
 
 .conteudo-nav {
+
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    margin-bottom: 10px;
 }
 
-.conteudo-nav a {
-    padding: 10px 15px;
+.conteudo-nav > a {
+    flex: 1;
+    text-align: center;
+    padding: 10px 20px;
     background-color: #f4f4f4;
     border: 1px solid #ddd;
     border-radius: 5px;
     text-decoration: none;
     color: #333;
+    font-size: 20px;
 }
 
-.conteudo-nav a:hover {
+.conteudo-nav > a:hover {
     background-color: #ddd;
+}
+
+h2{
+    color: #0000008f;
 }
 
 .conteudo-list {
     display: flex;
     flex-direction: column;
+    height: 70vh;
+    width: 100%;
     gap: 20px;
 }
 
@@ -39,23 +56,23 @@
     border-radius: 5px;
 }
 
-.conteudo-item h3 {
+.conteudo-item > h3 {
     font-size: 20px;
     margin-bottom: 10px;
 }
 
-.conteudo-item video,
-.conteudo-item iframe {
+.conteudo-item > video,
+.conteudo-item > iframe {
     width: 100%;
     height: auto;
 }
 
-.conteudo-item a {
+.conteudo-item > a {
     color: #007bff;
     text-decoration: none;
     margin-right: 10px;
 }
 
-.conteudo-item a:hover {
+.conteudo-item > a:hover {
     text-decoration: underline;
 }

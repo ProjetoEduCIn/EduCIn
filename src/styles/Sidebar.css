@@ -1,16 +1,18 @@
 .sidebar {
-    width: 250px;
-    background-color: #f4f4f4;
+    height: 90vh;
+    width: 25vw;
+    background-color: #c2c2c2;
     padding: 20px;
     border-right: 1px solid #ddd;
 }
 
-.sidebar h3 {
-    font-size: 18px;
+.sidebar > h3 {
+    color: black;
+    font-size: 26px;
     margin-bottom: 10px;
 }
 
-.sidebar ul {
+.sidebar > ul {
     list-style-type: none;
     padding: 0;
 }

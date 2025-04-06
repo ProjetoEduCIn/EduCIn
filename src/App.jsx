@@ -115,15 +115,14 @@ function AnimatedRoutes() {
 
           {/* Nova rota padronizada */}
           <Route
-            path="/disciplina/:disciplinaNome/*"
-            element={
-              isAuthenticated ? (
-                <DynamicDisciplinaRoute disciplinas={disciplinas} />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
+            path="/disciplina/:disciplinaNome"
+            element={isAuthenticated ? <DisciplinaPage /> : <Navigate to="/" />}
+          >
+            <Route path="video" element={<VideoContent />} />
+            <Route path="questoes" element={<QuestoesContent />} />
+            <Route path="slides" element={<SlidesContent />} />
+            <Route path="links" element={<LinksContent />} />
+          </Route>
         </Routes>
       </AnimatePresence>
     </>

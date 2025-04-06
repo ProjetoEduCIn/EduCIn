@@ -28,6 +28,7 @@ from application.auth import verificar_dominio, hash_password, verify_password
 from application.auth import pwd_context  # Opcional, se quiser usar diretamente
 
 # Configurações básicas; em produção use variáveis de ambiente
+#mudar isso aq
 SECRET_KEY = "692737049916-miegon1ifskij17dpt54ufq13qfulto7.apps.googleusercontent.com"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -308,7 +309,34 @@ def listar_todas_disciplinas():
             {"id": "acso", "nome": "Arquitetura de Computadores e Sistemas Operacionais", "imagem": "/imagens/ImagemLivro.jpg"},
             {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
         ],
-        # Adicione os outros períodos...
+        "3": [
+                {"id": "av", "nome": "Álgebra Vetorial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "alg", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "bd", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "iesi", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+        "4": [
+                {"id": "epc", "nome": "Estatística e Probabilidade", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "lc", "nome": "Lógica para Computação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "isdr", "nome": "Introdução a Sistemas Distribuídos e Redes", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "amcd", "nome": "Aprendizado de Máquina e Ciência de Dados", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+        "5": [
+                {"id": "ei", "nome": "Empreendimentos em Informática", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "asesi", "nome": "Aspectos Sócio-Econômicos de SI", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ac", "nome": "Administração Contemporânea", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+        "6": [
+                {"id": "ae", "nome": "Arquitetura Empresarial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "gpn", "nome": "Gestão de Processos de Negócios", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+        "7": [
+                {"id": "ctc", "nome": "Comunicação Técnica e Científica", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "apsi", "nome": "Análise e Projeto de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+        "8": [
+                {"id": "tcc", "nome": "TCC", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
     }
 
 class ConteudoDTO(BaseModel):
@@ -329,7 +357,7 @@ def obter_detalhes_disciplina(disciplina_id: str):
     
     #Retorna detalhes de uma disciplina (dados simulados).
     
-    if disciplina_id == "ip":
+    if disciplina_id == "introducao-a-programacao":
         return {
             "id": "ip",
             "nome": "Introdução à Programação",
@@ -349,6 +377,16 @@ def obter_detalhes_disciplina(disciplina_id: str):
             "professores": ["Carlos Oliveira", "Ana Souza"],
             "imagem": "/imagens/ImagemLivro.jpg"
         }
+    elif disciplina_id == "edoo":
+        return {
+            "id": "sistemas-digitais",
+            "nome": "Sistemas Digitais",
+            "codigo": "IF675",
+            "descricao": "Fundamentos de sistemas digitais e lógica booleana.",
+            "cargaHoraria": 60,
+            "professores": ["Carlos Oliveira", "Ana Souza"],
+            "imagem": "/imagens/ImagemLivro.jpg"
+        }
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Disciplina com ID {disciplina_id} não encontrada"
@@ -359,7 +397,7 @@ def obter_conteudo_disciplina(disciplina_id: str):
     """
     Retorna o conteúdo programático de uma disciplina (dados simulados).
     """
-    if disciplina_id == "ip":
+    if disciplina_id == "introducao-a-programacao":
         return {
             "topicos": [
                 "Introdução a algoritmos",
@@ -376,25 +414,25 @@ def obter_conteudo_disciplina(disciplina_id: str):
                 {"texto": "Material complementar", "url": "https://example.com/extra"}
             ]
         }
+    elif disciplina_id == "sistemas-digitais":
+        return {
+            "topicos": [
+                "Lógica booleana",
+                "Circuitos combinacionais",
+                "Circuitos sequenciais",
+                "Máquinas de estados",
+                "Memórias digitais"
+            ],
+            "links": [
+                {"texto": "Apostila de Sistemas Digitais", "url": "https://example.com/sistemas-digitais"},
+                {"texto": "Exercícios", "url": "https://example.com/exercises-sd"},
+                {"texto": "Material complementar", "url": "https://example.com/extra-sd"}
+            ]
+        }
+        
     return {"topicos": [], "links": []}
 
 
-#apagar isso aqui 
-@router.get("/disciplinas/{disciplina_id}/duvidas")
-def obter_duvidas_disciplina(disciplina_id: str):
-    """
-    Retorna dúvidas frequentes sobre a disciplina (dados simulados).
-    """
-    return [
-        {
-            "pergunta": "Qual a linguagem de programação utilizada?",
-            "resposta": "Python"
-        },
-        {
-            "pergunta": "Preciso ter conhecimento prévio?",
-            "resposta": "Não, a disciplina é introdutória."
-        }
-    ]
 
 @router.get("/cursos/{curso_id}/disciplinas")
 def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
@@ -420,40 +458,6 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
                 {"id": "alg-cc", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "bd-cc", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "iesi-cc", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-        },
-        "EC": {
-            1: [
-                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sistemas-digitais-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            2: [
-                {"id": "edoo-ec", "nome": "Estrutura De Dados", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ds-ec", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "acso-ec", "nome": "Arquitetura de Computadores", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "calc1-ec", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
-            ]
-        },
-        "SI": {
-            1: [
-                {"id": "sistemas-digitais", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            2: [
-                {"id": "edoo", "nome": "Estrutura De Dados Orientada a Objetos", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "ds", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "acso", "nome": "Arquitetura de Computadores e SO", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "calc1", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
-            ],
-            3: [
-                {"id": "av", "nome": "Álgebra Vetorial", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "alg", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "bd", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "iesi", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
             ],
             4: [
                 {"id": "epc", "nome": "Estatística e Probabilidade", "imagem": "/imagens/ImagemLivro.jpg"},
@@ -476,8 +480,60 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
             ],
             8: [
                 {"id": "tcc", "nome": "TCC", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            9: [
+                {"id": "tcc-2", "nome": "TCC 2", "imagem": "/imagens/ImagemLivro.jpg"}
             ]
-        }
+        },
+        "EC": {
+            1: [
+                {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sistemas-digitais-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            2: [
+                {"id": "edoo-ec", "nome": "Estrutura De Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ds-ec", "nome": "Desenvolvimento de Software", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "acso-ec", "nome": "Arquitetura de Computadores", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "calc1-ec", "nome": "Cálculo 1", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            3: [
+                {"id": "av-cc", "nome": "Álgebra Vetorial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "alg-cc", "nome": "Algoritmos", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "bd-cc", "nome": "Banco de Dados", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "iesi-cc", "nome": "Integ e Evol de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            4: [
+                {"id": "epc", "nome": "Estatística e Probabilidade", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "lc", "nome": "Lógica para Computação", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "isdr", "nome": "Introdução a Sistemas Distribuídos e Redes", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "amcd", "nome": "Aprendizado de Máquina e Ciência de Dados", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            5: [
+                {"id": "ei", "nome": "Empreendimentos em Informática", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "asesi", "nome": "Aspectos Sócio-Econômicos de SI", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "ac", "nome": "Administração Contemporânea", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            6: [
+                {"id": "ae", "nome": "Arquitetura Empresarial", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "gpn", "nome": "Gestão de Processos de Negócios", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            7: [
+                {"id": "ctc", "nome": "Comunicação Técnica e Científica", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "apsi", "nome": "Análise e Projeto de SI", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            8: [
+                {"id": "tcc", "nome": "TCC", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            9: [
+                {"id": "tcc-2", "nome": "TCC 2", "imagem": "/imagens/ImagemLivro.jpg"}
+            ],
+            10: [
+                {"id": "tcc-3", "nome": "TCC 3", "imagem": "/imagens/ImagemLivro.jpg"}
+            ]
+        },
+           
     }
 
     if curso_id not in disciplinas_por_periodo:

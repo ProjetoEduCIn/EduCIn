@@ -11,8 +11,8 @@ const Header = ({ isAuthenticated }) => {
 
   // Verifica se está em uma das rotas específicas para exibir os cursos
   const isContentPage =
-    location.pathname === "/si" 
-    location.pathname === "/ec" 
+    location.pathname === "/si" ||
+    location.pathname === "/ec" ||
     location.pathname === "/cc";
 
   return (

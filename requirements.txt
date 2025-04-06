@@ -6,3 +6,10 @@ firebase-admin
 python-dotenv
 requests
 email-validator
+python-jose[cryptography]
+python-multipart
+authlib
+httpx
+passlib
+bcrypt
+jwt-decode

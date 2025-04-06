@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { disciplinaService } from "../../services/apiService";
 import "@styles/index.css";
@@ -17,7 +17,7 @@ const ContentCC = () => {
       setLoading(true);
       try {
         // Por enquanto, carregaremos apenas os 3 primeiros períodos (conforme seu arquivo atual)
-        const periodos = [1, 2, 3];
+        const periodos = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         const disciplinasPorPeriodo = {};
 
         for (const periodo of periodos) {
@@ -123,7 +123,7 @@ const ContentCC = () => {
   };
 
   const getAllFallbackDisciplinas = () => {
-    const periodos = [1, 2, 3];
+    const periodos = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const result = {};
     periodos.forEach((periodo) => {
       result[periodo] = getFallbackDisciplinas(periodo);
@@ -207,7 +207,115 @@ const ContentCC = () => {
 
       <h3 className="periodo">4° Período</h3>
       <div className="cadeiras">
-        {/* Este período ainda será implementado conforme os dados do backend */}
+      {disciplinas[4]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+      <h3 className="periodo">5° Período</h3>
+      <div className="cadeiras">
+      {disciplinas[5]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <h3 className="periodo">6° Período</h3>
+      <div className="cadeiras">
+      {disciplinas[6]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <h3 className="periodo">7° Período</h3>
+      <div className="cadeiras">
+      {disciplinas[7]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <h3 className="periodo">8° Período</h3>
+      <div className="cadeiras">
+      {disciplinas[8]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <h3 className="periodo">9° Período</h3>
+      <div className="cadeiras">
+      {disciplinas[9]?.map((disciplina) => (
+          <Link
+            key={disciplina.id}
+            className="Card"
+            to={`/disciplina/${disciplina.nome.replace(/\s+/g, "-").toLowerCase()}/video`}
+          >
+            <img
+              src={disciplina.imagem || "/imagens/ImagemLivro.jpg"}
+              alt="Livro"
+            />
+            <div className="Inferior">
+              <p>{disciplina.nome}</p>
+            </div>
+          </Link>
+        ))}
       </div>
     </motion.div>
   );

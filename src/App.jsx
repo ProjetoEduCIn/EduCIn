@@ -13,7 +13,7 @@ import ContentCC from "./components/pages/ContentCC";
 import ContentEC from "./components/pages/ContentEC";
 import DisciplinaPage from "./components/pages/DisciplinaPage";
 import VideoContent from "./components/VideoContent";
-import QuestoesContent from "./components/pages/QuestoesContent";
+import QuestoesContent from "./components/QuestoesContent";
 import SlidesContent from "./components/SlidesContent";
 import LinksContent from "./components/LinksContent";
 import "@styles/index.css";

@@ -297,7 +297,7 @@ def listar_todas_disciplinas():
     """
     return {
         "1": [
-            {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+            {"id": "sistemas-digitais", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
             {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
             {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
             {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
@@ -339,9 +339,9 @@ def obter_detalhes_disciplina(disciplina_id: str):
             "professores": ["João Silva", "Maria Santos"],
             "imagem": "/imagens/ImagemLivro.jpg"
         }
-    elif disciplina_id == "sd":
+    elif disciplina_id == "sistemas-digitais":
         return {
-            "id": "sd",
+            "id": "sistemas-digitais",
             "nome": "Sistemas Digitais",
             "codigo": "IF675",
             "descricao": "Fundamentos de sistemas digitais e lógica booleana.",
@@ -378,6 +378,8 @@ def obter_conteudo_disciplina(disciplina_id: str):
         }
     return {"topicos": [], "links": []}
 
+
+#apagar isso aqui 
 @router.get("/disciplinas/{disciplina_id}/duvidas")
 def obter_duvidas_disciplina(disciplina_id: str):
     """
@@ -403,7 +405,7 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
         "CC": {
             1: [
                 {"id": "ip-cc", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sd-cc", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sistemas-digitais-cc", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "cad-cc", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md-cc", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
             ],
@@ -423,7 +425,7 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
         "EC": {
             1: [
                 {"id": "ip-ec", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
-                {"id": "sd-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sistemas-digitais-ec", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "cad-ec", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md-ec", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}
             ],
@@ -436,7 +438,7 @@ def listar_disciplinas_por_curso(curso_id: str, periodo: Optional[int] = None):
         },
         "SI": {
             1: [
-                {"id": "sd", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
+                {"id": "sistemas-digitais", "nome": "Sistemas Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "ip", "nome": "Introdução à Programação", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "cad", "nome": "Concepção de Artefatos Digitais", "imagem": "/imagens/ImagemLivro.jpg"},
                 {"id": "md", "nome": "Matemática Discreta", "imagem": "/imagens/ImagemLivro.jpg"}

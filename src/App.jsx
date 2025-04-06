@@ -137,7 +137,7 @@ function DynamicDisciplinaRoute({ disciplinas }) {
   const [disciplina, setDisciplina] = useState(null);
   const [conteudo, setConteudo] = useState([]);
 
-  const disciplinaNome = location.pathname.split("/")[1]; // Obtém 'sistemas-digitais' de '/sistemas-digitais/video'
+  const disciplinaNome = location.pathname.split("/")[2]; // Obtém 'sistemas-digitais' de '/sistemas-digitais/video'
 
   useEffect(() => {
     const carregarDetalhes = async () => {

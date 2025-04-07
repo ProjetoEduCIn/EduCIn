@@ -1,24 +1,13 @@
-import React from "react";
+
 import { useOutletContext } from "react-router-dom";
 import "@styles/VideoContent.css"; // Importar o CSS para estilização
 const VideoContent = () => {
-  const { conteudo, materiaisExtras } = useOutletContext();
+  const {materiaisExtras } = useOutletContext();
   const videos = materiaisExtras.filter((item) => item.tipo === "video");
 
   return (
     <div className="video-content">
-      <div className="topicos-section">
-        <h3>Tópicos da disciplina</h3>
-        {conteudo.topicos && conteudo.topicos.length > 0 ? (
-          <ul className="topicos-lista">
-            {conteudo.topicos.map((topico, index) => (
-              <li key={index}>{topico}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nenhum tópico disponível para esta disciplina.</p>
-        )}
-      </div>
+      
 
       <div className="videos-section">
         <h3>Vídeos disponíveis</h3>

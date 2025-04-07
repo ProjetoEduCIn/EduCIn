@@ -7,18 +7,7 @@ const LinksContent = () => {
 
   return (
     <div className="links-content">
-      <div className="topicos-section">
-        <h3>Tópicos da disciplina</h3>
-        {conteudo.topicos && conteudo.topicos.length > 0 ? (
-          <ul className="topicos-lista">
-            {conteudo.topicos.map((topico, index) => (
-              <li key={index}>{topico}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nenhum tópico disponível para esta disciplina.</p>
-        )}
-      </div>
+
 
       <div className="links-section">
         <h3>Material de apoio</h3>

@@ -1,8 +1,8 @@
 /* Estilo geral para o contêiner principal */
 .video-content {
     
-  padding: 20px;
-  background-color: rgba(213, 1, 34, 1);
+  padding: 50px;
+ 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -54,10 +54,10 @@
 
 .video-item {
   flex: 1 1 calc(33.333% - 20px); /* Responsivo: 3 vídeos por linha */
-  background-color: rgba(213, 1, 34, 1);
+  background-color: #D50122;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

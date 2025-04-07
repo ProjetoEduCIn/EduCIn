@@ -1,6 +1,6 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-
+import "@styles/VideoContent.css"; // Importar o CSS para estilização
 const VideoContent = () => {
   const { conteudo, materiaisExtras } = useOutletContext();
   const videos = materiaisExtras.filter((item) => item.tipo === "video");

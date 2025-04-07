@@ -130,8 +130,8 @@ const DisciplinaPage = () => {
           <Link to={`/disciplina/${disciplinaSlug}/links`}>Links</Link>
         </motion.nav>
 
-        <div className="conteudo-list">
-          <Outlet context={{ conteudo, materiaisExtras }} />
+        <div className="conteudo-list alinhado-esquerda">
+        <Outlet context={{ conteudo, materiaisExtras }} />
         </div>
       </div>
     </div>

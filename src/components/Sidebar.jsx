@@ -1,22 +1,26 @@
 // componente responsavel por renderizar a barra lateral
-import { Link } from 'react-router-dom';
 import '@styles/Sidebar.css';
 import { motion } from 'framer-motion';
 
-import '@styles/Sidebar.css';
-
-const Sidebar = ({ conteudos, provas }) => {
+const Sidebar = ({ conteudos, provas, onSelectConteudo }) => {
     return (
         <motion.div
             className="sidebar"
             initial={{ x: -200 }}
             animate={{ x: 0 }}
-            transition={{ duration: 0.5 }}>
+            transition={{ duration: 0.5 }}
+        >
             <h3>Conteúdos</h3>
-            <ul>
+            <ul className="sidebar-lista">
                 {conteudos.map((conteudo, index) => (
-                    <li key={index}>
-                        <Link to={conteudo.link}>{conteudo.nome}</Link>
+                    <li key={index}
+                    onclick={() => onSelectConteudo(conteudo)}>
+                        <button
+                            className="sidebar-button"
+                            
+                        >
+                            {conteudo.nome}
+                        </button>
                     </li>
                 ))}
             </ul>
@@ -24,7 +28,11 @@ const Sidebar = ({ conteudos, provas }) => {
             <ul>
                 {provas.map((prova, index) => (
                     <li key={index}>
-                        <Link to={prova.link}>{prova.periodo}</Link>
+                        <button
+                            className="sidebar-button"
+                        >
+                            {prova.periodo}
+                        </button>
                     </li>
                 ))}
             </ul>

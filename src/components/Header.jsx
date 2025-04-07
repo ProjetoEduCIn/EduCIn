@@ -31,7 +31,7 @@ const Header = ({ isAuthenticated }) => {
       </Link>
       {isAuthenticated && isContentPage && ( // Mostra os links apenas nas páginas específicas
         <nav>
-          <ul>
+          <ul className="ul-header">
             <li>
               <Link to="/si" className="link">
                 Sistemas de Informação

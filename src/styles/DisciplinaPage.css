@@ -2,6 +2,7 @@
     display: flex;
     height: 90vh; /* O header tem 10vh de altura*/
     width: 100vw;
+    background-image: image(url('../public/imagens/ImagenCin.jpg'));
 }
 
 .conteudo {
@@ -10,6 +11,8 @@
     height: 90vh;
     flex: 1;
     padding: 10px;
+    
+
 }
 
 .conteudo-nav {
@@ -44,6 +47,7 @@ h2{
 .conteudo-list {
     display: flex;
     flex-direction: column;
+    
     height: 70vh;
     width: 100%;
     gap: 20px;
@@ -76,3 +80,13 @@ h2{
 .conteudo-item > a:hover {
     text-decoration: underline;
 }
+
+.conteudo-list.alinhado-esquerda {
+    text-align: left; /* Alinha o texto à esquerda */
+    margin-left: 0; /* Remove qualquer margem à esquerda */
+    padding-left: 10px; /* Adiciona um pequeno espaçamento à esquerda */
+  }
+
+  .conteudo-list.alinhado-esquerda > * {
+    text-align: left;
+  }

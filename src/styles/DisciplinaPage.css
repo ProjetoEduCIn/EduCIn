@@ -1,98 +1,181 @@
-.disciplina-page {
+/* ===============================
+   🟥 SIDEBAR FIXA À ESQUERDA
+================================= */
+
+.page-wrapper {
     display: flex;
-    height: 810px; /* O header tem 10vh de altura */
-    width: 1920px;
-    background-image: image(url('../public/imagens/ImagenCin.jpg'));
+    min-height: 100vh;
+    margin: 0; /* ✅ Sem margem lateral */
 }
 
-.conteudo {
+.sidebar {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 350px;
+    
+    background-color: #d4001a;
+    color: #fff;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    height: 810px;
-    flex: 1;
-    padding: 10px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    height: auto;
+    
 }
 
-/* Botões de navegação (Vídeo, Questões, etc) */
-.conteudo-nav {
+.sidebar h3 {
+    font-size: 18px;
+    margin: 20px 0 10px;
+    font-weight: 600;
+}
+
+.sidebar-section {
+    margin-top: 40px;
+}
+
+.sidebar-button {
+    background: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sidebar-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-button.active {
+    background-color: white;
+    color: #d4001a;
+    font-weight: bold;
+}
+
+
+/* ===============================
+   🧱 ÁREA PRINCIPAL
+================================= */
+.main-content {
+    margin-left: 350px; /* Ou use flex com width dinâmica */
+    margin-top: 0;       /* ⛔ REMOVER qualquer topo extra */
+    padding-top: 20px;   /* ✅ Um padding suave, se quiser */
+    padding-left: 40px;
+    padding-right: 40px;
+  
+    min-height: 100vh;
+}
+
+/* 🔺 HEADER */
+.disciplina-header {
     display: flex;
-    flex-direction: row;
-    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: flex-start;
     margin-bottom: 10px;
+    
 }
 
-.conteudo-nav > a {
-    flex: 1;
-    text-align: center;
-    padding: 10px 20px;
-    background-color: white; /* Fundo branco */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #D50122; /* Texto vermelho */
-    font-size: 20px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.conteudo-nav > a:hover {
-    background-color: #f4f4f4; /* Fundo levemente cinza ao passar o mouse */
-    color: #a0001c; /* Tom mais escuro de vermelho */
-}
-
-/* Título da disciplina (h2), código (p) e descrição */
-h2 {
-    color: white; /* Cor branca */
-    font-size: 48px; /* Fonte maior */
+.titulo {
+    font-size: 32px;
     font-weight: bold;
-    margin-bottom: 10px;
+    color:white;
+    margin-bottom: 50px;
+    text-decoration: none;
+    text-align: left;
+    padding: 0px;
 }
 
-p {
-    color: white; /* Cor branca */
-    font-size: 20px; /* Fonte maior */
-    margin-bottom: 15px;
+.info {
+    font-size: 16px;
+    color: #666;
 }
 
-/* Seção "Vídeos disponíveis" */
-.conteudo-list {
+/* 🧭 TABS */
+.tabs {
+    display: flex;
+    gap: 30px;
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
+    margin-top: 20px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    padding: 10px 5px;
+    cursor: pointer;
+    position: relative;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.tab-button:hover {
+    color: #d4001a;
+}
+
+.tab-button.active {
+    color: #d4001a;
+    font-weight: bold;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #d4001a;
+    border-radius: 2px;
+}
+
+/* 📦 CONTEÚDO DAS TABS */
+.tab-content {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    min-height: 400px; /* Ajuste se necessário */
+}
+
+.content-display {
     display: flex;
     flex-direction: column;
-    height: auto; /* Altura dinâmica */
-    width: 90%; /* Maior largura */
     gap: 20px;
-    margin-top: 20px; /* Fica mais próxima dos botões */
-    text-align: left; /* Alinha o texto à esquerda */
-    margin-left: 0; /* Remove qualquer margem à esquerda */
-    padding-left: 10px; /* Adiciona um pequeno espaçamento à esquerda */
 }
-
-/* Estilo dos itens dentro da seção */
-.conteudo-item {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.conteudo-item > h3 {
-    font-size: 22px;
+.content-display h3 {
+    font-size: 24px;
     margin-bottom: 10px;
+    color: #333;
 }
 
-.conteudo-item > video,
-.conteudo-item > iframe {
-    width: 100%;
-    height: auto;
+.video-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    size: 100%;
+
 }
 
-.conteudo-item > a {
-    color: #007bff;
-    text-decoration: none;
-    margin-right: 10px;
+.video-frame {
+    width: 100%; /* Define a largura do contêiner */
+    max-width: 100vh; /* Define uma largura máxima para o player */
+    aspect-ratio: 16 / 9; /* Mantém a proporção de 16:9 */
+    margin: 0 auto; /* Centraliza o player horizontalmente */
+    overflow: hidden; /* Garante que nada ultrapasse os limites */
+    border-radius: 8px; /* Adiciona bordas arredondadas, se necessário */
 }
 
-.conteudo-item > a:hover {
-    text-decoration: underline;
+.video-frame iframe {
+    width: 90vh; /* O iframe ocupa toda a largura do contêiner */
+    height: 100%; /* O iframe ocupa toda a altura do contêiner */
+    border: none; /* Remove bordas do iframe */
 }

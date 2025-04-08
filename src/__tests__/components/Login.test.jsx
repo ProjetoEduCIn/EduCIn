@@ -83,8 +83,11 @@ describe('Login Tradicional', () => {
 });
 
 describe('Gerenciamento de Tokens', () => {
+  const mockOnPageChange = jest.fn();
+
   beforeEach(() => {
     localStorage.clear();
+    mockOnPageChange.mockClear(); // Limpar o mock antes de cada teste
   });
 
   test('deve limpar tokens ao fazer logout', () => {

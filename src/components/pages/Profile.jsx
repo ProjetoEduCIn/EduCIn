@@ -18,14 +18,14 @@ const Profile = ({ onPageChange }) => {
     special: true,
     match: true,
   });
-  const validatePassword = (password) => {
+  const validatePassword = (password, confirmValue = confirmarSenha) => {
     const errors = {
       length: password.length < 8,
       uppercase: !/[A-Z]/.test(password),
       lowercase: !/[a-z]/.test(password),
       number: !/[0-9]/.test(password),
       special: !/[!@#$%^&*(),.?":{}|<>]/.test(password),
-      match: password !== confirmarSenha,
+      match: password !== confirmValue,
     };
     setSenhaErrors(errors);
     return !Object.values(errors).some((error) => error);
@@ -48,7 +48,7 @@ const Profile = ({ onPageChange }) => {
     setError("");
 
     // Validar a senha antes de enviar
-    if (!validatePassword(senha)) {
+    if (!validatePassword(senha, confirmarSenha)) {
       setError("Sua senha não atende aos requisitos de segurança");
       setLoading(false);
       return;
@@ -163,8 +163,9 @@ const Profile = ({ onPageChange }) => {
           type="password"
           value={confirmarSenha}
           onChange={(e) => {
-            setConfirmarSenha(e.target.value);
-            validatePassword(senha);
+            const novoValor = e.target.value;
+            setConfirmarSenha(novoValor);
+            validatePassword(senha, novoValor); // Passa o novo valor
           }}
           placeholder="Confirme sua senha"
         />

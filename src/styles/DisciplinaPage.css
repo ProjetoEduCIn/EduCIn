@@ -1,92 +1,190 @@
-.disciplina-page {
-    display: flex;
-    height: 90vh; /* O header tem 10vh de altura*/
-    width: 100vw;
-    background-image: image(url('../public/imagens/ImagenCin.jpg'));
+/* ===============================
+   🟥 SIDEBAR FIXA À ESQUERDA
+================================= */
+
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  margin: 0; /* ✅ Sem margem lateral */
+  padding: 0;
+  display: flex;
+  flex-direction: row; /* default, mas importante */
+  overflow: hidden;
 }
 
-.conteudo {
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    flex: 1;
-    padding: 10px;
-    
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 8vh;
+  width: 25vw; /* Convertido de 60vh para 25vw (melhor para largura) */
+  margin-top: 4vh;
 
+  background-color: #d4001a;
+  color: #fff;
+  padding: 1.5vh 1.5vw; /* Convertido de 15px */
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  height: 88vh;
 }
 
-.conteudo-nav {
-
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: flex-start;
-    margin-bottom: 10px;
+.sidebar h3 {
+  font-size: 1.5rem; /* Convertido de 18px para unidade relativa ao root */
+  margin: 2vh 0 1vh; /* Convertido de 20px 0 10px */
+  font-weight: 600;
 }
 
-.conteudo-nav > a {
-    flex: 1;
-    text-align: center;
-    padding: 10px 20px;
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
+.sidebar-section {
+  margin-top: 4vh; /* Convertido de 40px */
 }
 
-.conteudo-nav > a:hover {
-    background-color: #ddd;
+.sidebar-button {
+  background: transparent;
+  color: white;
+  border: none;
+  text-align: left;
+  padding: 1vh 1vw; /* Convertido de 10px */
+  border-radius: 0.5rem; /* Convertido de 6px */
+  margin-bottom: 0.5vh; /* Convertido de 5px */
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-h2{
-    color: #0000008f;
+.sidebar-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-.conteudo-list {
-    display: flex;
-    flex-direction: column;
-    
-    height: 70vh;
-    width: 100%;
-    gap: 20px;
+.sidebar-button.active {
+  background-color: white;
+  color: #d4001a;
+  font-weight: bold;
 }
 
-.conteudo-item {
-    background-color: #fff;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* ===============================
+   🧱 ÁREA PRINCIPAL
+================================= */
+.main-content {
+  margin-left: 25vw; /* Ajustado para corresponder à largura da sidebar */
+  padding: 2vh 3vw; /* Convertido de 20px 40px */
+  flex-grow: 1;
 }
 
-.conteudo-item > h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
+/* 🔺 HEADER */
+.disciplina-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 1vh; /* Convertido de 10px */
 }
 
-.conteudo-item > video,
-.conteudo-item > iframe {
-    width: 100%;
-    height: auto;
+.titulo {
+  font-size: 2.2rem; /* Convertido de 32px */
+  font-weight: bold;
+  color: white;
+  margin-bottom: 3vh; /* Convertido de 20px */
+  text-decoration: none;
+  text-align: left;
+  padding: 0;
 }
 
-.conteudo-item > a {
-    color: #007bff;
-    text-decoration: none;
-    margin-right: 10px;
+.tabs {
+  margin-top: 0; /* Convertido de 40px */
+  padding-top: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
 }
 
-.conteudo-item > a:hover {
-    text-decoration: underline;
+.info {
+  font-size: 3rem; /* Convertido de 16px */
+  color: #666;
 }
 
-.conteudo-list.alinhado-esquerda {
-    text-align: left; /* Alinha o texto à esquerda */
-    margin-left: 0; /* Remove qualquer margem à esquerda */
-    padding-left: 10px; /* Adiciona um pequeno espaçamento à esquerda */
-  }
+.tab-button {
+  background: none;
+  border: none;
+  font-size: 1.4rem; /* Convertido de 18px */
+  padding: 1.8vh 1.5vw; /* Convertido de 10px 5px */
+  cursor: pointer;
+  position: relative;
+  color: #fff; 
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
 
-  .conteudo-list.alinhado-esquerda > * {
-    text-align: left;
-  }
+.tab-button:focus {
+    outline: none; /* Remove o outline quando o botão recebe foco */
+}
+
+.tab-button:hover {
+  color: #d4001a;
+}
+
+.tab-button.active {
+  color: #d4001a;
+  font-weight: 600;
+}
+
+.tab-button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -0.8vh; /* Convertido de -8px */
+  left: 0;
+  right: 0;
+  height: 0.3vh; /* Convertido de 3px */
+  background-color: #d4001a !important;
+  border-radius: 0.2vh; /* Convertido de 2px */
+}
+
+/* 📦 CONTEÚDO DAS TABS */
+.tab-content {
+  padding: 2vh 2vw; /* Ajustado de 200px para um valor mais razoável */
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.content-display {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Convertido de 20px */
+}
+
+.content-display h3 {
+  font-size: 1.5rem; /* Convertido de 24px */
+  text-align: left;
+  margin-bottom: 1vh; /* Convertido de 10px */
+  color: #333;
+}
+
+.video-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Convertido de 20px */
+  width: 100%;
+}
+
+.video-frame {
+  margin: auto;
+  max-width: 100%;
+  width: 100%;
+}
+
+.video-frame iframe {
+  width: 60vw; /* Convertido de 700px para unidade relativa */
+  height: 33.75vw; /* Mantém proporção 16:9 baseado na largura */
+  display: block;
+  max-width: 100%;
+}
+
+/* ✅ Container para título, tabs e conteúdo */
+.conteudo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8vh; /* Convertido de 20px */
+  padding-top: 1vh;
+  margin-left: 26vw; /* Convertido de 20vh para 26vw para alinhar com a sidebar */
+  margin-top: 5vh;
+}

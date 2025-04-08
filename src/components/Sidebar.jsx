@@ -2,7 +2,8 @@
 import '@styles/Sidebar.css';
 import { motion } from 'framer-motion';
 
-const Sidebar = ({ conteudos, provas, onSelectConteudo }) => {
+
+const Sidebar = ({ conteudos, provas}) => {
     return (
         <motion.div
             className="sidebar"
@@ -14,7 +15,7 @@ const Sidebar = ({ conteudos, provas, onSelectConteudo }) => {
             <ul className="sidebar-lista">
                 {conteudos.map((conteudo, index) => (
                     <li key={index}
-                    onclick={() => onSelectConteudo(conteudo)}>
+                    >
                         <button
                             className="sidebar-button"
                             

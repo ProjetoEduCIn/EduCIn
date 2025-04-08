@@ -12,4 +12,4 @@ authlib
 httpx
 passlib
 bcrypt
-jwt-decode
+google-oauth

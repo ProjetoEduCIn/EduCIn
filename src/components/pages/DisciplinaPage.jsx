@@ -1,141 +1,216 @@
-import { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import Sidebar from "../../components/Sidebar.jsx";
-import { disciplinaService } from "../../services/apiService";
-import "@styles/DisciplinaPage.css";
+import React, { useState } from "react";
+import "@styles/disciplinaPage.css";
 
-const DisciplinaPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [loading, setLoading] = useState(true);
-  const [disciplina, setDisciplina] = useState({});
-  const [conteudo, setConteudo] = useState({
-    topicos: [],
-    links: [],
-  });
-  const [materiaisExtras, setMateriaisExtras] = useState([]);
-  const [error, setError] = useState(null);
-
-  // Extrair o slug da disciplina da URL atual
-  const disciplinaSlug = location.pathname.split("/")[2];
-
-  useEffect(() => {
-    const carregarDados = async () => {
-      setLoading(true);
-      try {
-        // Carregar detalhes da disciplina
-        const detalhesDisciplina = await disciplinaService.obterDetalhes(
-          disciplinaSlug
-        );
-        setDisciplina(detalhesDisciplina);
-
-        // Carregar conteúdo da disciplina
-        const conteudoDisciplina = await disciplinaService.obterConteudo(
-          disciplinaSlug
-        );
-        console.log("Conteúdo carregado:", conteudoDisciplina);
-        setConteudo(conteudoDisciplina);
-
-        // Exemplo de materiais adicionais (poderia vir de outra API no futuro)
-        setMateriaisExtras([
-          {
-            tipo: "video",
-            nome: "Introdução à Disciplina",
-            link: "https://example.com/intro.mp4",
-          },
-          {
-            tipo: "video",
-            nome: "Conceitos Fundamentais",
-            link: "https://example.com/fundamentos.mp4",
-          },
-          {
-            tipo: "questao",
-            nome: "Lista de Exercícios 1",
-            descricao: "Exercícios sobre conceitos básicos",
-          },
-          {
-            tipo: "slide",
-            nome: "Slides Aula 1",
-            link: "https://example.com/slides1.pdf",
-          },
-          {
-            tipo: "prova",
-            nome: "Prova 1 - 2024.1",
-            periodo: "2024.1",
-            visualizarLink: "#",
-          },
-        ]);
-
-        setError(null);
-      } catch (err) {
-        console.error("Erro ao carregar dados da disciplina:", err);
-        setError("Não foi possível carregar os dados da disciplina.");
-      } finally {
-        setLoading(false);
+const conteudos = {
+  "Introdução à Disciplina": {
+    videos: ["https://www.youtube.com/embed/vVGTZLnnpdM"],
+    questoes: [
+      "O que são sistemas digitais?",
+      "Qual a diferença entre lógica booleana e lógica comum?"
+    ],
+    slides: ["https://drive.google.com/file/d/1ZAx/view"],
+    links: [
+      { url: "https://www.inf.ufpe.br/~if675/", texto: "Página da disciplina IF675" }
+    ]
+  },
+  "Conceitos Fundamentais": {
+    videos: ["https://www.youtube.com/embed/6z7GQewK-Ks"],
+    questoes: [
+      "Explique o funcionamento de portas lógicas AND e OR.",
+      "Como os flip-flops são utilizados em circuitos?"
+    ],
+    slides: ["https://drive.google.com/file/d/1YMg/view"],
+    links: [
+      { url: "https://pt.wikipedia.org/wiki/Porta_l%C3%B3gica", texto: "Artigo sobre portas lógicas" }
+    ]
+  },
+  "Álgebra Booleana": {
+    videos: ["https://www.youtube.com/embed/3X9w5z8z2cM"],
+    questoes: [
+      "Quais são as principais leis da álgebra booleana?",
+      "Como simplificar expressões booleanas utilizando mapas de Karnaugh?"
+    ],
+    slides: ["https://drive.google.com/file/d/1Booleana/view"],
+    links: [
+      { url: "https://pt.wikipedia.org/wiki/%C3%81lgebra_booleana", texto: "Wikipedia - Álgebra Booleana" }
+    ]
+  },
+  "Circuitos Combinacionais": {
+    videos: ["https://www.youtube.com/embed/4circuitos"],
+    questoes: [
+      "O que são circuitos combinacionais?",
+      "Explique o funcionamento de um multiplexador e de um demultiplexador."
+    ],
+    slides: ["https://drive.google.com/file/d/1Circuitos/view"],
+    links: [
+      {
+        url: "https://www.tutorialspoint.com/digital_circuits/digital_circuits_combinational_circuits.htm",
+        texto: "TutorialsPoint - Circuitos Combinacionais"
       }
-    };
-
-    carregarDados();
-
-    // Redireciona para a página de vídeo se estiver na raiz da disciplina
-    if (location.pathname === `/disciplina/${disciplinaSlug}`) {
-      navigate(`/disciplina/${disciplinaSlug}/video`);
-    }
-  }, [disciplinaSlug, navigate, location.pathname]);
-
-  // Filtrar provas dos materiais extras para exibir na sidebar
-  const provas = materiaisExtras
-    .filter((item) => item.tipo === "prova")
-    .map((prova) => ({
-      periodo: prova.periodo,
-      link: prova.visualizarLink,
-      nome: prova.nome,
-    }));
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        Carregando conteúdo da disciplina...
-      </div>
-    );
+    ]
+  },
+  "Circuitos Sequenciais": {
+    videos: ["https://www.youtube.com/embed/5sequenciais"],
+    questoes: [
+      "Qual a diferença entre circuitos combinacionais e sequenciais?",
+      "Como os registradores são utilizados em circuitos sequenciais?"
+    ],
+    slides: ["https://drive.google.com/file/d/1Sequenciais/view"],
+    links: [
+      { url: "https://pt.wikipedia.org/wiki/Circuito_sequencial", texto: "Wikipedia - Circuito Sequencial" }
+    ]
+  },
+  "Memórias Digitais": {
+    videos: ["https://www.youtube.com/embed/6memorias"],
+    questoes: [
+      "Quais são os principais tipos de memórias digitais?",
+      "Explique o funcionamento de uma memória RAM."
+    ],
+    slides: ["https://drive.google.com/file/d/1Memorias/view"],
+    links: [
+      {
+        url: "https://pt.wikipedia.org/wiki/Mem%C3%B3ria_(inform%C3%A1tica)",
+        texto: "Wikipedia - Memória (Informática)"
+      }
+    ]
+  },
+  "Introdução a Microcontroladores": {
+    videos: ["https://www.youtube.com/embed/7microcontroladores"],
+    questoes: [
+      "O que é um microcontrolador e como ele difere de um microprocessador?",
+      "Quais são as principais aplicações de microcontroladores?"
+    ],
+    slides: ["https://drive.google.com/file/d/1Microcontroladores/view"],
+    links: [
+      {
+        url: "https://pt.wikipedia.org/wiki/Microcontrolador",
+        texto: "Wikipedia - Microcontrolador"
+      }
+    ]
   }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-
-  return (
-    <div className="disciplina-page">
-      <Sidebar conteudos={materiaisExtras} provas={provas} />
-      <div className="conteudo">
-        <h2>{disciplina.nome || disciplinaSlug.replace(/-/g, " ")}</h2>
-        {disciplina.codigo && (
-          <p className="disciplina-codigo">Código: {disciplina.codigo}</p>
-        )}
-        {disciplina.descricao && (
-          <p className="disciplina-descricao">{disciplina.descricao}</p>
-        )}
-
-        <motion.nav
-          className="conteudo-nav"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.1 }}
-        >
-          <Link to={`/disciplina/${disciplinaSlug}/video`}>Vídeo</Link>
-          <Link to={`/disciplina/${disciplinaSlug}/questoes`}>Questões</Link>
-          <Link to={`/disciplina/${disciplinaSlug}/slides`}>Slides</Link>
-          <Link to={`/disciplina/${disciplinaSlug}/links`}>Links</Link>
-        </motion.nav>
-
-        <div className="conteudo-list alinhado-esquerda">
-        <Outlet context={{ conteudo, materiaisExtras }} />
-        </div>
-      </div>
-    </div>
-  );
 };
 
-export default DisciplinaPage;
+const abas = ["Vídeos", "Questões", "Documentos", "Links"];
+
+export default function SistemasDigitais() {
+  const [conteudoSelecionado, setConteudoSelecionado] = useState("Introdução à Disciplina");
+  const [abaAtiva, setAbaAtiva] = useState("Vídeos");
+  const [mostrarListaExercicios, setMostrarListaExercicios] = useState(false);
+
+  const material = conteudos[conteudoSelecionado];
+
+  return (
+    <div className="page-wrapper">
+      <aside className="sidebar">
+        <h1 className="titulo">Sistemas Digitais</h1>
+        <header className="disciplina-header">
+          <p><strong>Código:</strong> CIN1234</p>
+          <p><strong>Professor:</strong> Professor Cristiano</p>
+        </header>
+
+        <h3>Conteúdos</h3>
+        {Object.keys(conteudos).map((nome) => (
+          <button
+            key={nome}
+            onClick={() => {
+              setConteudoSelecionado(nome);
+              setMostrarListaExercicios(false);
+            }}
+            className={`sidebar-button ${conteudoSelecionado === nome ? "active" : ""}`}
+          >
+            {nome}
+          </button>
+        ))}
+
+        <h3 className="sidebar-section">Provas e Listas</h3>
+        <button
+          className={`sidebar-button ${mostrarListaExercicios ? "active" : ""}`}
+          onClick={() => setMostrarListaExercicios(true)}
+        >
+          Lista de Exercícios
+        </button>
+      </aside>
+
+    
+  {/* ✅ Novo container para agrupar tudo */}
+  <div className="conteudo-container">
+    {!mostrarListaExercicios && (
+      <div className="tabs">
+        {abas.map((aba) => (
+          <button
+            key={aba}
+            onClick={() => setAbaAtiva(aba)}
+            className={`tab-button ${abaAtiva === aba ? "active" : ""}`}
+          >
+            {aba}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div className="content-display">
+      {mostrarListaExercicios ? (
+        <>
+          <h2>📎 Lista de Exercícios</h2>
+          <p>Acesse o documento no link abaixo:</p>
+          <a
+            href="https://docs.google.com/document/d/1jVcxJdn4XyiLgnGd8vKi4LPy0uEZK1_vlOCB6wj7OzA/edit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="lista-link"
+          >
+            Abrir Documento .docx no Google Docs
+          </a>
+        </>
+      ) : (
+        <>
+          <h2>{conteudoSelecionado}</h2>
+
+          {abaAtiva === "Vídeos" && (
+            <div className="video-section">
+              {material.videos.map((url, idx) => (
+                <div key={idx} className="video-frame">
+                  <iframe src={url} allowFullScreen title={`video-${idx}`} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {abaAtiva === "Questões" && (
+            <ul className="text-list">
+              {material.questoes.map((q, idx) => (
+                <li key={idx}>{q}</li>
+              ))}
+            </ul>
+          )}
+
+          {abaAtiva === "Documentos" && (
+            <ul className="text-list">
+              {material.slides.map((s, idx) => (
+                <li key={idx}>
+                  <a href={s} target="_blank" rel="noopener noreferrer">
+                    Ver slide {idx + 1}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {abaAtiva === "Links" && (
+            <ul className="text-list">
+              {material.links.map((link, idx) => (
+                <li key={idx}>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.texto}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+    </div>
+  </div>
+</div>
+  );
+}

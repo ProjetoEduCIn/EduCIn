@@ -1,24 +1,13 @@
-import React from "react";
+
 import { useOutletContext } from "react-router-dom";
 
 const SlidesContent = () => {
-  const { conteudo, materiaisExtras } = useOutletContext();
+  const {materiaisExtras } = useOutletContext();
   const slides = materiaisExtras.filter((item) => item.tipo === "slide");
 
   return (
     <div className="slides-content">
-      <div className="topicos-section">
-        <h3>Tópicos da disciplina</h3>
-        {conteudo.topicos && conteudo.topicos.length > 0 ? (
-          <ul className="topicos-lista">
-            {conteudo.topicos.map((topico, index) => (
-              <li key={index}>{topico}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nenhum tópico disponível para esta disciplina.</p>
-        )}
-      </div>
+      
 
       <div className="slides-section">
         <h3>Slides das aulas</h3>

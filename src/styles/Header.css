@@ -3,7 +3,7 @@
     top: 0; /* Coloca a header no topo */
     left: 0; /* Alinha a header à esquerda */
     width: 100%; /* Faz a header ocupar toda a largura da tela */
-    height: 60px; /* Altura fixa */
+    height: 12vh; /* Altura fixa */
     background-color: #f4f4f4;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Garante que a header fique acima de outros elementos */

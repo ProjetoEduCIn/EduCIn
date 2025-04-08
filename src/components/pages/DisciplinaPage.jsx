@@ -90,7 +90,6 @@ const conteudos = {
   }
 };
 
-
 const abas = ["Vídeos", "Questões", "Documentos", "Links"];
 
 export default function SistemasDigitais() {
@@ -102,16 +101,13 @@ export default function SistemasDigitais() {
 
   return (
     <div className="page-wrapper">
-      
-
       <aside className="sidebar">
-        {/* Cabeçalho da disciplina */}
         <h1 className="titulo">Sistemas Digitais</h1>
-      <header className="disciplina-header">
-        
-        <p><strong>Código:</strong>  CIN1234</p>
-        <p><strong>Professor:</strong> Professor Cristiano </p>
-      </header>
+        <header className="disciplina-header">
+          <p><strong>Código:</strong> CIN1234</p>
+          <p><strong>Professor:</strong> Professor Cristiano</p>
+        </header>
+
         <h3>Conteúdos</h3>
         {Object.keys(conteudos).map((nome) => (
           <button
@@ -135,90 +131,86 @@ export default function SistemasDigitais() {
         </button>
       </aside>
 
-      <main className="main-content">
-        {/* Exibir Lista de Exercícios separada */}
-        {mostrarListaExercicios ? (
-          <div className="content-display">
-            <h2>📎 Lista de Exercícios</h2>
-            <p>
-              Acesse o documento no link abaixo:
-            </p>
-            <a
-              href="https://docs.google.com/document/d/1jVcxJdn4XyiLgnGd8vKi4LPy0uEZK1_vlOCB6wj7OzA/edit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lista-link"
-            >
-              Abrir Documento .docx no Google Docs
-            </a>
-          </div>
-        ) : (
-          <>
-            <div className="tabs">
-              {abas.map((aba) => (
-                <button
-                  key={aba}
-                  onClick={() => setAbaAtiva(aba)}
-                  className={`tab-button ${abaAtiva === aba ? "active" : ""}`}
-                >
-                  {aba}
-                </button>
+    
+  {/* ✅ Novo container para agrupar tudo */}
+  <div className="conteudo-container">
+    {!mostrarListaExercicios && (
+      <div className="tabs">
+        {abas.map((aba) => (
+          <button
+            key={aba}
+            onClick={() => setAbaAtiva(aba)}
+            className={`tab-button ${abaAtiva === aba ? "active" : ""}`}
+          >
+            {aba}
+          </button>
+        ))}
+      </div>
+    )}
+
+    <div className="content-display">
+      {mostrarListaExercicios ? (
+        <>
+          <h2>📎 Lista de Exercícios</h2>
+          <p>Acesse o documento no link abaixo:</p>
+          <a
+            href="https://docs.google.com/document/d/1jVcxJdn4XyiLgnGd8vKi4LPy0uEZK1_vlOCB6wj7OzA/edit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="lista-link"
+          >
+            Abrir Documento .docx no Google Docs
+          </a>
+        </>
+      ) : (
+        <>
+          <h2>{conteudoSelecionado}</h2>
+
+          {abaAtiva === "Vídeos" && (
+            <div className="video-section">
+              {material.videos.map((url, idx) => (
+                <div key={idx} className="video-frame">
+                  <iframe src={url} allowFullScreen title={`video-${idx}`} />
+                </div>
               ))}
             </div>
+          )}
 
-            <div className="content-display">
-              <h2>{conteudoSelecionado}</h2>
+          {abaAtiva === "Questões" && (
+            <ul className="text-list">
+              {material.questoes.map((q, idx) => (
+                <li key={idx}>{q}</li>
+              ))}
+            </ul>
+          )}
 
-              {abaAtiva === "Vídeos" && (
-                <div className="video-section">
-                  {material.videos.map((url, idx) => (
-                    <div key={idx} className="video-frame">
-                      <iframe
-                        src={url}
-                        allowFullScreen
-                        title={`video-${idx}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+          {abaAtiva === "Documentos" && (
+            <ul className="text-list">
+              {material.slides.map((s, idx) => (
+                <li key={idx}>
+                  <a href={s} target="_blank" rel="noopener noreferrer">
+                    Ver slide {idx + 1}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
 
-              {abaAtiva === "Questões" && (
-                <ul className="text-list">
-                  {material.questoes.map((q, idx) => (
-                    <li key={idx}>{q}</li>
-                  ))}
-                </ul>
-              )}
-
-              {abaAtiva === "Documentos" && (
-                <ul className="text-list">
-                  {material.slides.map((s, idx) => (
-                    <li key={idx}>
-                      <a href={s} target="_blank" rel="noopener noreferrer">
-                        Ver slide {idx + 1}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {abaAtiva === "Links" && (
-                <ul className="text-list">
-                  {material.links.map((link, idx) => (
-                      <li key={idx}>
-                    <a href={link.url} target="_blank" rel="noopener noreferrer">
-                   {link.texto}
-                    </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-             
-            </div>
-          </>
-        )}
-      </main>
+          {abaAtiva === "Links" && (
+            <ul className="text-list">
+              {material.links.map((link, idx) => (
+                <li key={idx}>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.texto}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
     </div>
+  </div>
+</div>
   );
 }

@@ -25,7 +25,6 @@
     height: auto;
     
 }
-
 .sidebar h3 {
     font-size: 18px;
     margin: 20px 0 10px;
@@ -63,10 +62,10 @@
    🧱 ÁREA PRINCIPAL
 ================================= */
 .main-content {
-    margin: 0;
-    padding: 20px 40px 0px; /* mantém espaçamento interno lateral */
+    margin-left: 280px; /* Mesmo valor do width da sidebar */
+    padding: 20px 40px;
     flex-grow: 1;
-  }
+}
 
 /* 🔺 HEADER */
 .disciplina-header {
@@ -89,12 +88,12 @@
 }
 
 .tabs {
-    display: flex;
-    gap: 30px;
-    padding: 10px 0;
-    border-bottom: 2px solid #ddd;
-    margin-top: 0.55vh;  /* ⬅️ Reduzi de 20px para 10px */
-}
+    margin-top: 0;            /* Tira o espaço superior */
+    padding-top: 0;
+    position: relative;       /* Se precisar alinhar com z-index */
+    z-index: 1;
+    display: flex;}
+
 .info {
     font-size: 16px;
     color: #666;
@@ -135,7 +134,7 @@
 
 /* 📦 CONTEÚDO DAS TABS */
 .tab-content {
-    padding: 20px;
+    padding: 200px;
     margin: 0;              /* Remover margens automáticas ou herdadas */
     width: 100%;
     max-width: none;
@@ -172,4 +171,14 @@
     width: 700px;
     height: 450px;
     display: block;
+}
+
+/* ✅ Container para título, tabs e conteúdo */
+.conteudo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 1vh;
+    margin-left: 20vh;
+    margin-top: 0vh;
 }

@@ -6,20 +6,21 @@
     display: flex;
     min-height: 100vh;
     margin: 0; /* ✅ Sem margem lateral */
+    display: flex;
+    flex-direction: row; /* default, mas importante */
 }
 
 .sidebar {
     position: absolute;
     left: 0;
-    top: 50px;
-    width: 350px;
+    top: 8vh;
+    width: 60vh;
     
     background-color: #d4001a;
     color: #fff;
     padding: 15px;
     display: flex;
     flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     z-index: 10;
     height: auto;
     
@@ -62,14 +63,10 @@
    🧱 ÁREA PRINCIPAL
 ================================= */
 .main-content {
-    margin-left: 350px; /* Ou use flex com width dinâmica */
-    margin-top: 0;       /* ⛔ REMOVER qualquer topo extra */
-    padding-top: 20px;   /* ✅ Um padding suave, se quiser */
-    padding-left: 40px;
-    padding-right: 40px;
-  
-    min-height: 100vh;
-}
+    margin: 0;
+    padding: 20px 40px 0px; /* mantém espaçamento interno lateral */
+    flex-grow: 1;
+  }
 
 /* 🔺 HEADER */
 .disciplina-header {
@@ -84,31 +81,31 @@
 .titulo {
     font-size: 32px;
     font-weight: bold;
-    color:white;
-    margin-bottom: 50px;
+    color: white;
+    margin-bottom: 20px;  /* ⬅️ Reduzi de 50px para 20px */
     text-decoration: none;
     text-align: left;
     padding: 0px;
 }
 
-.info {
-    font-size: 16px;
-    color: #666;
-}
-
-/* 🧭 TABS */
 .tabs {
     display: flex;
     gap: 30px;
     padding: 10px 0;
     border-bottom: 2px solid #ddd;
-    margin-top: 20px;
+    margin-top: 0.55vh;  /* ⬅️ Reduzi de 20px para 10px */
 }
+.info {
+    font-size: 16px;
+    color: #666;
+}
+
+
 
 .tab-button {
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 18px;
     padding: 10px 5px;
     cursor: pointer;
     position: relative;
@@ -138,12 +135,11 @@
 
 /* 📦 CONTEÚDO DAS TABS */
 .tab-content {
-    margin-top: 30px;
     padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    min-height: 400px; /* Ajuste se necessário */
+    margin: 0;              /* Remover margens automáticas ou herdadas */
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
 }
 
 .content-display {
@@ -153,6 +149,7 @@
 }
 .content-display h3 {
     font-size: 24px;
+    text-align: left;       /* Força alinhamento */
     margin-bottom: 10px;
     color: #333;
 }
@@ -166,16 +163,13 @@
 }
 
 .video-frame {
-    width: 100%; /* Define a largura do contêiner */
-    max-width: 100vh; /* Define uma largura máxima para o player */
-    aspect-ratio: 16 / 9; /* Mantém a proporção de 16:9 */
-    margin: 0 auto; /* Centraliza o player horizontalmente */
-    overflow: hidden; /* Garante que nada ultrapasse os limites */
-    border-radius: 8px; /* Adiciona bordas arredondadas, se necessário */
+    margin: auto;           /* Antes: margin: 0 auto; */
+    max-width: 100%;     /* Antes era 100vh, o que limitava e centralizava */
+    width: 100%;
 }
 
 .video-frame iframe {
-    width: 90vh; /* O iframe ocupa toda a largura do contêiner */
-    height: 100%; /* O iframe ocupa toda a altura do contêiner */
-    border: none; /* Remove bordas do iframe */
+    width: 700px;
+    height: 450px;
+    display: block;
 }

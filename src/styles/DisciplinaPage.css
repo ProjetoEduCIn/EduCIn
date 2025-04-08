@@ -3,182 +3,188 @@
 ================================= */
 
 .page-wrapper {
-    display: flex;
-    min-height: 100vh;
-    margin: 0; /* ✅ Sem margem lateral */
-    display: flex;
-    flex-direction: row; /* default, mas importante */
+  display: flex;
+  min-height: 100vh;
+  margin: 0; /* ✅ Sem margem lateral */
+  padding: 0;
+  display: flex;
+  flex-direction: row; /* default, mas importante */
+  overflow: hidden;
 }
 
 .sidebar {
-    position: absolute;
-    left: 0;
-    top: 8vh;
-    width: 60vh;
-    
-    background-color: #d4001a;
-    color: #fff;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-    height: auto;
-    
+  position: fixed;
+  left: 0;
+  top: 8vh;
+  width: 25vw; /* Convertido de 60vh para 25vw (melhor para largura) */
+  margin-top: 4vh;
+
+  background-color: #d4001a;
+  color: #fff;
+  padding: 1.5vh 1.5vw; /* Convertido de 15px */
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  height: 88vh;
 }
+
 .sidebar h3 {
-    font-size: 18px;
-    margin: 20px 0 10px;
-    font-weight: 600;
+  font-size: 1.5rem; /* Convertido de 18px para unidade relativa ao root */
+  margin: 2vh 0 1vh; /* Convertido de 20px 0 10px */
+  font-weight: 600;
 }
 
 .sidebar-section {
-    margin-top: 40px;
+  margin-top: 4vh; /* Convertido de 40px */
 }
 
 .sidebar-button {
-    background: transparent;
-    color: white;
-    border: none;
-    text-align: left;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background: transparent;
+  color: white;
+  border: none;
+  text-align: left;
+  padding: 1vh 1vw; /* Convertido de 10px */
+  border-radius: 0.5rem; /* Convertido de 6px */
+  margin-bottom: 0.5vh; /* Convertido de 5px */
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .sidebar-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .sidebar-button.active {
-    background-color: white;
-    color: #d4001a;
-    font-weight: bold;
+  background-color: white;
+  color: #d4001a;
+  font-weight: bold;
 }
-
 
 /* ===============================
    🧱 ÁREA PRINCIPAL
 ================================= */
 .main-content {
-    margin-left: 280px; /* Mesmo valor do width da sidebar */
-    padding: 20px 40px;
-    flex-grow: 1;
+  margin-left: 25vw; /* Ajustado para corresponder à largura da sidebar */
+  padding: 2vh 3vw; /* Convertido de 20px 40px */
+  flex-grow: 1;
 }
 
 /* 🔺 HEADER */
 .disciplina-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-bottom: 10px;
-    
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 1vh; /* Convertido de 10px */
 }
 
 .titulo {
-    font-size: 32px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 20px;  /* ⬅️ Reduzi de 50px para 20px */
-    text-decoration: none;
-    text-align: left;
-    padding: 0px;
+  font-size: 2.2rem; /* Convertido de 32px */
+  font-weight: bold;
+  color: white;
+  margin-bottom: 3vh; /* Convertido de 20px */
+  text-decoration: none;
+  text-align: left;
+  padding: 0;
 }
 
 .tabs {
-    margin-top: 0;            /* Tira o espaço superior */
-    padding-top: 0;
-    position: relative;       /* Se precisar alinhar com z-index */
-    z-index: 1;
-    display: flex;}
-
-.info {
-    font-size: 16px;
-    color: #666;
+  margin-top: 0; /* Convertido de 40px */
+  padding-top: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
 }
 
-
+.info {
+  font-size: 3rem; /* Convertido de 16px */
+  color: #666;
+}
 
 .tab-button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    padding: 10px 5px;
-    cursor: pointer;
-    position: relative;
-    color: white;
-    transition: color 0.3s ease;
+  background: none;
+  border: none;
+  font-size: 1.4rem; /* Convertido de 18px */
+  padding: 1.8vh 1.5vw; /* Convertido de 10px 5px */
+  cursor: pointer;
+  position: relative;
+  color: #fff; 
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.tab-button:focus {
+    outline: none; /* Remove o outline quando o botão recebe foco */
 }
 
 .tab-button:hover {
-    color: #d4001a;
+  color: #d4001a;
 }
 
 .tab-button.active {
-    color: #d4001a;
-    font-weight: bold;
+  color: #d4001a;
+  font-weight: 600;
 }
 
 .tab-button.active::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background-color: #d4001a;
-    border-radius: 2px;
+  content: "";
+  position: absolute;
+  bottom: -0.8vh; /* Convertido de -8px */
+  left: 0;
+  right: 0;
+  height: 0.3vh; /* Convertido de 3px */
+  background-color: #d4001a !important;
+  border-radius: 0.2vh; /* Convertido de 2px */
 }
 
 /* 📦 CONTEÚDO DAS TABS */
 .tab-content {
-    padding: 200px;
-    margin: 0;              /* Remover margens automáticas ou herdadas */
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
+  padding: 2vh 2vw; /* Ajustado de 200px para um valor mais razoável */
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
 }
 
 .content-display {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Convertido de 20px */
 }
+
 .content-display h3 {
-    font-size: 24px;
-    text-align: left;       /* Força alinhamento */
-    margin-bottom: 10px;
-    color: #333;
+  font-size: 1.5rem; /* Convertido de 24px */
+  text-align: left;
+  margin-bottom: 1vh; /* Convertido de 10px */
+  color: #333;
 }
 
 .video-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    size: 100%;
-
+  display: flex;
+  flex-direction: column;
+  gap: 2vh; /* Convertido de 20px */
+  width: 100%;
 }
 
 .video-frame {
-    margin: auto;           /* Antes: margin: 0 auto; */
-    max-width: 100%;     /* Antes era 100vh, o que limitava e centralizava */
-    width: 100%;
+  margin: auto;
+  max-width: 100%;
+  width: 100%;
 }
 
 .video-frame iframe {
-    width: 700px;
-    height: 450px;
-    display: block;
+  width: 60vw; /* Convertido de 700px para unidade relativa */
+  height: 33.75vw; /* Mantém proporção 16:9 baseado na largura */
+  display: block;
+  max-width: 100%;
 }
 
 /* ✅ Container para título, tabs e conteúdo */
 .conteudo-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-top: 1vh;
-    margin-left: 20vh;
-    margin-top: 0vh;
+  display: flex;
+  flex-direction: column;
+  gap: 8vh; /* Convertido de 20px */
+  padding-top: 1vh;
+  margin-left: 26vw; /* Convertido de 20vh para 26vw para alinhar com a sidebar */
+  margin-top: 5vh;
 }

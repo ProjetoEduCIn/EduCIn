@@ -12,4 +12,4 @@ authlib
 httpx
 passlib
 bcrypt
-google-oauth
+google-auth-oauthlib

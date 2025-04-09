@@ -75,7 +75,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - [Ana Júlia Ferreira ](https://github.com/jujubsfs)
 - [Maria Letícia Figuerôa](https://github.com/LetsSI)
 - [Gabriel Wamat Matias](https://github.com/Gabriel-Wamat)
-- [Fábio Filho Farias](https://github.com/FabinhoFarias)
+- [Fábio Jorge Coelho ](https://github.com/FabinhoFarias)
 
 ---
 
